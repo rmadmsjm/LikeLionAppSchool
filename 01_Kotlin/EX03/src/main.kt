@@ -48,7 +48,8 @@ fun printString(num:Long) {
     }
 
     var brithYear = when(gender) {
-        9L, 0L, 1L, 2L, 5L, 6L -> "19${yearCheck}"
+        9L, 0L -> "18${yearCheck}"
+        1L, 2L, 5L, 6L -> "19${yearCheck}"
         3L, 4L, 7L, 8L -> "20${yearCheck}"
         else -> ""
     }
