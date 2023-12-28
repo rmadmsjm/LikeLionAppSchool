@@ -10,9 +10,9 @@ fun main() {
 }
 
 fun inputNum() : Int {
-    val scanner = Scanner(System.`in`)
+    var scanner = Scanner(System.`in`)
     print("숫자를 입력하세요 : ")
-    val num = scanner.nextInt()
+    var num = scanner.nextInt()
     return num
 }
 
