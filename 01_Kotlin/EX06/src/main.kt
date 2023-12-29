@@ -36,7 +36,10 @@ fun sumFor() {
 
 /*
 fun main() {
-
+    // 1부터 100까지의 홀수 총합
+    val total = getTotal()
+    // 출력
+    printTotal(total)
 }
 
 // 1부터 100까지의 홀수의 총합
