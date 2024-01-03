@@ -31,6 +31,38 @@ fun main() {
     // TestClass3는 매개변수가 있는 생성자를 작성햇기 때문에 매개변수가 없는 생성자가 자동으로 추가되지 않음
     // 오류
     // val t5 = TestClass3()
+
+    val t6 = TestClass4(100, 200)
+    // 객체의 멤버 변수를 출력
+    println("t6.memberA1 : ${t6.memberA1}")
+    println("t6.memberA2 : ${t6.memberA2}")
+
+    println()
+
+    val t7 = TestClass4()
+    println("t7.memberA1 : ${t7.memberA1}")
+    println("t7.memberA2 : ${t7.memberA2}")
+
+    println()
+
+    val t8 = TestClass5(100, 200, 300)
+    println("t8.a1 : ${t8.a1}")
+    println("t8.a2 : ${t8.a2}")
+    println("t8.a3 : ${t8.a3}")
+
+    println()
+
+    val t9 = TestClass6(100, 200, 300)
+    println("t9.a1 : ${t9.a1}")
+    println("t9.a2 : ${t9.a2}")
+    println("t9.a3 : ${t9.a3}")
+
+    println()
+
+    val t10 = TestClass7(10, 20, 30)
+    println("t10.a1 : ${t10.a1}")
+    println("t10.a2 : ${t10.a2}")
+    println("t10.a3 : ${t10.a3}")
 }
 
 // init 코드 블럭
@@ -77,5 +109,67 @@ class TestClass3 {
         println("TestClass3의 생성자 호출")
         println("a1 : $a1")
         println("a2 : $a2")
+    }
+}
+
+// this : 객체가 가지고 있는 멤버를 지정하기 위해 사용함
+// 매서드나 생성자의 매개변수 이름과 객체의 멤버 변수의 이름이 같을 때 사용함
+// 같은 클래스 내의 다른 생성자를 호출하고자 할 때 사용함
+class TestClass4 {
+    var memberA1 = 0
+    var memberA2 = 0
+
+    constructor(memberA1:Int, memberA2:Int) {
+        // 여기서 사용하는 memberA1과 membaerA2는 매개변수를 지칭함
+        println("memberA1 : $memberA1")
+        println("memberA2 : $memberA2")
+        // 생성자나 매서드의 매개변수 이름과 멤버변수의 이름이 같은 경우
+        // 멤버 변수를 사용하고자 한다면 this를 사용함
+        // this는 객체 자기 자신을 가리키는 키워드
+        this.memberA1 = memberA1
+        this.memberA2 = memberA2
+    }
+
+    // 생성자에서 다른 생성자를 호출
+    // constructor(매개변수) : 호출할 다르 생성자(매개변수)
+    // 생성자가 호출되면 지정한 다른 생성자를 먼저 호출하여 코드가 수행되고 다른 생성자의 수행이 끝나면 생성자의 코드가 동작함
+    constructor():this(1000, 2000) {
+        println("매개변수가 없는 생성자 호출")
+    }
+}
+
+// 주 생성자
+// 하나의 클래스에서 생성자가 여러 개 있을 경우 주 생성자를 지정할 수 있음
+// 주 생성자가 아닌 다른 생성자들은 무조건 주 생성자를 호출해야 함
+class TestClass5 {
+    var a1 = 0
+    var a2 = 0
+    var a3 = 0
+
+    constructor(a1:Int, a2: Int, a3:Int) {
+        this.a1 = a1
+        this.a2 = a2
+        this.a3 = a3
+    }
+}
+
+// 주 생성자 사용
+// constructor에 명시한 변수들은 멤버변수로 정의되고 매개변수 3개를 가지고 잇는 생성자가 자동으로 추가됨
+// 이 생성자는 매개변수로 돌아가는 값을 멤버변수로 저장해주는 코드가 삽입됨
+// TestClass5와 같은 같은 형태로 변환됨
+// class TestClass6 constructor(var a1:Int, var a2:Int, var a3:Int)
+// 주 생성자 정의 시 constructor는 생략해도 됨
+class TestClass6(var a1:Int, var a2:Int, var a3:Int)
+
+// 만약 주 생성자에 정의하지 않은 멤버변수가 있다면
+class TestClass7(var a1:Int, var a2:Int) {
+    // 주 생성자에 정의하지 않은 멤버변수
+    var a3:Int = 0
+
+    // 다른 생성자를 만들어서 주 생성자에 정의하지 않은 변수의 값을 넣어줘야 함
+    // 이때, 추가적으로 작성한 생성자는 반드시 주 생성자를 호출해야 함
+    // 생성자() : this() 형태로 하여 주 생성자를 반드시 호출해야 함
+    constructor(a1:Int, a2:Int, a3:Int) : this(a1, a2) {
+        this.a3 = a3
     }
 }
