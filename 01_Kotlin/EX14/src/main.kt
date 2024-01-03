@@ -70,7 +70,7 @@ import java.util.Scanner
 
 // step8) main에서 필요한 만큼 객체를 생성하고 메서드를 호출하여 프로그램 완료
 
-// ‼️ 복습 : Zoo 클래스 구성 및 객체 생성, Animal 클래스 입출력, 각 동물 클래스 입출력 내부 코드
+// 📌 복습 : Zoo 클래스 구성 및 객체 생성, Animal 클래스 입출력, 각 동물 클래스 입출력 내부 코드
 
 fun main() {
     val zoo = Zoo()
