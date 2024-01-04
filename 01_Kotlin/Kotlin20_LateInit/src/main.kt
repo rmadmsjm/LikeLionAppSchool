@@ -26,14 +26,6 @@ class TestClass1 {
     var a3:Int
     var a4:Int
 
-    init {
-        a4 = 400
-    }
-
-    constructor() {
-        a3 = 300
-    }
-
     // 지연 초기화
     // init 블럭이나 생성자에서 값을 저장하지 않고 메서드에서 값을 저장하는 경우 사용함
     // var 변수만 가능
@@ -50,5 +42,27 @@ class TestClass1 {
         if (::a5.isInitialized) {
             println("step2 : $a5")
         }
+    }
+
+    // val property도 init이나 생성자에서 초기화 해주는 코드를 넣으면
+    // property 정의 시 저장할 값을 지정하지 않아도 됨
+    val a6:Int
+    val a7:Int
+
+    // lazy를 사용하면 property에 저장될 값을 어떠한 처리를 통해 구해 저장할 수 있음
+    val a8:Int by lazy {
+        val temp = 1 + 2+ 3 + 4 + 5
+        // 마지막에 작성한 값이나 변수의 값이 property에 저장됨
+        temp
+    }
+
+    init {
+        a4 = 400
+        a6 = 600
+    }
+
+    constructor() {
+        a3 = 300
+        a7 = 700
     }
 }
