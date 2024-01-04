@@ -70,8 +70,6 @@ import java.util.Scanner
 
 // step8) main에서 필요한 만큼 객체를 생성하고 메서드를 호출하여 프로그램 완료
 
-// 📌 복습 : Zoo 클래스 구성 및 객체 생성, Animal 클래스 입출력, 각 동물 클래스 입출력 내부 코드
-
 fun main() {
     val zoo = Zoo()
 
@@ -200,3 +198,210 @@ class Fox : Animal("여우") {
         println("다리 개수 : $tail")
     }
 }
+
+// ----------강사님 설명----------
+// step1) 출력 화면 구현
+// 출력 화면 구현 시 필요한 데이터는 임의의 데이터로 설정함
+
+// step2) 프로그램에서 필요한 기능을 정리
+// 먹는다
+// 달린다
+// 염색한다
+// 유혹한다
+// 동물들의 정보 입력
+// 동물들의 정보 출력
+
+// step3) step2에서 정리한 기능을 그룹으로 묶음
+// 먹는다 -> 호랑이, 사자, 여우
+// 달린다 -> 호랑이
+// 염색한다 -> 사자
+// 유혹한다 -> 여우
+// 동물들의 정보 입력 -> 동물원
+// 동물들의 정보 출력 -> 동물원
+// 동물의 정보 입력 -> 호랑이, 사자, 여우
+// 동물의 정보 출력 -> 호랑이, 사자, 여우
+
+// step4) 출력 화면과 step2, step3에서 정의한 기능을 보고 필요한 데이터를 정리
+// 필요한 데이터 : 화면을 구성하기 위해 필요한 데이터, 입력받는 데이터, 발생되는 데이터, 계산되는 데이터 등
+// 동물 종류
+// 동물 이름
+// 다리 개수
+// 털 개수
+// 꼬리 개수
+
+// step5) step4에서 정리한 변수들을 그룹으로 묶음
+// 동물 종류 -> 호랑이, 사자, 여우
+// 동물 이름 -> 호랑이, 사자, 여우
+// 다리 개수 -> 호랑이
+// 털 개수 -> 사자
+// 꼬리 개수 -> 여우
+
+// step6) 클래스 정의
+// 클래스 내부에 변수와 메서드 작성
+// 메서드의 코드는 아직 작성하지 않음
+
+// step7) 메서드 내부의 코드 작성 및 테스트
+
+// step8) main에서 필요한 만큼 객체를 생성하고 메서드를 호출하여 프로그램 완료
+
+/*
+fun main() {
+    // 동물원 객체 생성
+    val zoo = Zoo()
+    // 동물들 정보 입력
+    zoo.inputAnimalInfo()
+    // 각 동물 행동
+    zoo.doAnimal()
+    // 동물들 정보 출력
+    zoo.printAnimalInfo()
+}
+
+// 동물원
+class Zoo {
+    val scanner = Scanner(System.`in`)
+
+    // 동물들
+    val animal1 = Tiger()
+    val animal2 = Tiger()
+    val animal3 = Lion()
+    val animal4 = Lion()
+    val animal5 = Fox()
+    val animal6 = Fox()
+
+    // 동물들의 정보 입력
+    fun inputAnimalsInfo() {
+        animal1.inputTigerInfo(scanner)
+        animal2.inputTigerInfo(scanner)
+        animal3.inputLionInfo(scanner)
+        animal4.inputLionInfo(scanner)
+        animal5.inputFoxInfo(scanner)
+        animal6.inputFoxInfo(scanner)
+    }
+
+    // 동물들 정보 출력
+    fun printAnimalsInfo() {
+        animal1.printTigerInfo()
+        animal2.printTigerInfo()
+        animal3.printLionInfo()
+        animal4.printLionInfo()
+        animal5.printFoxInfo()
+        animal6.printFoxInfo()
+    }
+
+    // 동물들 행동
+    fun doAnimal() {
+        animal1.doEat()
+        animal1.doRun()
+        animal2.doEat()
+        animal2.doRun()
+        animal3.doEat()
+        animal3.doDyed()
+        animal4.doEat()
+        animal4.doDyed()
+        animal5.doEat()
+        animal5.doTempted()
+        animal6.doEat()
+        animal6.doTempted()
+    }
+
+}
+
+// 동물들이 상속 받을 부모 클래스
+// animalType : 동물 종류
+open class Animal(var animalType:String) {
+    // 동물 이름
+    var animalName = ""
+
+    // 먹는다
+    fun doEat() {
+        println()
+        println("${animalType} ${animalName}(이)가 먹는다")
+    }
+
+    // 동물 정보 입력
+    fun inputAnimalInfo(scanner: Scanner) {
+        println()
+        print("동물 이름 : ")
+        animalName = scanner.next()
+    }
+
+    // 동물 정보 출력
+    fun printAnimalInfo() {
+        println()
+        println("동물 이름 : ${animalName}")
+        println("동물 종류 : ${animalType}")
+    }
+}
+
+// 호랑이
+class Tiger : Animal("호랑이") {
+    // 다리 개수
+    var legCount = 0
+
+    //달린다
+    fun doRun() {
+        println("${animalType} ${aniamlName}(이)가 달린다")
+    }
+
+    // 입력 받기
+    fun inputTigerInfo(scanner: Scanner) {
+        inputAnimalInfo(scanner)
+        print("다리 개수 : ")
+        legCount = scanner.nextInt()
+    }
+
+    // 입력 받기
+    fun printTigerInfo() {
+        printAnimalInfo()
+        println("다리 개수 : $legCount")
+    }
+}
+
+// 사자
+class Lion : Animal("사자") {
+    // 털 개수
+    var hairCount = 0
+
+    // 염색한다
+    fun doDye() {
+        println("${animalType} ${aniamlName}(이)가 염색한다")
+    }
+
+    // 입력 받기
+    fun inputLionInfo(scanner: Scanner) {
+        inputAnimalInfo(scanner)
+        print("털 개수 : ")
+        hairCount = scanner.nextInt()
+    }
+
+    // 입력 받기
+    fun printLionInfo() {
+        printAnimalInfo()
+        println("털 개수 : $hairCount")
+    }
+}
+
+// 여우
+class Fox : Animal("여우") {
+    // 꼬리 개수
+    var tailCount = 0
+
+    // 유혹한다
+    fun doTempted() {
+        println("${animalType} ${aniamlName}(이)가 유혹한다")
+    }
+
+    // 입력 받기
+    fun inputFoxInfo(scanner: Scanner) {
+        inputAnimalInfo(scanner)
+        print("꼬리 개수 : ")
+        tailCount = scanner.nextInt()
+    }
+
+    // 입력 받기
+    fun printFoxInfo() {
+        printAnimalInfo()
+        println("꼬리 개수 : $tailCount")
+    }
+}
+ */
