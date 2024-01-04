@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Kotlin18_AccessModifier.iml" filepath="$PROJECT_DIR$/Kotlin18_AccessModifier.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SecondModule/SecondModule.iml" filepath="$PROJECT_DIR$/SecondModule/SecondModule.iml" />
+    </modules>
+  </component>
+</project>
