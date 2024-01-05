@@ -66,6 +66,8 @@ class SubClass1 : SuperClass1() {
     // 매개변수의 형태, 이름 등 모든 것이 같아야 함
     // overriding한 메서드는 'override' 키워드 붙여야 함
     override fun superMethod2() {
+        // 만약 부모 메서드를 호출하고자 한다면 super를 통해 접근함
+        super.superMethod2()
         println("SubClass1의 superMethod2")
     }
 }
