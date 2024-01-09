@@ -35,6 +35,9 @@ import java.util.Scanner
 /*
 step1) 출력 화면 구현
 승용차, 타이어 2개, 좌석 4개, 카시트 0개
+.
+.
+.
 승용차가 주행한다
 승용차가 후진한다
 승용차가 자장가를 재생한다
@@ -57,6 +60,8 @@ step2) 프로그램에서 필요한 기능을 정리
 충전
 정보 입력
 정보 출력
+전체 정보 입력
+전체 정보 출력
 보고서 출력
 
 step3) step2에서 정리한 기능을 그룹으로 묶음
@@ -64,8 +69,10 @@ step3) step2에서 정리한 기능을 그룹으로 묶음
 자장가 재생 -> 승용차
 물건 싣기 -> 트럭
 충전 -> 전기차
-정보 입력 -> 공장
-정보 출력 -> 공장
+정보 입력 -> 자동차
+정보 출력 -> 자동차
+전체 정보 입력 -> 공장
+전체 정보 출력 -> 공장
 보고서 출력 -> 공장
 
 step4) 출력 화면과 step2, step3에서 정의한 기능을 보고 필요한 데이터를 정리
@@ -88,53 +95,65 @@ step8) main에서 필요한 만큼 객체를 생성하고 메서드를 호출하
  */
 
 fun main() {
+    // 공장 객체 생성
     val factory = Factory()
+    // 전체 자동차 정보 입력
     factory.inputInfo()
+    // 전체 자동차 정보 출력
     factory.printInfo()
-    factory.report()
+    // 전체 자동차 기능 출력
+    factory.printDoVehicle()
+    // 자동차 보고서 출력
+    factory.printReport()
 }
 
+// 공장 클래스
 class Factory {
+    // scanner
     private val scanner = Scanner(System.`in`)
 
-    private val vehicle1 = Car()
-    private val vehicle2 = Car()
-    private val vehicle3 = Car()
-    private val vehicle4 = Car()
-    private val vehicle5 = Truck()
-    private val vehicle6 = Truck()
-    private val vehicle7 = ElectricCar()
-    private val vehicle8 = ElectricCar()
-    private val vehicle9 = ElectricCar()
-    private val vehicle10 = ElectricCar()
+    // 자동차 객체 배열
+    private val vehicleArray = arrayOf(
+        Car(),
+        Car(),
+        Car(),
+        Car(),
+        Truck(),
+        Truck(),
+        ElectricCar(),
+        ElectricCar(),
+        ElectricCar(),
+        ElectricCar()
+    )
 
+    // 전체 자동차 정보 입력
     fun inputInfo() {
-        vehicle1.inputInfo(scanner)
-        vehicle2.inputInfo(scanner)
-        vehicle3.inputInfo(scanner)
-        vehicle4.inputInfo(scanner)
-        vehicle5.inputInfo(scanner)
-        vehicle6.inputInfo(scanner)
-        vehicle7.inputInfo(scanner)
-        vehicle8.inputInfo(scanner)
-        vehicle9.inputInfo(scanner)
-        vehicle10.inputInfo(scanner)
+        println("---------- 자동차 정보 입력 ----------")
+        for (index in 0..9) {
+            vehicleArray[index].inputInfo(scanner)
+        }
     }
 
+    // 전체 자동차 정보 출력
     fun printInfo() {
-        vehicle1.printInfo()
-        vehicle2.printInfo()
-        vehicle3.printInfo()
-        vehicle4.printInfo()
-        vehicle5.printInfo()
-        vehicle6.printInfo()
-        vehicle7.printInfo()
-        vehicle8.printInfo()
-        vehicle9.printInfo()
-        vehicle10.printInfo()
+        println()
+        println("---------- 자동차 정보 ----------")
+        for (index in 0..9) {
+            vehicleArray[index].printInfo()
+        }
     }
 
-    fun report() {
+    // 전체 자동차 기능 출력
+    fun printDoVehicle() {
+        println()
+        println("---------- 자동차 기능 ----------")
+        for (index in 0..9) {
+            vehicleArray[index].doVehicle()
+        }
+    }
+
+    // 자동차 보고서 출력
+    fun printReport() {
         var totalCar = 0
         var totalTruck = 0
         var totalElectricCar = 0
@@ -144,21 +163,51 @@ class Factory {
         var totalLoadage = 0
         var totalBatteryCapacity = 0
 
+        for (index in 0..9) {
+            // 배열에서 현재 인덱스의 차량 가져오기
+            val vehicle = vehicleArray[index]
+
+            // 총 타이어 개수와 총 좌석 개수 누적
+            totalTire += vehicle.tire
+            totalSeat += vehicle.seat
+
+            // 자동차 타입에 따라 분기
+            if (vehicle is Car) {
+                // 총 승용차의 수와 총 카시트 개수 누적
+                totalCar++
+                totalCarSeat += vehicle.carSeat
+            } else if (vehicle is Truck) {
+                // 총 트럭의 수와 총 적재량 누적
+                totalTruck++
+                totalLoadage += vehicle.loadage
+            } else if (vehicle is ElectricCar) {
+                // 총 전기차의 수와 총 배터리 용량 누적
+                totalElectricCar++
+                totalBatteryCapacity += vehicle.batteryCapacity
+            }
+        }
+
+        println()
+        println("---------- 자동차 보고서 ----------")
         println("승용차 : ${totalCar}대")
-        println("트력 : ${totalCar}대")
-        println("전기 자동차 : ${totalCar}대")
-        println("총 타이어의 개수 : ${totalCar}개")
-        println("총 좌석의 개수 : ${totalCar}개")
-        println("총 카시트의 개수 : ${totalCar}개")
-        println("총 적재량 개수 : ${totalCar}kg")
-        println("총 배터리 용량 : ${totalCar}mAh")
+        println("트력 : ${totalTruck}대")
+        println("전기 자동차 : ${totalElectricCar}대")
+        println("총 타이어의 개수 : ${totalTire}개")
+        println("총 좌석의 개수 : ${totalSeat}개")
+        println("총 카시트의 개수 : ${totalCarSeat}개")
+        println("총 적재량 개수 : ${totalLoadage}kg")
+        println("총 배터리 용량 : ${totalBatteryCapacity}mAh")
     }
 }
 
+// 자동차 클래스
 open class Vehicle(var type:String) {
+    // 타이어 개수
     var tire = 0
+    // 좌석 개수
     var seat = 0
 
+    // 자동차 정보 입력
     open fun inputInfo(scanner: Scanner) {
         println()
         print("${type}의 타이어 개수 : ")
@@ -167,75 +216,91 @@ open class Vehicle(var type:String) {
         seat = scanner.nextInt()
     }
 
+    // 자동차 정보 출력
     open fun printInfo() {
-        println()
-        println("${type}의 타이어 개수 : ${tire}개")
-        println("${type}의 타이어 개수 : ${seat}개")
+        print("${type} ")
+        print("타이어 ${tire}개, ")
+        print("좌석 ${seat}개, ")
     }
 
+    // 자동차 기능
     open fun doVehicle() {
-        println()
         println("${type}(이)가 주행한다")
         println("${type}(이)가 후진한다")
     }
 }
 
+// 승용차 클래스
 class Car : Vehicle("승용차") {
+    // 카시트 개수
     var carSeat = 0
 
+    // 승용차 기능
     override fun doVehicle() {
         super.doVehicle()
         println("${type}가 자장가를 재생한다")
     }
 
+    // 승용차 정보 입력
     override fun inputInfo(scanner: Scanner) {
         super.inputInfo(scanner)
         print("${type}의 카시트 개수 : ")
         carSeat = scanner.nextInt()
     }
 
+    // 승용차 정보 출력
     override fun printInfo() {
         super.printInfo()
-        println("${type}의 카시트 개수 : ${carSeat}개")
+        println("카시트 ${carSeat}개")
     }
 }
 
+// 트럭 클래스
 class Truck : Vehicle("트럭") {
+    // 적재량
     var loadage = 0
 
+    // 트럭 기능
     override fun doVehicle() {
         super.doVehicle()
         println("${type}에 물건을 싣는다")
     }
 
+    // 트럭 정보 입력
     override fun inputInfo(scanner: Scanner) {
         super.inputInfo(scanner)
         print("${type}의 적재량 : ")
         loadage = scanner.nextInt()
     }
 
+    // 트럭 정보 출력
     override fun printInfo() {
         super.printInfo()
-        println("${type}의 적재량 : ${loadage}kg")
+        println("적재량 ${loadage}kg")
     }
 }
 
+// 전기차 클래스
 class ElectricCar : Vehicle("전기차") {
+    // 배터리 용량
     var batteryCapacity = 0
 
+    // 전기차 기능
     override fun doVehicle() {
         super.doVehicle()
-        println("${type}을 충전한다")
+        println("${type}를 충전한다")
     }
 
+    // 전기차 정보 입력
     override fun inputInfo(scanner: Scanner) {
         super.inputInfo(scanner)
         print("${type}의 배터리 용량 : ")
         batteryCapacity = scanner.nextInt()
     }
 
+    // 전기차 정보 출력
     override fun printInfo() {
         super.printInfo()
-        println("${type}의 배터리 용량 : ${batteryCapacity}mAh")
+        println("배터리 용량 ${batteryCapacity}mAh")
     }
 }
