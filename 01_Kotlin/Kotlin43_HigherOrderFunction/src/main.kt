@@ -42,6 +42,17 @@ fun main() {
     testFunc4 {x1, x2 ->
         x1 + x2
     }
+
+    // 고차함수로 전달하는 람다식의 매개변수가 1개일 경우, it 사용하면 됨
+    testFunc5 { x1 ->
+        println(x1)
+        100
+    }
+
+    testFunc5 {
+        println(it)
+        100
+    }
 }
 
 // 매개변수로 함수를 받는 함수
@@ -72,4 +83,9 @@ fun testFunc3(a1:Int) : (Int, Int) -> Int {
 fun testFunc4(m1:(Int, Int) -> Int){
     val r1 = m1(100, 200)
     println(r1)
+}
+
+// 매개변수를 하나만 가지고 있는 함수나 람다를 받는 함수
+fun testFunc5(m1:(Int) -> Int) {
+    m1(100)
 }
