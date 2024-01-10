@@ -68,4 +68,41 @@ fun main() {
     val chk4 = map1.containsValue(1000)
     println("chk3 : $chk3")
     println("chk4 : $chk4")
+
+    println("-------------------------------------------------------")
+
+    val map12 = mutableMapOf("a1" to 10, "a2" to 20)
+    println("map12 : $map12")
+
+    // 추가
+    // 1) get()
+    map12.put("a3", 30)
+    println("map12 : $map12")
+
+    // 2) []
+    map12["a4"] = 40
+    println("map12 : $map12")
+
+    // 수정
+    // 있는 이름으로 객체를 넣어줌
+    map12["a4"] = 400
+    println("map12 : $map12")
+
+    // 삭제
+    map12.remove("a4")
+    println("map12 : $map12")
+
+    println("-------------------------------------------------------")
+
+    // mapOf -> mutableMapof
+    val map13 = mapOf("a1" to 10, "a2" to 20, "a3" to 30)
+
+    val map14 = map13.toMutableMap()
+    map14["a4"] = 40
+    println("map14 : $map14")
+
+    // mutableMapof -> map
+    val map15 = map14.toMap()
+    // map15["a5"] = 50
+    println("map15 : $map15")
 }
