@@ -15,3 +15,17 @@ enum class ProgramState {
     // 종료 상태
     PROGRAM_STATE_TERMINATE
 }
+
+// 각 메뉴
+enum class MenuNumber(var num:Int){
+    // 학생 정보 입력
+    MAIN_MENU_INPUT_STUDENT_INFO(1),
+    // 학생 정보 검색
+    MAIN_MENU_SEARCH_STUDENT_INFO(2),
+    // 학생 정보 전체 출력
+    MAIN_MENU_SHOW_STUDENT_INFO_ALL(3),
+    // 각 과목별 총점과 평균 확인
+    MAIN_MENU_SHOW_POINT_TOTAL_AVG(4),
+    // 종료
+    MAIN_MENU_TERMINATE(5)
+}
