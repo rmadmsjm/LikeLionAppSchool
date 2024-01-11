@@ -303,7 +303,128 @@ step15) 필요한 데이터 묶기
 
 -------------------------------------------------------------------------------------------------------
 
-step17) 학생
+step17) 학생 클래스 및 각 상태별 클래스에 프로퍼티와 메서드를 정의한다.
+
+-------------------------------------------------------------------------------------------------------
+
+step18) ShowMenuActivity의 메서드 구현
+
+-------------------------------------------------------------------------------------------------------
+
+step19) MainController 에 상태값 변경시키는 메서드 구현
+
+    // 상태 값을 변경하는 메서드
+    fun setProgramState(programState: ProgramState){
+        this.programState = programState
+    }
+
+ShowMenuActivity 의 주 생성자 추가
+(var mainController: MainController)
+
+ShowMenuActivity 객체 생성시 mainController 주소값 전달
+ProgramState.PROGRAM_STATE_SHOW_MENU -> ShowMenuActivity(this)
+
+ValueUtil에 각 메뉴를 나타내는 상수값 정의
+// 각 메뉴
+enum class MenuNumber(var num:Int){
+    // 학생 정보 입력
+    MAIN_MENU_INPUT_STUDENT_INFO(1),
+    // 학생 정보 검색
+    MAIN_MENU_SEARCH_STUDENT_INFO(2),
+    // 학생 정보 전체 출력
+    MAIN_MENU_SHOW_STUDENT_INFO_ALL(3),
+    // 각 과목별 총점과 평균 확인
+    MAIN_MENU_SHOW_POINT_TOTAL_AVG(4),
+    // 종료
+    MAIN_MENU_TERMINATE(5)
+}
+
+ShowMenuActivity의 finishActivity 메서드 구현
+
+override fun finishActivity() {
+        // 사용자가 입력한 메뉴 번호에 따라 프로그램의 상태를 변경한다.
+        when(menuNumber){
+            // 학생 정보를 입력
+            MenuNumber.MAIN_MENU_INPUT_STUDENT_INFO.num ->
+                mainController.setProgramState(ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO)
+            // 학생 정보를 검색
+            MenuNumber.MAIN_MENU_SEARCH_STUDENT_INFO.num ->
+                mainController.setProgramState(ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO)
+            // 모든 학생의 정보를 출력
+            MenuNumber.MAIN_MENU_SHOW_STUDENT_INFO_ALL.num ->
+                mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_STUDENT_INFO_ALL)
+            // 과목별 총점과 평균을 출력
+            MenuNumber.MAIN_MENU_SHOW_POINT_TOTAL_AVG.num ->
+                mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG)
+            // 종료
+            MenuNumber.MAIN_MENU_TERMINATE.num ->
+                mainController.setProgramState(ProgramState.PROGRAM_STATE_TERMINATE)
+        }
+    }
+-------------------------------------------------------------------------------------------------------
+
+step20) InputStudentInfoActivity구현
+
+showStudentCnt 구현
+
+    // 현재 입력된 학생의 수를 보여주는 기능
+    fun showStudentCnt(){
+        if(studentList != null){
+            println("현재 입력된 학생 수 : ${studentList?.size}명")
+        } else {
+            println("현재 입력된 학생 수 : 0명")
+        }
+    }
+
+inputStudentInfo 구현
+
+// 학생의 정보를 입력받는 기능
+    fun inputStudentInfo(){
+        var name = ""
+        var age = -1
+        var kor = -1
+        var eng = -1
+        var math = -1
+
+        print("학생 이름 :")
+        name = scanner.next()
+
+        do {
+            try {
+                print("학생 나이 :")
+                age = scanner.nextInt()
+
+                if(age !in 0..200){
+                    println("나이는 0 ~ 200까지의 값을 넣어주세요")
+                }
+            }catch(e:NumberFormatException){
+                println("나이는 숫자로 입력해주세요")
+            }
+        } while(age !in 0..200)
+
+        print("국어 점수 :")
+        kor = scanner.nextInt()
+        print("영어 점수 :")
+        eng = scanner.nextInt()
+        print("수학 점수 :")
+        math = scanner.nextInt()
+
+        studentModel = StudentModel(name, age, kor, eng, math)
+    }
+
+ showActivity 수정
+
+     override fun showActivity() {
+         println()
+         println("[ 학생정보 입력 ]")
+         // 현재 학생 수를 출력한다.
+         showStudentCnt()
+         // 현재 학생의 정보를 입력받는다.
+         inputStudentInfo()
+
+     }
+
+-------------------------------------------------------------------------------------------------------
 
 
 
