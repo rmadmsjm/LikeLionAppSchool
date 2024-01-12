@@ -1,12 +1,12 @@
 package com.lion.project1.activity
 
+import kotlin.system.exitProcess
+
 class TerminateActivity : BaseActivity() {
     override fun initActivity() {
-        TODO("Not yet implemented")
     }
 
     override fun processActivity() {
-        TODO("Not yet implemented")
     }
 
     override fun showActivity() {
@@ -15,10 +15,13 @@ class TerminateActivity : BaseActivity() {
 
         // 강사랑 같이 작업한 부분
         println("프로그램이 종료되었습니다")
+        // 프로그램 종료
+        // System.exit(0)
+        // 프로그램 종료 코드 : 0 (정상 종료)
+        exitProcess(0)
     }
 
     override fun finishActivity() {
-        TODO("Not yet implemented")
     }
 
     // 프로그램 종료 메서드
