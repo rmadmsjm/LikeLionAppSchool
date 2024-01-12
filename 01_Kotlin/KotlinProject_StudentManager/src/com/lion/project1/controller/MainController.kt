@@ -5,7 +5,7 @@ import com.lion.project1.util.ProgramState
 
 class MainController {
     // 상태값을 담을 변수
-    var programStateValue = ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO
+    var programStateValue = ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG
 
     // Activity 객체의 주소값을 담을 변수
     lateinit var activity:BaseActivity
@@ -35,8 +35,8 @@ class MainController {
         ProgramState.PROGRAM_STATE_SHOW_MENU -> ShowMenuActivity(this)
         ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO -> InputStudentInfoActivity(this)
         ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO -> SearchStudentInfoActivity(this)
-        ProgramState.PROGRAM_STATE_SHOW_STUDENT_INFO_ALL -> ShowStudentInfoAllActivity()
-        ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG -> ShowPointTotalAvgActivity()
+        ProgramState.PROGRAM_STATE_SHOW_STUDENT_INFO_ALL -> ShowStudentInfoAllActivity(this)
+        ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG -> ShowPointTotalAvgActivity(this)
         ProgramState.PROGRAM_STATE_TERMINATE -> TerminateActivity()
     }
 
