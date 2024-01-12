@@ -14,6 +14,11 @@ class StudentModel(var name:String, var age:Int, var kor:Int, var eng:Int, var m
 
     // 학생 한 명의 정보 출력 메서드
     fun printStudentInfo() {
-
+        println()
+        println("학생 이름 : $name ")
+        println("학생 나이 : $age ")
+        println("국어 점수 : $kor ")
+        println("영어 점수 : $eng ")
+        println("수학 점수 : $math ")
     }
 }

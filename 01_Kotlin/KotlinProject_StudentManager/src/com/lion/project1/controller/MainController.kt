@@ -34,7 +34,7 @@ class MainController {
     fun getStateClass() = when(programStateValue){
         ProgramState.PROGRAM_STATE_SHOW_MENU -> ShowMenuActivity(this)
         ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO -> InputStudentInfoActivity(this)
-        ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO -> SearchStudentInfoActivity()
+        ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO -> SearchStudentInfoActivity(this)
         ProgramState.PROGRAM_STATE_SHOW_STUDENT_INFO_ALL -> ShowStudentInfoAllActivity()
         ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG -> ShowPointTotalAvgActivity()
         ProgramState.PROGRAM_STATE_TERMINATE -> TerminateActivity()
