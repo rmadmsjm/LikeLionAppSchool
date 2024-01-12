@@ -5,6 +5,7 @@ import com.lion.project1.dao.UserInfoDAO
 import com.lion.project1.model.StudentModel
 import com.lion.project1.util.ProgramState
 import java.util.Scanner
+import kotlin.collections.ArrayList
 
 class InputStudentInfoActivity(var mainController: MainController) : BaseActivity() {
 

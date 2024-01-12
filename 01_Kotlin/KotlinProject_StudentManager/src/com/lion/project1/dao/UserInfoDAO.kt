@@ -1,7 +1,11 @@
 package com.lion.project1.dao
 
 import com.lion.project1.model.StudentModel
-import java.io.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 
 class UserInfoDAO {
 
@@ -18,7 +22,7 @@ class UserInfoDAO {
         // 파일에서 데이터를 읽어와 ArrayList에 담고 반환함
         fun getStudentInfoList(): ArrayList<StudentModel>? {
             // 파일이 없다면 null 반환함
-            if (isExistUserInfoFile()) {
+            if (isExistUserInfoFile() == false) {
                 return null
             }
             // 파일에서 데이터를 읽어올 기본 스트림을 생성.

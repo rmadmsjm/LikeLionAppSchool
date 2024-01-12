@@ -2,11 +2,9 @@ package com.lion.project1.activity
 
 class SearchStudentInfoActivity : BaseActivity() {
     override fun initActivity() {
-        TODO("Not yet implemented")
     }
 
     override fun processActivity() {
-        TODO("Not yet implemented")
     }
 
     override fun showActivity() {
@@ -30,7 +28,6 @@ class SearchStudentInfoActivity : BaseActivity() {
     }
 
     override fun finishActivity() {
-        TODO("Not yet implemented")
     }
 
     // 검색할 학생 이름 입력 받는 메서드
