@@ -1,9 +1,12 @@
 package com.lion.project1.activity
 
+import com.lion.project1.controller.MainController
+import com.lion.project1.dao.UserInfoDAO
 import com.lion.project1.model.StudentModel
+import com.lion.project1.util.ProgramState
 import java.util.Scanner
 
-class InputStudentInfoActivity : BaseActivity() {
+class InputStudentInfoActivity(var mainController: MainController) : BaseActivity() {
 
     // 입력된 학생 정보 담을 객체
     var studentList:ArrayList<StudentModel>? = null
@@ -14,6 +17,9 @@ class InputStudentInfoActivity : BaseActivity() {
 
     override fun initActivity() {
         scanner = Scanner(System.`in`)
+
+        // 학생정보 가져오기
+        studentList = UserInfoDAO.getStudentInfoList()
     }
 
     override fun processActivity() {
@@ -26,9 +32,13 @@ class InputStudentInfoActivity : BaseActivity() {
         showStudentCnt()
         // 현재 학생 정보 입력 받기
         inputStudentInfo()
+        // 학생 정보 파일에 쓰기
+        saveStudentInfo()
     }
 
     override fun finishActivity() {
+        // 작업 완료 후 상태를 메뉴를 보여주는 상태로 변경
+        mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_MENU)
     }
 
     // 현재 입력된 학생 수를 보여주는 메서드
@@ -79,6 +89,15 @@ class InputStudentInfoActivity : BaseActivity() {
 
     // 입력 받은 학생의 정보를 저장하는 메서드
     fun saveStudentInfo() {
+        // ArrayList가 null 이면 객체를 생성함
+        if(studentList == null){
+            studentList = ArrayList<StudentModel>()
+        }
+
+        // 객체를 ArrayList에 담기
+        studentList?.add(studentModel)
+        // 파일에 저장
+        UserInfoDAO.saveStudentInfoList(studentList!!)
 
     }
 }

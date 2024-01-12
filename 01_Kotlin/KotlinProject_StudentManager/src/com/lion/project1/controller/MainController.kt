@@ -33,7 +33,7 @@ class MainController {
     // 상태값에 따라 객체를 생성해서 반환하는 메서드
     fun getStateClass() = when(programStateValue){
         ProgramState.PROGRAM_STATE_SHOW_MENU -> ShowMenuActivity(this)
-        ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO -> InputStudentInfoActivity()
+        ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO -> InputStudentInfoActivity(this)
         ProgramState.PROGRAM_STATE_SEARCH_STUDENT_INFO -> SearchStudentInfoActivity()
         ProgramState.PROGRAM_STATE_SHOW_STUDENT_INFO_ALL -> ShowStudentInfoAllActivity()
         ProgramState.PROGRAM_STATE_SHOW_POINT_TOTAL_AVG -> ShowPointTotalAvgActivity()
