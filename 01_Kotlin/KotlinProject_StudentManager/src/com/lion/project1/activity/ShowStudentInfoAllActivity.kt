@@ -63,12 +63,12 @@ class ShowStudentInfoAllActivity(var mainController: MainController) : BaseActiv
 
         // 학생 객체의 수만큼 반복
         studentList?.forEach {
-            println()
-            println("학생 이름 : ${it.name}")
-            println("학생 나이 : ${it.age}")
-            println("국어 점수 : ${it.kor}")
-            println("영어 점수 : ${it.eng}")
-            println("수학 점수 : ${it.math}")
+//            println("학생 이름 : ${it.name}")
+//            println("학생 나이 : ${it.age}")
+//            println("국어 점수 : ${it.kor}")
+//            println("영어 점수 : ${it.eng}")
+//            println("수학 점수 : ${it.math}")
+            it.printStudentInfo()
         }
     }
 

@@ -361,6 +361,7 @@ override fun finishActivity() {
                 mainController.setProgramState(ProgramState.PROGRAM_STATE_TERMINATE)
         }
     }
+
 -------------------------------------------------------------------------------------------------------
 
 step20) InputStudentInfoActivity구현
@@ -425,6 +426,358 @@ inputStudentInfo 구현
      }
 
 -------------------------------------------------------------------------------------------------------
+
+step21) UserInfoDAO 에 메서드 구현
+
+companion object{
+        // 파일 있는지 확인하는 메서드
+        fun isExistUserInfoFile():Boolean{
+            // File 객체를 생성한다.
+            val saveFile = File("userData.dat")
+            // 파일이 존재하는지 확인한다.
+            // 파일이 있으면 true를 반환하고 없으면 false를 반환한다.
+            return saveFile.exists()
+        }
+
+        // 파일에서 데이터를 읽어와 ArrayList에 담고 반환한다.
+        fun getStudentInfoList():ArrayList<StudentModel>?{
+            // 파일이 없다면 null을 반환한다.
+            if(isExistUserInfoFile() == false){
+                return null
+            }
+            return null
+        }
+    }
+
+InputStudentInfoActivity 에서 메서드 호출
+
+        // 학생정보를 가져온다.
+        studentList = UserInfoDAO.getStudentInfoList()
+
+-------------------------------------------------------------------------------------------------------
+
+step22) StudentModel 클래스에 Seriealizable 인터페이스 구현을 추가한다.
+
+// 객체를 외부에 보내려면(파일에 저장하려면) Serializable 인터페이스를 구현해야 한다.
+class StudentModel(var name:String, var age:Int, var kor:Int, var eng:Int, var math:Int) : Serializable {
+
+-------------------------------------------------------------------------------------------------------
+
+step23) UserInfoDAO 에 객체를 파일에 쓰는 메서드 구현
+
+        // 데이터를 파일에 쓴다.
+        fun saveStudentInfoList(dataList:ArrayList<StudentModel>){
+            // 파일에 데이터를 쓰기 위핸 기본 스트림 생성한다.
+            // 쓰기를 할 때는 파일이 없을 경우 파일이 생성된다.
+            val fileOutputStream = FileOutputStream("userData.dat")
+            // 객체를 파일에 쓸 수 있는 형태로 가공하는 필터스트림 생성하여 연결한다.
+            val objectOuputStream = ObjectOutputStream(fileOutputStream)
+            // 객체를 파일에 쓴다.
+            objectOuputStream.writeObject(dataList)
+            // 파일을 닫아준다.
+            objectOuputStream.flush()
+            objectOuputStream.close()
+            fileOutputStream.close()
+        }
+    }
+
+-------------------------------------------------------------------------------------------------------
+
+step24) InputStudentInfoActivity 에 saveStudentInfo 메서드 구현
+
+    // 입력받은 학생의 정보를 저장하는 기능
+    fun saveStudentInfo(){
+        // ArrayList가 null 이면 객체를 생성해준다.
+        if(studentList == null){
+            studentList = ArrayList<StudentModel>()
+        }
+
+        // 객체를 ArrayList에 담아준다.
+        studentList?.add(studentModel)
+        // 파일에 저장한다.
+        UserInfoDAO.saveStudentInfoList(studentList!!)
+    }
+
+구현한 메서드를 호출한다.
+
+        // 학쟁 정보를 파일에 쓴다.
+        saveStudentInfo()
+
+-------------------------------------------------------------------------------------------------------
+
+step25) UserInfoDAO 에 getStudentInfoList 코드 구현
+
+            // 파일에서 데이터를 읽어올 기본 스트림을 생성한다.
+            val fileInputStream = FileInputStream("userData.dat")
+            // 읽어온 데이터를 객체로 복원하는 필터 스트림을 생성한다.
+            val objectInputStraem = ObjectInputStream(fileInputStream)
+            // 읽어온다.
+            val resultList = objectInputStraem.readObject() as ArrayList<StudentModel>
+            // 파일을 닫아준다.
+            objectInputStraem.close()
+            fileInputStream.close()
+
+            // 객체를 반환한다.
+            return resultList
+
+-------------------------------------------------------------------------------------------------------
+
+step26) InputStudentInfoActivity에 주생성자 추가
+
+(var mainController: MainController)
+
+finishActivity 메서드에서 프로그램의 상태를 메뉴를 보여주는 상태로 설정
+
+        // 작업 완료 후 상태를 메뉴를 보여주는 상태로 변경한다.
+        mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_MENU)
+
+
+MainController 에서 InputStudentInfoActivity 객체 생성시 자기 자신을 전달한다.
+
+ProgramState.PROGRAM_STATE_INPUT_STUDENT_INFO -> InputStudentInfoActivity(this)
+
+-------------------------------------------------------------------------------------------------------
+
+step27) SearchStudentInfoActivity 구현
+
+변수 선언
+
+    // 학생들의 정보를 담을 ArrayList
+    var studentList:ArrayList<StudentModel>? = null
+    // 검색할 학생의 이름
+    lateinit var serachName:String
+
+학생 정보를 가져온다.
+
+        // 학생들의 정보를 가져온다.
+        studentList = UserInfoDAO.getStudentInfoList()
+
+학생 정보가 없을 경우 구현
+        // 저장된 학생 정보가 없다면
+        println()
+        println("[ 학생 정보 검색 ]")
+        if(studentList == null){
+            println("저장된 학생 정보가 없습니다.")
+        } else {
+
+        }
+
+        println("검색할 학생 이름 : ")
+        println("학생 이름 : 0000 ")
+        println("학생 나이 : 0000 ")
+        println("국어 점수 : 0000 ")
+        println("영어 점수 : 0000 ")
+        println("수학 점수 : 0000 ")
+
+Scanner 생성
+    // 입력을 위한 스캐너
+    lateinit var scanner: Scanner
+
+    override fun initActivity() {
+        // 학생들의 정보를 가져온다.
+        studentList = UserInfoDAO.getStudentInfoList()
+        // 스캐너 생성
+        scanner = Scanner(System.`in`)
+    }
+
+inputSearchName  메서드 구현
+    // 검색할 학생의 이름을 입력받는 기능
+    fun inputSearchName(){
+        print("검색할 학생 이름 : ")
+        serachName = scanner.next()
+    }
+
+ printSearchResult 메서드 구현
+     // 검색된 학생들의 정보를 출력하는 메서드
+     fun printSearchResult(){
+         // 검색된 학생의 수
+         var findCnt = 0
+         // ArrayList가 관리하는 객체의 수 만큼 반복한다.
+         studentList?.forEach{
+             // 현재 반복번째 학생의 이름이 검색어와 같다면 출력한다.
+             if(it.name == serachName){
+                 println()
+                 it.printStudentInfo()
+                 // 검색된 학생 수를 증가시킨다
+                 findCnt++
+             }
+         }
+         // 검색된 학생이 없다면
+         if(findCnt == 0){
+             println("검색된 학생이 없습니다.")
+         }
+     }
+
+showActivity 메서드 내의 else 문 구현
+
+            // 검색어를 입력받는다.
+            inputSearchName()
+            // 검색 결과를 출력한다.
+            printSearchResult()
+
+StudentModel.kt 파일의 printStudentInfo 메서드 구현
+    // 학생 한명의 정보를 출력하는 메서드
+    fun printStudentInfo(){
+        println()
+        println("학생 이름 : $name ")
+        println("학생 나이 : $age ")
+        println("국어 점수 : $kor ")
+        println("영어 점수 : $eng ")
+        println("수학 점수 : $math ")
+    }
+
+-------------------------------------------------------------------------------------------------------
+
+step28)
+MainController 의 SearchStudentInfoActivity 객체 생성 부분에 this 설정
+SearchStudentInfoActivity(this)
+
+SearchStudentInfoActivity 에 주생성자 설정
+(var mainController: MainController)
+
+finishActivity 메서드 구현
+    override fun finishActivity() {
+        mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_MENU)
+    }
+
+-------------------------------------------------------------------------------------------------------
+
+step29)
+MainController 에서 ShowStudentInfoAllActivity 생성시 자기 자신 전달하기
+ShowStudentInfoAllActivity(this)
+
+ShowStudentInfoAllActivity의 주 생성자 추가
+(var mainController: MainController)
+
+학생 정보를 담을 ArrayList 선언
+    // 학생 정보를 담을 ArrayList
+    var studentList:ArrayList<StudentModel>? = null
+
+initActivity 메서드에서 학생 정보를 가져온다.
+        // 학생 정보를 가져온다.
+        studentList = UserInfoDAO.getStudentInfoList()
+
+showActivity 메서드에 if 문 구현
+        // 학생 정보가 없다면
+        if(studentList == null){
+            println("저장된 학생 정보가 없습니다.")
+        } else {
+
+        }
+
+printStudentInfoAll 메서드 구현
+    // 모든 학생들의 정보를 출력하는 메서드
+    fun printStudentInfoAll(){
+        // 학생 객체의 수 만큼 반복한다.
+        studentList?.forEach{
+            println()
+            println("학생 이름 : ${it.name}")
+            println("학생 나이 : ${it.age}")
+            println("국어 점수 : ${it.kor}")
+            println("영어 점수 : ${it.eng}")
+            println("수학 점수 : ${it.math}")
+        }
+    }
+
+showActivity 메서드의 else에 printStudentInfoAll 메서드 호출
+            // 학생 정보가 있다면 출력한다.
+            printStudentInfoAll()
+
+finishActivity 메서드에서 프로그램 상태를 메뉴 상태로 변경
+
+    override fun finishActivity() {
+        mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_MENU)
+    }
+
+-------------------------------------------------------------------------------------------------------
+
+step30)
+MainController의 ShowPointTotalAvgActivity 객체 생성시 자기 자신 넘겨주기
+ShowPointTotalAvgActivity(this)
+
+ShowPointTotalAvgActivity에 주 생성자 추가
+(var mainController: MainController)
+
+프로퍼티들 정의
+    // 학생의 정보를 담을 ArrayList
+    var studentList:ArrayList<StudentModel>? = null
+    // 총점들을 담을 프로퍼티
+    var korTotal = 0
+    var engTotal = 0
+    var mathTotal = 0
+    // 평균들을 담을 프로퍼티
+    var korAvg = 0
+    var engAvg = 0
+    var mathAvg = 0
+
+initActivity에서 학생들의 정보를 가져온다.
+        // 학생들의 정보를 가져온다.
+        studentList = UserInfoDAO.getStudentInfoList()
+
+getPointTotal 메서드 구현
+
+    // 과목별 총점을 구하는 메서드
+    fun getPointTotal(){
+        // 각 과목별 총점을 구한다.
+        studentList?.forEach{
+            korTotal += it.kor
+            engTotal += it.eng
+            mathTotal += it.math
+        }
+    }
+
+getPointAvg 메서드 구현
+    // 과목별 평균을 구하는 메서드
+    fun getPointAvg(){
+        korAvg = korTotal / studentList!!.size
+        engAvg = engTotal / studentList!!.size
+        mathAvg = mathTotal / studentList!!.size
+    }
+
+processActivity 메서드 구현
+    override fun processActivity() {
+
+        if(studentList != null){
+            // 총점을 구한다
+            getPointTotal()
+            // 평균을 구한다.
+            getPointAvg()
+        }
+    }
+
+showActivity 메서드에 if 문 구현
+        println()
+        println("[ 점수 통계 ]")
+
+        if(studentList == null){
+            println("저장된 학생 정보가 없습니다")
+        } else {
+
+        }
+
+showActivity의 else 부분 구현
+            println()
+            println("국어 총점 : $korTotal")
+            println("영어 총점 : $engTotal")
+            println("수학 총점 : $mathTotal")
+            println("국어 평균 : $korAvg")
+            println("영어 평균 : $engAvg")
+            println("수학 평균 : $mathAvg")
+
+finishActivity 메서드 구현
+    override fun finishActivity() {
+        mainController.setProgramState(ProgramState.PROGRAM_STATE_SHOW_MENU)
+    }
+
+-------------------------------------------------------------------------------------------------------
+
+step31) TerminateActivity 의 showActivity
+
+    override fun showActivity() {
+        println("프로그램이 종료되었습니다.")
+        // 프로그램을 종료한다.
+        exitProcess(0)
+    }
 
 
 
