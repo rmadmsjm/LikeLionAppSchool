@@ -14,6 +14,7 @@ class TerminateActivity : BaseActivity() {
 //        println("프로그램이 종료되었습니다")
 
         // 강사랑 같이 작업한 부분
+        println()
         println("프로그램이 종료되었습니다")
         // 프로그램 종료
         // System.exit(0)

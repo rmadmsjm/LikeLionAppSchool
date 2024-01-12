@@ -5,7 +5,7 @@ import com.lion.project1.util.ProgramState
 
 class MainController {
     // 상태값을 담을 변수
-    var programStateValue = ProgramState.PROGRAM_STATE_TERMINATE
+    var programStateValue = ProgramState.PROGRAM_STATE_SHOW_MENU
 
     // Activity 객체의 주소값을 담을 변수
     lateinit var activity:BaseActivity
