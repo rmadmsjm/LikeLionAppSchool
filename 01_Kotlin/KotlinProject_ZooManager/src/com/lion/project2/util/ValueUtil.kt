@@ -31,3 +31,9 @@ enum class MenuNumber(var num:Int) {
     // 종료
     MAIN_MENU_FINISH(6)
 }
+
+enum class AnimalTypeNumber(var num:Int) {
+    LION(1),
+    TIGER(2),
+    ELEPHANT(3)
+}

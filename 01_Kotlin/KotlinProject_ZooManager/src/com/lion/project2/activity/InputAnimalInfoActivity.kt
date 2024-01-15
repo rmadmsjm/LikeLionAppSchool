@@ -3,6 +3,7 @@ package com.lion.project2.activity
 import com.lion.project2.controller.MainController
 import com.lion.project2.dao.AnimalInfoDAO
 import com.lion.project2.model.AnimalModel
+import com.lion.project2.util.AnimalTypeNumber
 import com.lion.project2.util.ProgramState
 import java.util.Scanner
 
@@ -45,7 +46,7 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
     }
 
     fun inputAnimalInfo() {
-        var type = ""
+        var type = -1
         var name = ""
         var age = -1
         var furCnt = -1
@@ -53,7 +54,7 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
         var noseLength = -1
 
         print("동물 종류 (1. 사자, 2. 호랑이, 3.코끼리) : ")
-        type = scanner.next()
+        type = scanner.nextInt()
 
         print("동물의 이름 : ")
         name = scanner.next()
@@ -61,13 +62,13 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
         print("동물의 나이 : ")
         age = scanner.nextInt()
 
-        if (type == "사자") {
+        if (type == AnimalTypeNumber.LION.num) {
             print("털의 개수 : ")
             furCnt = scanner.nextInt()
-        } else if (type == "호랑이") {
+        } else if (type == AnimalTypeNumber.TIGER.num) {
             print("줄무늬 개수 : ")
             stripesCnt = scanner.nextInt()
-        } else if (type == "코끼리") {
+        } else if (type == AnimalTypeNumber.ELEPHANT.num) {
             print("코의 길이 : ")
             noseLength = scanner.nextInt()
         }

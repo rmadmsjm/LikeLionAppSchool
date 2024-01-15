@@ -8,7 +8,7 @@ import java.util.Scanner
 
 class SearchAnimalTypeActivity(var mainController: MainController) : BaseActivity() {
     var animalList:ArrayList<AnimalModel>? = null
-    lateinit var searchType:String
+    var searchType = -1
     lateinit var scanner: Scanner
 
     override fun initActivity() {
@@ -37,8 +37,13 @@ class SearchAnimalTypeActivity(var mainController: MainController) : BaseActivit
     }
 
     fun inputSearchType() {
+        println("다음 중 동물의 타입을 선택해주세요")
+        println("1. 사자")
+        println("2. 호랑이")
+        println("3. 코끼리")
         print("검색할 동물 타입 : ")
-        searchType = scanner.next()
+        searchType = scanner.nextInt()
+        println()
     }
 
     fun printSearchResult() {
