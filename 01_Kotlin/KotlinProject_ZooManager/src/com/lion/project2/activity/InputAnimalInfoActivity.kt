@@ -38,7 +38,7 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
     }
 
     fun showAnimalCnt() {
-        if(animalList != null) {
+        if(animalList!!.isNotEmpty()) {
             println("현재 입력된 동물의 수 : ${animalList?.size}마리")
         } else {
             println("현재 입력된 동물의 수 : 0마리")

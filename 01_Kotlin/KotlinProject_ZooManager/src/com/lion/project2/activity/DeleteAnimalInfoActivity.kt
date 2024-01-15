@@ -23,8 +23,9 @@ class DeleteAnimalInfoActivity(var mainController: MainController) : BaseActivit
     override fun showActivity() {
         println()
         println("[ 동물 정보 삭제 ]")
-        if(animalList == null) {
+        if(animalList!!.isEmpty()) {
             println("저장된 동물 정보가 없습니다")
+            println()
         } else {
             printAllAnimalInfo()
             deleteAnimalInfo()

@@ -22,8 +22,9 @@ class SearchAnimalTypeActivity(var mainController: MainController) : BaseActivit
     override fun showActivity() {
         println()
         println("[ 동물 정보 타입 검색 ]")
-        if(animalList == null) {
+        if(animalList!!.isEmpty()) {
             println("저장된 동물 정보가 없습니다")
+            println()
         } else {
             // 검색어 입력 받기
             inputSearchType()
@@ -57,6 +58,7 @@ class SearchAnimalTypeActivity(var mainController: MainController) : BaseActivit
 
         if (findCnt == 0) {
             println("검색된 동물이 없습니다")
+            println()
         }
     }
 }

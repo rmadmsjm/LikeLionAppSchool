@@ -20,8 +20,9 @@ class ShowAllAnimalInfoActivity(var mainController: MainController) : BaseActivi
     override fun showActivity() {
         println()
         println("[ 동물 전체 정보 ]")
-        if(animalList == null) {
-            println("저장한 동물 정보가 없습니다")
+        if(animalList!!.isEmpty()) {
+            println("저장된 동물 정보가 없습니다")
+            println()
         } else {
             showAnimalCnt()
             printAnimalInfoAll()
