@@ -1,4 +1,4 @@
 package com.lion.project2.activity
 
-class ShowMenuActivity {
+class ShowMenuActivity : BaseActivity() {
 }

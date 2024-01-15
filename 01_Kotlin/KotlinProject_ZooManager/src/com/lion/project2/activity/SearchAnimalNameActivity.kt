@@ -1,4 +1,4 @@
 package com.lion.project2.activity
 
-class SearchAnimalNameActivity {
+class SearchAnimalNameActivity : BaseActivity() {
 }
