@@ -26,4 +26,20 @@ class AnimalModel(var type:Int, var name:String, var age:Int, var furCnt:Int, va
             println()
         }
     }
+
+    fun printDeleteAnimalInfo() {
+        if(type == AnimalTypeNumber.LION.num) {
+            println("동물 타입 : 사자")
+            println("동물 이름 : $name ")
+            println()
+        } else if(type == AnimalTypeNumber.TIGER.num) {
+            println("동물 타입 : 호랑이")
+            println("동물 이름 : $name ")
+            println()
+        } else if(type == AnimalTypeNumber.ELEPHANT.num){
+            println("동물 타입 : 코끼리")
+            println("동물 이름 : $name ")
+            println()
+        }
+    }
 }

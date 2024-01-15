@@ -40,7 +40,7 @@ class DeleteAnimalInfoActivity(var mainController: MainController) : BaseActivit
         var index = 1
         animalList?.forEach {
             println("${index}번 동물")
-            it.printAnimalInfo()
+            it.printDeleteAnimalInfo()
             index++
         }
     }
@@ -51,5 +51,6 @@ class DeleteAnimalInfoActivity(var mainController: MainController) : BaseActivit
         animalList?.removeAt(deleteNum-1)
         AnimalInfoDAO.saveAnimalInfoList(animalList!!)
         println("동물의 정보가 삭제되었습니다")
+        println()
     }
 }
