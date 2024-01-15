@@ -22,7 +22,6 @@ class ShowMenuActivity(var mainController: MainController) : BaseActivity() {
 
     // 화면에 그리는 처리
     override fun showActivity() {
-        println()
         println("[ 메인 메뉴 ]")
         println("1. 동물 정보 입력")
         println("2. 동물 이름 검색")
@@ -30,6 +29,7 @@ class ShowMenuActivity(var mainController: MainController) : BaseActivity() {
         println("4. 모든 동물의 정보 출력")
         println("5. 동물 삭제")
         println("6. 프로그램 종료")
+        println()
 
         // 메뉴 번호 입력 받기
         inputMenuNumber()

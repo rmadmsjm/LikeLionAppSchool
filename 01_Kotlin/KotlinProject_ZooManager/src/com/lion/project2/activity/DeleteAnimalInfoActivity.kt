@@ -38,7 +38,6 @@ class DeleteAnimalInfoActivity(var mainController: MainController) : BaseActivit
     fun printAllAnimalInfo() {
         var index = 1
         animalList?.forEach {
-            println()
             println("${index}번 동물")
             it.printAnimalInfo()
             index++
