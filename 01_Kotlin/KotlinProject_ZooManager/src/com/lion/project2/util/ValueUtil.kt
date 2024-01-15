@@ -16,3 +16,18 @@ enum class ProgramState {
     // 종료 상태
     PROGRAM_STATE_FINISH
 }
+
+enum class MenuNumber(var num:Int) {
+    // 동물 정보 입력
+    MAIN_MENU_INPUT_ANIMAL_INFO(1),
+    // 동물 정보 이름 검색
+    MAIN_MENU_SEARCH_ANIMAL_NAME_INFO(2),
+    // 동물 정보 타입 검색
+    MAIN_MENU_SEARCH_ANIMAL_TYPE_INFO(3),
+    // 동물 정보 전체 출력
+    MAIN_MENU_SHOW_ANIMAL_INFO_ALL(4),
+    // 동물 정보 삭제
+    MAIN_MENU_DELETE_ANIMAL_INFO(5),
+    // 종료
+    MAIN_MENU_FINISH(6)
+}

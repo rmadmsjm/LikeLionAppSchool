@@ -1,7 +1,6 @@
 package com.lion.project2.activity
 
 abstract class BaseActivity {
-    abstract class BaseActivity {
 
         // 초기화 메서드
         abstract fun initActivity()
@@ -14,5 +13,5 @@ abstract class BaseActivity {
 
         // 수행이 끝났을 때 호출되는 메서드
         abstract fun finishActivity()
-    }
+
 }
