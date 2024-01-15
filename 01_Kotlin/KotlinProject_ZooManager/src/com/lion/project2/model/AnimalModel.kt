@@ -1,6 +1,9 @@
 package com.lion.project2.model
 
-class AnimalModel(var type:Int, var name:String, var age:Int, var furCnt:Int, var stripesCnt: Int, var noseLength:Int) {
+import java.io.Serializable
+
+class AnimalModel(var type:Int, var name:String, var age:Int, var furCnt:Int, var stripesCnt: Int, var noseLength:Int) :
+    Serializable {
     fun printAnimalInfo() {
         if(type == 1) {
             println()
