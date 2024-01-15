@@ -35,7 +35,7 @@ class MainController {
         ProgramState.PROGRAM_STATE_SHOW_MENU -> ShowMenuActivity(this)
         ProgramState.PROGRAM_STATE_INPUT_ANIMAL_INFO -> InputAnimalInfoActivity(this)
         ProgramState.PROGRAM_STATE_SEARCH_ANIMAL_NAME_INFO -> SearchAnimalNameActivity(this)
-        ProgramState.PROGRAM_STATE_SEARCH_ANIMAL_TYPE_INFO -> SearchAnimalTypeActivity()
+        ProgramState.PROGRAM_STATE_SEARCH_ANIMAL_TYPE_INFO -> SearchAnimalTypeActivity(this)
         ProgramState.PROGRAM_STATE_SHOW_ANIMAL_INFO_ALL -> ShowAllAnimalInfoActivity()
         ProgramState.PROGRAM_STATE_DELETE_ANIMAL_INFO -> DeleteAnimalInfoActivity()
         ProgramState.PROGRAM_STATE_FINISH -> FinishProgramActivity()

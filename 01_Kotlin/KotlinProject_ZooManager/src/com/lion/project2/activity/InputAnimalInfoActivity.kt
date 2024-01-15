@@ -45,7 +45,7 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
     }
 
     fun inputAnimalInfo() {
-        var type = -1
+        var type = ""
         var name = ""
         var age = -1
         var furCnt = -1
@@ -53,7 +53,7 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
         var noseLength = -1
 
         print("동물 종류 (1. 사자, 2. 호랑이, 3.코끼리) : ")
-        type = scanner.nextInt()
+        type = scanner.next()
 
         print("동물의 이름 : ")
         name = scanner.next()
@@ -61,13 +61,13 @@ class InputAnimalInfoActivity(var mainController: MainController) : BaseActivity
         print("동물의 나이 : ")
         age = scanner.nextInt()
 
-        if (type == 1) {
+        if (type == "사자") {
             print("털의 개수 : ")
             furCnt = scanner.nextInt()
-        } else if (type == 2) {
+        } else if (type == "호랑이") {
             print("줄무늬 개수 : ")
             stripesCnt = scanner.nextInt()
-        } else if (type == 3) {
+        } else if (type == "코끼리") {
             print("코의 길이 : ")
             noseLength = scanner.nextInt()
         }
