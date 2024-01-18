@@ -22,7 +22,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/num1"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -46,7 +46,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/num2"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -61,14 +61,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/plusBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="+" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/minusBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,14 +81,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/multiplyBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="*" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/divisionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -96,9 +96,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/resultText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="총합 : "
+        android:paddingLeft="20dp"
+        android:text="결과 : "
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </LinearLayout>

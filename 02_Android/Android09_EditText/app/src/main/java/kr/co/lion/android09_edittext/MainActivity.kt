@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
                     textView.text = "엔터키를 눌렀습니다\n"
                     textView.append("입력된 문자열 : $text")
-                    
+
                     // true 반환 : 리턴키를 누른 후 포커스가 현재 EditText로 유지됨
                     // false 반환 : 리턴키를 누른 후 포커스가 다음 EditText로 유지됨
                     false
