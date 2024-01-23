@@ -3,7 +3,10 @@ package kr.co.lion.android20_recyclerview
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.android20_recyclerview.databinding.ActivityMainBinding
 import kr.co.lion.android20_recyclerview.databinding.RowBinding
 
@@ -42,6 +45,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        activityMainBinding.apply {
+            // Adapter 객체 생성
+            val recyclerViewAdapter = RecyclerViewAdapter()
+            // Adapter 적용
+            recyclerView.adapter = recyclerViewAdapter
+            // RecyclerView 의 항목을 보여줄 방식을 설정
+            // 위에서 아래 방향
+            // this = activityMainBinding
+            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+
+            // RecyclerView Decoration
+            // 각 항목을 구분하기 위한 선
+//            val deco = DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL)
+//            recyclerView.addItemDecoration(deco)
+            // 구분선 양쪽 여백 주기 가능 (Material 3)
+            val deco = MaterialDividerItemDecoration(this@MainActivity, MaterialDividerItemDecoration.VERTICAL)
+            // 구분선 좌측 여백
+            deco.dividerInsetStart = 400
+            // 구분선 우측 여백
+            deco.dividerInsetEnd = 50
+            recyclerView.addItemDecoration(deco)
+        }
     }
 
     // Adapter
@@ -78,6 +104,21 @@ class MainActivity : AppCompatActivity() {
 
             init {
                 this.rowBinding = rowBinding
+
+                // 항목을 누르면 반응하는 리스너
+                // adapterPosition 프로퍼티 : 항목의 순서값
+                // 사용자가 터치한 항목이 몇번째 항목인가로 사용함
+                this.rowBinding.root.setOnClickListener {
+                    activityMainBinding.textView.text = "선택한 항목 : ${textData1[adapterPosition]}"
+                }
+
+                // View의 가로 길이를 최대 길이로 맞추기
+                this.rowBinding.root.layoutParams = ViewGroup.LayoutParams(
+                    // 가로 길이
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    // 세로 길이
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
             }
         }
 
