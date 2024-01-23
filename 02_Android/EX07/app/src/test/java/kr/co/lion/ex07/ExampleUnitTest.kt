@@ -1,4 +1,4 @@
-package kr.co.lion.ex06
+package kr.co.lion.ex07
 
 import org.junit.Test
 

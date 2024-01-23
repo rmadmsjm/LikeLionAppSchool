@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "kr.co.lion.ex06"
+    namespace = "kr.co.lion.ex07"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "kr.co.lion.ex06"
+        applicationId = "kr.co.lion.ex07"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

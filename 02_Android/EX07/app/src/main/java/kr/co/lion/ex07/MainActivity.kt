@@ -1,8 +1,8 @@
-package kr.co.lion.ex06
+package kr.co.lion.ex07
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kr.co.lion.ex06.databinding.ActivityMainBinding
+import kr.co.lion.ex07.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
