@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.android20_recyclerview.databinding.ActivityMainBinding
 import kr.co.lion.android20_recyclerview.databinding.RowBinding
@@ -51,10 +53,23 @@ class MainActivity : AppCompatActivity() {
             val recyclerViewAdapter = RecyclerViewAdapter()
             // Adapter 적용
             recyclerView.adapter = recyclerViewAdapter
+
             // RecyclerView 의 항목을 보여줄 방식을 설정
-            // 위에서 아래 방향
+            // 1) 세로 방향
             // this = activityMainBinding
-            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+             recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+            // 2) 가로 방향
+            // 마지막 Boolean 값 = 순서를 뒤집을 것이냐
+//            recyclerView.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            // 3) 그리드
+            // 한 줄에 몇 칸을 사용할 것인가
+//            recyclerView.layoutManager = GridLayoutManager(this@MainActivity, 2)
+            // 4) 그리드
+            // 항목 View의 크기가 다를 경우 GridlayoutManager는 같은 행의 모든 뷰가 같은 크기로 조정됨
+            // StaggeredGridLayoutManager는 항목 View의 크기를 필요한 만큼한 사용하고 화면의 빈칸이 없어지도록 함
+            // RecyclerView Decoration 사용하지 않는 것을 추천
+//            recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//            recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
 
             // RecyclerView Decoration
             // 각 항목을 구분하기 위한 선
@@ -63,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             // 구분선 양쪽 여백 주기 가능 (Material 3)
             val deco = MaterialDividerItemDecoration(this@MainActivity, MaterialDividerItemDecoration.VERTICAL)
             // 구분선 좌측 여백
-            deco.dividerInsetStart = 400
+            deco.dividerInsetStart = 50
             // 구분선 우측 여백
             deco.dividerInsetEnd = 50
             recyclerView.addItemDecoration(deco)
