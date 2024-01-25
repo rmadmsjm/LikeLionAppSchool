@@ -5,24 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".ThirdActivity">
 
     <TextView
-        android:id="@+id/textViewMain"
+        android:id="@+id/textViewThrid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MainActivity"
+        android:text="ThirdActivity"
         tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Button
-        android:id="@+id/buttonStartSecond"
+        android:id="@+id/buttonFinishThird"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Second Activity 실행" />
-
-    <Button
-        android:id="@+id/buttonStartThrid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Third Activity 실행" />
+        android:text="Third Activity 종료" />
 </LinearLayout>
