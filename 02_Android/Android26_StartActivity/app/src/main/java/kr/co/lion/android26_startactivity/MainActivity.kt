@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         // 계약 객체 : onCreate 메서드 안에 바로 만들어야 함, 다른 Listener 안에 만들면 안 됨
         // 다른 Activity를 갔다 돌아왔을 때의 계약
+        // 이거 사용 권장
         val contract = ActivityResultContracts.StartActivityForResult()
         // 계약 등록
         // 다른 Activity를 갔다 돌아오면 { } 내의 코드가 동작함
