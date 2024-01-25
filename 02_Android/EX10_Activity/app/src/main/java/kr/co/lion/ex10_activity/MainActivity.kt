@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     RESULT_CANCELED -> {
-                        //
+                        Toast.makeText(this@MainActivity, "학생 입력 정보 취소", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -12,6 +12,8 @@ class TotalPointAvgActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityTotalPointAvgBinding = ActivityTotalPointAvgBinding.inflate(layoutInflater)
         setContentView(activityTotalPointAvgBinding.root)
+
+        setViewEvent()
     }
 
     fun init() {
