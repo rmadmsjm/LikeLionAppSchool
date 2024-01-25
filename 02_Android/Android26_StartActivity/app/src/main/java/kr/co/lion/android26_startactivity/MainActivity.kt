@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
                 // ❓ 리플렉션 : 클래스에 대한 정보를 파악하기 위해서 사용
                 val seconIntent = Intent(this@MainActivity, SecondActivity::class.java)
 
+                // 새롭게 실행되는 Activity에 전달할 데이터가 있다면 intent에 담아서 전달
+                seconIntent.putExtra("data1", 100)
+                seconIntent.putExtra("data2", 11.11)
+                seconIntent.putExtra("data3", true)
+
                 // Activity 실행
                 // Intent에 등록한 클래스를 확인해 그 클래스의 객체를 생성하고 onCreate 메서드 호출
                 // 이 때, 만들어진 화면이 보임
