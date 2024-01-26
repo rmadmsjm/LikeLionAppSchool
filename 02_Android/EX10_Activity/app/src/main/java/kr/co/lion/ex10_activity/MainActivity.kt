@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
     // InputStudentInfoActivity에서 받아올 각 값을 담을 Lists
     val nameList = mutableListOf<String>()
     val gradeList = mutableListOf<String>()
-    val korList = mutableListOf<String>()
-    val engList = mutableListOf<String>()
-    val mathList = mutableListOf<String>()
+    val korList = mutableListOf<Int>()
+    val engList = mutableListOf<Int>()
+    val mathList = mutableListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
 
                             nameList.add(nameData.toString())
                             gradeList.add(gradeData.toString())
-                            korList.add(korData.toString())
-                            engList.add(engData.toString())
-                            mathList.add(mathData.toString())
+                            korList.add(korData!!.toInt())
+                            engList.add(engData!!.toInt())
+                            mathList.add(mathData!!.toInt())
                         }
                     }
                     RESULT_CANCELED -> {
@@ -95,7 +95,11 @@ class MainActivity : AppCompatActivity() {
                 // Activity 실행
                 val totalPointAvgActivityIntent = Intent(this@MainActivity, TotalPointAvgActivity::class.java)
 
-                
+                // TotalPointAvgActivity로 데이터 전달
+                // list를 array로 전환해서 전달
+                totalPointAvgActivityIntent.putExtra("kor", korList.toIntArray())
+                totalPointAvgActivityIntent.putExtra("eng", engList.toIntArray())
+                totalPointAvgActivityIntent.putExtra("math", mathList.toIntArray())
 
                 startActivity(totalPointAvgActivityIntent)
             }

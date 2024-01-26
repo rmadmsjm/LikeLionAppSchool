@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="TextView"
+        android:text="총점 및 평균"
         tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Button
