@@ -9,11 +9,18 @@
     tools:context=".TotalPointAvgActivity">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="총점 및 평균"
+        android:textColor="#9775fa"
+        tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <TextView
         android:id="@+id/totalPointAvgTextVIew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="총점 및 평균"
         tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Button
