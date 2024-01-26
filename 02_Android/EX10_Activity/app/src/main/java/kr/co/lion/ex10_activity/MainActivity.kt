@@ -62,14 +62,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        // TotalPointAvgActivity
-        val totalPointAvgActivityLauncher = registerForActivityResult(contract) {
-            // TotalPointAvgActivity 갔다 돌아왔을 대 동작할 코드
-        }
-        // StudentInfoActivity
 
         init()
-        setViewEvent(inputStudentInfoActivityLauncher, totalPointAvgActivityLauncher)
+        setViewEvent(inputStudentInfoActivityLauncher)
     }
 
     fun init() {
@@ -87,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setViewEvent(inputStudentInfoActivityLauncher: ActivityResultLauncher<Intent>, totalPointAvgActivityLauncher: ActivityResultLauncher<Intent>){
+    fun setViewEvent(inputStudentInfoActivityLauncher: ActivityResultLauncher<Intent>){
         activityMainBinding.apply {
             inputStudentInfoBtn.setOnClickListener {
                 // Activity 실행
@@ -99,7 +94,10 @@ class MainActivity : AppCompatActivity() {
             totalPointAvgBtn.setOnClickListener {
                 // Activity 실행
                 val totalPointAvgActivityIntent = Intent(this@MainActivity, TotalPointAvgActivity::class.java)
-                totalPointAvgActivityLauncher.launch(totalPointAvgActivityIntent)
+
+                
+
+                startActivity(totalPointAvgActivityIntent)
             }
         }
     }
