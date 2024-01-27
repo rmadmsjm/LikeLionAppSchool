@@ -134,6 +134,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 // View의 가로 길이를 최대 길이로 맞추기
+                this.rowBinding.root.layoutParams = ViewGroup.LayoutParams(
+                    // 가로 길이
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    // 세로 길이
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                )
             }
         }
 
