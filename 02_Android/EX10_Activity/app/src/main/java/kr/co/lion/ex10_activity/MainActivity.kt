@@ -16,8 +16,7 @@ import kr.co.lion.ex10_activity.databinding.RowBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var activityMainBinding: ActivityMainBinding
-    // InputStudentInfoActivity에서 받아올 값을 담을 List
-//    val studentInfosList = mutableListOf<String>()
+
     // InputStudentInfoActivity에서 받아올 각 값을 담을 Lists
     val nameList = mutableListOf<String>()
     val gradeList = mutableListOf<String>()
@@ -117,7 +116,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-//            return studentInfosList.size
             return nameList.size
         }
 
