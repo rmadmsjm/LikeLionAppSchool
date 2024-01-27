@@ -112,6 +112,28 @@ class MainActivity : AppCompatActivity() {
 
             init {
                 this.rowBinding = rowBinding
+
+                // 항목을 누르면 반응하는 리스너
+                this.rowBinding.root.setOnClickListener {
+                    // Activity 실행
+                    val studentInfoActivityIntent = Intent(this@MainActivity, StudentInfoActivity::class.java)
+
+                    // StudentInfoActivity로 데이터 전달
+                    // adapterPosition : RecyclerView에서 클릭된 항목의 위치 제공
+                    val position = adapterPosition
+                    // RecyclerView.NO_POSITION : RecyclerView의 context에서 유효하지 않거나 정의되지 않은 위치
+                    if (position != RecyclerView.NO_POSITION) {
+                        studentInfoActivityIntent.putExtra("name", nameList[position])
+                        studentInfoActivityIntent.putExtra("grade", gradeList[position])
+                        studentInfoActivityIntent.putExtra("kor", korList[position].toString())
+                        studentInfoActivityIntent.putExtra("eng", engList[position].toString())
+                        studentInfoActivityIntent.putExtra("math", mathList[position].toString())
+
+                        startActivity(studentInfoActivityIntent)
+                    }
+                }
+
+                // View의 가로 길이를 최대 길이로 맞추기
             }
         }
 
