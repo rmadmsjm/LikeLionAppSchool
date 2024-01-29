@@ -32,7 +32,7 @@ class StudentInfoActivity : AppCompatActivity() {
                 // 총점 및 평균
                 val totalPoint = kor!!.toInt() + eng!!.toInt() + math!!.toInt()
                 val avg = totalPoint / 3
-                
+
                 append("이름 : $name\n")
                 append("학년 : ${grade}학년\n")
                 append("\n")
