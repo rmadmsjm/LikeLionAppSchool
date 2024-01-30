@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this@MainActivity, ShowInfosActivity::class.java)
 
                     // 선택한 항목 번째의 학생 객체를 Intent에 담기
+                    intent.putExtra("obj", studentList[adapterPosition])
 
                     showInfosActivityLauncher.launch(intent)
                 }
