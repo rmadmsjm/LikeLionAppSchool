@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var showInfosActivityLauncher: ActivityResultLauncher<Intent>
 
     // 학생 정보를 담을 List
-    val studentList = mutableListOf<String>()
+    val studentList = mutableListOf<InfoClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,20 @@ class MainActivity : AppCompatActivity() {
         // InputInfosActivity 등록
         val contract = ActivityResultContracts.StartActivityForResult()
         inputInfosActivityLauncher = registerForActivityResult(contract) {
+            if(it.resultCode == RESULT_OK) {
+                // 객체 호출
+                // createFromParcel 메서드가 호출되고 반환하는 객체를 반환
+                val info = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.data!!.getParcelableExtra("obj", InfoClass::class.java)
+                } else {
+                    it.data!!.getParcelableExtra<InfoClass>("obj")
+                }
+
+                studentList.add(info!!)
+
+                // RecyclerView 갱신
+                activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+            }
         }
     }
 
@@ -123,8 +137,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
-            holder.rowBinding.textViewName.text = studentList[position]
-            holder.rowBinding.textViewGrade.text = studentList[position]
+            holder.rowBinding.textViewName.text = studentList[position].name
+            holder.rowBinding.textViewGrade.text = studentList[position].grade.toString()
         }
     }
 }
