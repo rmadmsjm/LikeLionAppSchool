@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/textviewMenuItem1"
+        android:icon="@drawable/approval_24px"
+        android:title="textview의 메뉴 1" />
+    <item
+        android:id="@+id/textviewMenuItem2"
+        android:icon="@drawable/key_24px"
+        android:title="textview의 메뉴2" />
+</menu>
