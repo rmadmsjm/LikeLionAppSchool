@@ -123,6 +123,21 @@ class MainActivity : AppCompatActivity() {
 
                     showInfosActivityLauncher.launch(intent)
                 }
+
+                // RecyclerView 항목에 context menu 설정
+                rowBinding.root.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                    // 메뉴의 헤더
+                    menu?.setHeaderTitle("${adapterPosition}번째 항목 메뉴")
+                    // 메뉴를 구성
+                    menuInflater.inflate(R.menu.recyclerview_menu, menu)
+                    // 각 메뉴 item을 추출해 리스너 설정
+                    menu?.findItem(R.id.recyclerViewMenuItem)?.setOnMenuItemClickListener {
+                        // 항목 삭제
+                        studentList.removeAt(adapterPosition)
+                        notifyItemRemoved(adapterPosition)
+                        true
+                    }
+                }
             }
         }
 
