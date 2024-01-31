@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuMainItemAdd"
+        android:id="@+id/menuItemMainAdd"
         android:icon="@drawable/add_24px"
         android:title="메모 작성"
         app:showAsAction="always" />
