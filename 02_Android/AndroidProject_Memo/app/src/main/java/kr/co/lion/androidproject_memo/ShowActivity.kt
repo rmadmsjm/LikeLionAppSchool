@@ -18,6 +18,9 @@ class ShowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         acitivityShowBinding = ActivityShowBinding.inflate(layoutInflater)
         setContentView(acitivityShowBinding.root)
+
+        initData()
+        setToolbar()
     }
 
     // 기본 데이터 및 객체 세팅
