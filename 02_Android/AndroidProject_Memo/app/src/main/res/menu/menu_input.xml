@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menuInputItmeSubmit"
+        android:id="@+id/menuItemInputSubmit"
         android:icon="@drawable/done_24px"
         android:title="작성 완료"
         app:showAsAction="always" />
