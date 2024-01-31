@@ -128,6 +128,21 @@ class MainActivity : AppCompatActivity() {
 
                     showInfoActivityLauncher.launch(showInfoIntent)
                 }
+
+                // 항목을 길게 눌렀을 때 context menu
+                this.rowMainBinding.root.setOnCreateContextMenuListener { menu, v, menuInfo ->
+                    // 메뉴 구성
+                    menuInflater.inflate(R.menu.menu_main_row, menu)
+
+                    // 메뉴 항목 눌렀을 때
+                    menu?.findItem(R.id.menu_main_row_item_delete)?.setOnMenuItemClickListener {
+                        // apdaterPostion 번째 객체 리스트에서 삭제
+                        studentList.removeAt(adapterPosition)
+                        // RecyclerView 갱신
+                        activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        true
+                    }
+                }
             }
         }
 
