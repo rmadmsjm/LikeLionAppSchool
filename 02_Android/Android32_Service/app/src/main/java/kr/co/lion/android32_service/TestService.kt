@@ -1,0 +1,106 @@
+package kr.co.lion.android32_service
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
+import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
+import android.os.IBinder
+import android.os.SystemClock
+import android.util.Log
+import androidx.core.app.NotificationCompat
+import kotlin.concurrent.thread
+
+// Android 8.0 이상붙는 서비스 가동 시 알림 메시지를 띄워야 함
+// 이때, AndroidManifest.xml에 FOREGROUND_SERVICE 권한을 등록해야 함
+
+class TestService : Service() {
+
+    // Thread의 반복문의 조건식으로 사용할 변수
+    var isRunning = false
+
+    var value = 0
+
+    override fun onBind(intent: Intent): IBinder {
+        TODO("Return the communication channel to the service.")
+    }
+
+    // 서비스가 가동되면 자동으로 호출되는 메서드
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        // Android 8.0 이상부터는 알림 메시지를 띄워야 함
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // 알림 채널 등록
+            addNotificationChannel("Service", "Service")
+            // 알림 메시지 구성
+            val builder = getNotificationBuilder("Service")
+            builder.setSmallIcon(android.R.drawable.ic_btn_speak_now)
+            builder.setContentTitle("서비스 가동")
+            builder.setContentText("서비스 가동 중")
+            // 알림 메시지 띄우기
+            val notification = builder.build()
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                startForeground(10, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            } else {
+                startForeground(10, notification)
+            }
+        }
+
+        // Thread 가동
+        isRunning = true
+        thread {
+            while (isRunning) {
+                SystemClock.sleep(500)
+                val now = System.currentTimeMillis()
+                Log.d("test1234", "현재시간 : $now")
+                value++
+            }
+        }
+
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    // 서비스가 중지되면 호출되는 메서드
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // Thread 중단을 위해 변수에 false 넣기
+        isRunning = false
+    }
+
+    // Notification Channel 등록
+    // 첫 번째 : 코드에서 채널을 관리하기 위한 이름
+    // 두 번째 : 사용자에게 보여줄 채널의 이름
+    fun addNotificationChannel(id:String, name:String){
+        // 안드로이드 8.0 이상일 때만 동작하게 한다.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            // 알림 메시지를 관라하는 객체를 가져온다.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            // 해당 채널이 등록되어 있는지 확인한다.
+            // 채널이 등록되어 있지 않으면 null을 반환한다.
+            val channel = notificationManager.getNotificationChannel(id)
+            // 등록된 채널이 없다면
+            if(channel == null){
+                // 채널 객체를 생성한다.
+                val newChannel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
+                // 진동을 사용할 것인가.
+                newChannel.enableVibration(true)
+                // 채널을 등록한다.
+                notificationManager.createNotificationChannel(newChannel)
+            }
+        }
+    }
+
+    // Notification 메새지를 생성하기 위한 객체를 반환하는 메서드
+    fun getNotificationBuilder(id:String) : NotificationCompat.Builder{
+        // 안드로이드 8.0 이상이면 마지막 매개변수에 채널 id를 설정해줘야 한다.
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val builder = NotificationCompat.Builder(this, id)
+            return builder
+        }  else {
+            val builder = NotificationCompat.Builder(this)
+            return builder
+        }
+    }
+}
