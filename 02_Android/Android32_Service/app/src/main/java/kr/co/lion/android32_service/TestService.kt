@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.os.SystemClock
@@ -22,8 +23,13 @@ class TestService : Service() {
 
     var value = 0
 
+    // Activity가 서비스에 접속하면 Activity로 전달될 객체 생성
+    val binder = LocalBinder()
+
+    // 외부에서 서비스에 접속하면 호출되는 메서드
+    // 여기에서 Binder 객체를 반환하면 Binder 객체를 Activity에서 받을 수 있음
     override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+        return binder
     }
 
     // 서비스가 가동되면 자동으로 호출되는 메서드
@@ -38,7 +44,7 @@ class TestService : Service() {
             builder.setSmallIcon(android.R.drawable.ic_btn_speak_now)
             builder.setContentTitle("서비스 가동")
             builder.setContentText("서비스 가동 중")
-            // 알림 메시지 띄우기
+            // ⭐ 알림 메시지 띄우기
             // Android 8.0부터는 서비스 가동 시 알림 메시지를 띄워야 함
             // Android 10.0에서 서비스에 대한 용도를 지정하는 개념이 추가됨
             // 예) startForeground(10, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
@@ -108,6 +114,18 @@ class TestService : Service() {
         }  else {
             val builder = NotificationCompat.Builder(this)
             return builder
+        }
+    }
+
+    // 프로퍼티의 값을 반환하는 메서드
+    fun getNumber() : Int {
+        return value
+    }
+
+    // Activity에서 서비스에 접속하고 서비스 객체를 반환 받기 위한 클래스
+    inner class LocalBinder : Binder() {
+        fun getService() : TestService {
+            return this@TestService
         }
     }
 }
