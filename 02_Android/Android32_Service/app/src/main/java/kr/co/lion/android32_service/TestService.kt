@@ -39,6 +39,13 @@ class TestService : Service() {
             builder.setContentTitle("서비스 가동")
             builder.setContentText("서비스 가동 중")
             // 알림 메시지 띄우기
+            // Android 8.0부터는 서비스 가동 시 알림 메시지를 띄워야 함
+            // Android 10.0에서 서비스에 대한 용도를 지정하는 개념이 추가됨
+            // 예) startForeground(10, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            // 용도를 지정하면 구글에서 용도에 맞는지 확인하고 용도에 맞으면 검수를 통과시킴
+            // 이때, 용도를 명시했고 구글로부터 인증을 받았기 때문에 알림 메시지를 띄우지 않음
+            // Android 14부터 서비스의 용도를 명시하는 것이 의무화 됨
+            // https://developer.android.com/about/versions/14/changes/fgs-types-required?hl=ko
             val notification = builder.build()
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 startForeground(10, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
