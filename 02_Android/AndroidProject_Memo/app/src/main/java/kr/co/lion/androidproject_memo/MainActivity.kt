@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     // InputActivity Launcher
     lateinit var inputactivityLauncher: ActivityResultLauncher<Intent>
 
+    // 메모 List
+    var memoList = mutableListOf<MemoClass>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
