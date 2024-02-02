@@ -19,13 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="15dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldLayoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="제목"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldInputTitle"
@@ -36,19 +38,20 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textFieldLayoutContext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:hint="내용"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldInputContext"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="top"
-                android:inputType="text" />
+                android:inputType="text|textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </LinearLayout>

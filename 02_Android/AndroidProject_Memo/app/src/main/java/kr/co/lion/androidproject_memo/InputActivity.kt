@@ -1,11 +1,16 @@
 package kr.co.lion.androidproject_memo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.inputmethod.InputMethodManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import kr.co.lion.androidproject_memo.databinding.ActivityInputBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.concurrent.thread
 
 class InputActivity : AppCompatActivity() {
@@ -42,8 +47,7 @@ class InputActivity : AppCompatActivity() {
                     // 메뉴 id로 분기
                     when(it.itemId) {
                         R.id.menuItemInputSubmit -> {
-                            setResult(RESULT_OK)
-                            finish()
+                            inputDone()
                         }
                     }
                     true
@@ -63,13 +67,51 @@ class InputActivity : AppCompatActivity() {
 
             // 메모 내용 textField 엔터키 클릭 시 입력 완료 처리
             textFieldInputContext.setOnEditorActionListener { v, actionId, event ->
-                //
+                inputDone()
                 true
             }
         }
     }
 
     // 입력 완료 처리 메서드
+    fun inputDone() {
+        activityInputBinding.apply {
+            // 입력값 가져오기
+            val title = textFieldInputTitle.text.toString()
+            val context = textFieldInputContext.text.toString()
+
+            // 작성 날짜
+            val dateForamt = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+            val currentDate = dateForamt.format(Date(System.currentTimeMillis()))
+            val date = currentDate
+
+            // 데이터 유효성 검사
+            if(title.isEmpty()) {
+                textFieldLayoutTitle.error = "제목을 입력해 주세요"
+                textFieldInputTitle.requestFocus()
+                showSoftInput(textFieldInputTitle)
+                return
+            }
+            if(context.isEmpty()) {
+                textFieldLayoutContext.error = "내용을 입력해 주세요"
+                textFieldInputContext.requestFocus()
+                showSoftInput(textFieldInputContext)
+                return
+            }
+
+            // 객체에 데이터 담기
+            val memoData = MemoClass(title, date, context)
+
+            // 데이터 전달 Intent
+            val resultIntent = Intent()
+            resultIntent.putExtra("memoData", memoData)
+
+            Snackbar.make(activityInputBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT)
+
+            setResult(RESULT_OK)
+            finish()
+        }
+    }
 
     // 키보드 올리는 메서드
     fun showSoftInput(focusView: TextInputEditText) {
