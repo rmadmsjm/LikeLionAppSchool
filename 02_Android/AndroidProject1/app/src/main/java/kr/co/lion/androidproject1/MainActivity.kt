@@ -89,6 +89,13 @@ class MainActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
+
+                // 항목 리스너
+                this.rowMainBinding.root.setOnClickListener {
+                    // ShowAnimalInfosActivity 실행
+                    val showInfosIntent = Intent(this@MainActivity, ShowAnimalInfosActivity::class.java)
+                    showAnimalInfosActivityLauncher.launch(showInfosIntent)
+                }
             }
         }
 
