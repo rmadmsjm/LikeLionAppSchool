@@ -12,6 +12,8 @@ class EditAnimalInfosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityEditAnimalInfosBinding = ActivityEditAnimalInfosBinding.inflate(layoutInflater)
         setContentView(activityEditAnimalInfosBinding.root)
+
+        setToolbar()
     }
 
     // 툴바
