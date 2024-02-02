@@ -9,7 +9,7 @@
     tools:context=".AnimalRegisterActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbarAnimalRegister"
+        android:id="@+id/toolbarAnimalEditInfos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
