@@ -35,7 +35,7 @@ class EditAnimalInfosActivity : AppCompatActivity() {
                         R.id.menuItemEditOk -> {
                         }
                     }
-                    
+
                     true
                 }
             }
