@@ -7,4 +7,25 @@
     android:orientation="vertical"
     tools:context=".ShowAnimalInfosActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarShowAnimalInfos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textViewShowAnimalInfos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </LinearLayout>
 </LinearLayout>
