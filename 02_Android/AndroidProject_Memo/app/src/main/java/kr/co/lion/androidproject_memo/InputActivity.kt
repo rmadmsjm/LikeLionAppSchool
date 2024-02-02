@@ -90,6 +90,9 @@ class InputActivity : AppCompatActivity() {
                 textFieldLayoutTitle.error = "제목을 입력해 주세요"
                 textFieldInputTitle.requestFocus()
                 showSoftInput(textFieldInputTitle)
+                if(context.isEmpty()) {
+                    textFieldLayoutContext.error = "내용을 입력해 주세요"
+                }
                 return
             }
             if(context.isEmpty()) {
