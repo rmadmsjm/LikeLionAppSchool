@@ -106,9 +106,7 @@ class InputActivity : AppCompatActivity() {
             val resultIntent = Intent()
             resultIntent.putExtra("memoData", memoData)
 
-            Snackbar.make(activityInputBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT).show()
-
-            setResult(RESULT_OK)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
     }

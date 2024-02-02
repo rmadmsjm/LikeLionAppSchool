@@ -1,14 +1,17 @@
 package kr.co.lion.androidproject_memo
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_memo.databinding.ActivityMainBinding
 import kr.co.lion.androidproject_memo.databinding.RowRecyclerviewBinding
 import java.text.SimpleDateFormat
@@ -22,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     // InputActivity Launcher
     lateinit var inputactivityLauncher: ActivityResultLauncher<Intent>
 
-    // 메모 List
-    var memoList = mutableListOf<MemoClass>()
+    // 메모 데이터 List
+    var memoDataList = mutableListOf<MemoClass>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         initData()
         setToolbar()
+        setView()
     }
 
     // 기본 데이터 및 객체 세팅
@@ -39,6 +43,33 @@ class MainActivity : AppCompatActivity() {
         // InputActivity Launcher
         val inputContract = ActivityResultContracts.StartActivityForResult()
         inputactivityLauncher = registerForActivityResult(inputContract) {
+            // resultCode에 따라 분기
+            when(it.resultCode) {
+                RESULT_OK -> {
+                    // 전달된 Intent객체가 있을 때 객체 추출
+                    if(it.data != null) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val memoData = it.data?.getParcelableExtra("memoData", MemoClass::class.java)
+                            memoDataList.add(memoData!!)
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+
+                        } else {
+                            val memoData = it.data?.getParcelableExtra<MemoClass>("memoData")
+                            memoDataList.add(memoData!!)
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        }
+                        
+                        Snackbar.make(activityMainBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Snackbar.make(activityMainBinding.root, "메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                RESULT_CANCELED -> {
+                    Snackbar.make(activityMainBinding.root, "메모 작성을 취소했습니다", Snackbar.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -79,8 +110,7 @@ class MainActivity : AppCompatActivity() {
     // RecycelrView Adapter
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolderClass>() {
         // ViewHolder
-        inner class ViewHolderClass(rowRecyclerviewBinding: RowRecyclerviewBinding)
-            : RecyclerView.ViewHolder(rowRecyclerviewBinding.root) {
+        inner class ViewHolderClass(rowRecyclerviewBinding: RowRecyclerviewBinding) : RecyclerView.ViewHolder(rowRecyclerviewBinding.root) {
                 val rowRecyclerviewBinding: RowRecyclerviewBinding
 
                 init {
@@ -102,16 +132,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return 20
+            return memoDataList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
-            holder.rowRecyclerviewBinding.textViewRowTitle.text = "제목 $position"
-
-            // 현재 날짜 설정
-            val dateFormat = SimpleDateFormat("yyyy.MM,dd", Locale.getDefault())
-            val currentDate = dateFormat.format(Date(System.currentTimeMillis()))
-            holder.rowRecyclerviewBinding.textViewRowDate.text = currentDate
+            holder.rowRecyclerviewBinding.textViewRowTitle.text = memoDataList[position].title
+            holder.rowRecyclerviewBinding.textViewRowDate.text = memoDataList[position].date
         }
     }
 }
