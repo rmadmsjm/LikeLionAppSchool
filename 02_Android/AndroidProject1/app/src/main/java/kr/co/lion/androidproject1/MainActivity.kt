@@ -1,8 +1,11 @@
 package kr.co.lion.androidproject1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -13,12 +16,30 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var activityMainBinding: ActivityMainBinding
 
+    // AnimalRegisterActivity Launcher
+    lateinit var animalRegisterActivityResultLauncher: ActivityResultLauncher<Intent>
+    // ShowAnimalInfosActivity Launcher
+    lateinit var showAnimalInfosActivityLauncher : ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
         setToolbar()
+    }
+
+    // 기본 데이터 및 객체 셋팅
+    fun initData() {
+        // AnimalRegisterActivity Launcher
+        val contractRegister = ActivityResultContracts.StartActivityForResult()
+        animalRegisterActivityResultLauncher = registerForActivityResult(contractRegister) {
+        }
+
+        // ShowAnimalInfosActivity Launcher
+        val contractShowInfos = ActivityResultContracts.StartActivityForResult()
+        showAnimalInfosActivityLauncher = registerForActivityResult(contractShowInfos) {
+        }
     }
 
     // 툴바
@@ -31,6 +52,8 @@ class MainActivity : AppCompatActivity() {
                     // 메뉴 id로 분기
                     when(it.itemId) {
                         R.id.menuItemMainAdd -> {
+                            val registerIntent = Intent(this@MainActivity, AnimalRegisterActivity::class.java)
+                            animalRegisterActivityResultLauncher.launch(registerIntent)
                         }
                         R.id.menuItemMainFilter -> {
                         }
