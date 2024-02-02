@@ -12,8 +12,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        setToolbar()
     }
 
+    // 툴바
     fun setToolbar() {
         activityMainBinding.apply {
             toolbarMain.apply {
