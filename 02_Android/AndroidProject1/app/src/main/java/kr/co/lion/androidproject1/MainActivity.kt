@@ -13,4 +13,23 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
     }
+
+    fun setToolbar() {
+        activityMainBinding.apply {
+            toolbarMain.apply {
+                title = "동물원 관리"
+                inflateMenu(R.menu.menu_main)
+                setOnMenuItemClickListener {
+                    // 메뉴 id로 분기
+                    when(it.itemId) {
+                        R.id.menuItemMainAdd -> {
+                        }
+                        R.id.menuItemMainFilter -> {
+                        }
+                    }
+                    true
+                }
+            }
+        }
+    }
 }
