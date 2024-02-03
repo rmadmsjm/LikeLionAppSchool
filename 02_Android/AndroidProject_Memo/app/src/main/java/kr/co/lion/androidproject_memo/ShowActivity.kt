@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_memo.databinding.ActivityShowBinding
 
 class ShowActivity : AppCompatActivity() {
@@ -70,24 +72,34 @@ class ShowActivity : AppCompatActivity() {
     fun setView() {
         activityShowBinding.apply {
             // Intent로부터 메모 데이터 객체 추출
-            val memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra("memoData", MemoClass::class.java)
-            } else {
-                intent.getParcelableExtra<MemoClass>("memoData")
-            }
+            val intentData = intent.extras
+            if (intentData != null && intentData.containsKey("memoData")) {
+                val memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra("memoData", MemoClass::class.java)
+                } else {
+                    intent.getParcelableExtra<MemoClass>("memoData")
+                }
 
-            // textViewShowTitle
-            textViewShowTitle.apply {
-                text = memoData?.title
-            }
-            // textViewShowDate
-            textViewShowDate.apply {
-                text = memoData?.date
-            }
-            // textViewShowDate
-            textViewShowDate.apply {
-                text = memoData?.context
-            }
+                Log.d("ShowActivity", "Title: ${memoData?.title}, Date: ${memoData?.date}, Context: ${memoData?.context}")
+
+                textViewShowTitle.text = memoData?.title
+                textViewShowDate.text = memoData?.date
+                textViewShowContext.text = memoData?.context
+            } else {
+                Snackbar.make(activityShowBinding.root, "메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()            }
+
+//            // textViewShowTitle
+//            textViewShowTitle.apply {
+//                text = memoData?.title
+//            }
+//            // textViewShowDate
+//            textViewShowDate.apply {
+//                text = memoData?.date
+//            }
+//            // textViewShowContext
+//            textViewShowContext.apply {
+//                text = memoData?.context
+//            }
         }
     }
 }

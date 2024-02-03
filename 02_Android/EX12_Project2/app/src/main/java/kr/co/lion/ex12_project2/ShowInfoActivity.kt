@@ -19,12 +19,12 @@ class ShowInfoActivity : AppCompatActivity() {
     }
 
     // 툴바
-    fun setToolbar() {
+    fun setToolbar(){
         activityShowInfoBinding.apply {
             toolbarShowInfo.apply {
                 // 타이틀
                 title = "학생 정보 보기"
-                // back button
+                // Back
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
                     setResult(RESULT_CANCELED)
@@ -35,13 +35,13 @@ class ShowInfoActivity : AppCompatActivity() {
     }
 
     // 뷰 설정
-    fun setView() {
+    fun setView(){
         activityShowInfoBinding.apply {
             // TextView
             textViewShowInfoReport.apply {
 
-                // Intent로부터 학생 정보 객체 추출
-                val studentData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                // Intent로 부터 학생 정보 객체 추출
+                val studentData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
                     intent.getParcelableExtra("studentData", StudentData::class.java)
                 } else {
                     intent.getParcelableExtra<StudentData>("studentData")

@@ -38,14 +38,14 @@ class MainActivity : AppCompatActivity() {
 
     // 기본 데이터 및 객체 셋팅
     fun initData() {
-        // InputAcitvity 런처
+        // InputActivity 런처
         val contract1 = ActivityResultContracts.StartActivityForResult()
         inputActivityLauncher = registerForActivityResult(contract1){
-            // 작업 결과가 ok 라면
-            if(it.resultCode == RESULT_OK) {
+            // 작업 결과가 OK 라면
+            if(it.resultCode == RESULT_OK){
                 // 전달된 Intent객체가 있다면
-                if(it.data != null) {
-                    // 학생 객체를 추출한다.
+                if(it.data != null){
+                    // 학생 객체를 추출
                     if(Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
                         val studentData = it.data?.getParcelableExtra("studentData", StudentData::class.java)
                         studentList.add(studentData!!)
@@ -66,20 +66,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 툴바 구성
-    fun setToolbar() {
+    fun setToolbar(){
         activityMainBinding.apply {
             toolbarMain.apply {
                 // 타이틀
                 title = "학생 정보 관리"
-                // 메뉴 설정
+                // 메뉴
                 inflateMenu(R.menu.menu_main)
-                // 메뉴 리스너
+                // 메뉴의 리스너
                 setOnMenuItemClickListener {
                     // 메뉴의 id로 분기
-                    when(it.itemId) {
-                        // 학생 정보 추가 메뉴
+                    when(it.itemId){
+                        // 추가 메뉴
                         R.id.menu_main_add -> {
-                            // InputActivity 실행
+                            // InputActivity를 실행
                             val inputIntent = Intent(this@MainActivity, InputActivity::class.java)
                             inputActivityLauncher.launch(inputIntent)
                         }
@@ -90,56 +90,57 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 뷰 구성
-    fun setView() {
+    // View 구성
+    fun setView(){
         activityMainBinding.apply {
-            // RecyclerView
+            // ReyclerView
             recyclerViewMain.apply {
-                adapter = RecycelrViewMainAdapter()
+                // 어뎁터 설정
+                adapter = RecyclerViewMainAdapter()
+                // 레이아웃 매니저
                 layoutManager = LinearLayoutManager(this@MainActivity)
+                // 구분선
                 val deco = MaterialDividerItemDecoration(this@MainActivity, MaterialDividerItemDecoration.VERTICAL)
                 addItemDecoration(deco)
             }
         }
     }
 
-    // RecycelrView Adapter
-    inner class RecycelrViewMainAdapter : RecyclerView.Adapter<RecycelrViewMainAdapter.ViewHolderMain>() {
+    // RecyclerView의 Adapter
+    inner class RecyclerViewMainAdapter : RecyclerView.Adapter<RecyclerViewMainAdapter.ViewHolderMain>(){
         // ViewHolder
-        inner class ViewHolderMain(rowMainBinding: RowMainBinding) : RecyclerView.ViewHolder(rowMainBinding.root) {
-            val rowMainBinding : RowMainBinding
+        inner class ViewHolderMain(rowMainBinding:RowMainBinding) : RecyclerView.ViewHolder(rowMainBinding.root){
+            val rowMainBinding:RowMainBinding
 
-            init {
+            init{
                 this.rowMainBinding = rowMainBinding
-
-                // 항목 클릭 시 전체가 클릭이 될 수 있도록 가로, 세로 길이 설정
+                // 항목 클릭시 전체가 클릭이 될 수 있도록 가로 세로 길이를 설정
                 this.rowMainBinding.root.layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-
-                // 항목을 눌렀을 때 리스너
+                // 항목을 눌렀을 때의 리스너
                 this.rowMainBinding.root.setOnClickListener {
-                    // ShowInfoActivity 실행
+
+                    // ShowInfoActivity를 실행
                     val showInfoIntent = Intent(this@MainActivity, ShowInfoActivity::class.java)
 
-                    // 선택한 항목 번째의 학생 객체를 Intent에 담기
+                    // 선택한 항목 번째의 학생 객체를 Intent 에 담아줌
                     showInfoIntent.putExtra("studentData", studentList[adapterPosition])
 
                     showInfoActivityLauncher.launch(showInfoIntent)
                 }
-
-                // 항목을 길게 눌렀을 때 context menu
+                // 항목을 길게 눌렀을 때 메뉴를 띄우기
                 this.rowMainBinding.root.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                    // 메뉴 구성
+                    // 메뉴를 구성
                     menuInflater.inflate(R.menu.menu_main_row, menu)
-
-                    // 메뉴 항목 눌렀을 때
+                    // 메뉴 항목을 눌렀을 때
                     menu?.findItem(R.id.menu_main_row_item_delete)?.setOnMenuItemClickListener {
-                        // apdaterPostion 번째 객체 리스트에서 삭제
+                        // adapterPosition 번째 객체를 리스트에서 제거
                         studentList.removeAt(adapterPosition)
-                        // RecyclerView 갱신
+                        // RecyclerView를 갱신
                         activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+
                         true
                     }
                 }
@@ -154,10 +155,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
+            // return 100
             return studentList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderMain, position: Int) {
+            // holder.rowMainBinding.textViewRowMainName.text = "이름 $position"
+            // holder.rowMainBinding.textViewRowMainGrade.text = "$position 학년"
             holder.rowMainBinding.textViewRowMainName.text = "${studentList[position].name}"
             holder.rowMainBinding.textViewRowMainGrade.text = "${studentList[position].grade}학년"
         }

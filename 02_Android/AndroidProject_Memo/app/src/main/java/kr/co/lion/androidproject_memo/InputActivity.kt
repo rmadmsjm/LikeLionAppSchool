@@ -63,7 +63,7 @@ class InputActivity : AppCompatActivity() {
             textFieldInputTitle.requestFocus()
 
             // 키보드 올리기
-            showSoftInput(textFieldInputTitle)
+            //showSoftInput(textFieldInputTitle)
 
             // 메모 내용 textField 엔터키 클릭 시 입력 완료 처리
             textFieldInputContext.setOnEditorActionListener { v, actionId, event ->
@@ -89,7 +89,7 @@ class InputActivity : AppCompatActivity() {
             if(title.isEmpty()) {
                 textFieldLayoutTitle.error = "제목을 입력해 주세요"
                 textFieldInputTitle.requestFocus()
-                showSoftInput(textFieldInputTitle)
+                //showSoftInput(textFieldInputTitle)
                 if(context.isEmpty()) {
                     textFieldLayoutContext.error = "내용을 입력해 주세요"
                 }
@@ -98,7 +98,7 @@ class InputActivity : AppCompatActivity() {
             if(context.isEmpty()) {
                 textFieldLayoutContext.error = "내용을 입력해 주세요"
                 textFieldInputContext.requestFocus()
-                showSoftInput(textFieldInputContext)
+                //showSoftInput(textFieldInputContext)
                 return
             }
 
@@ -115,11 +115,11 @@ class InputActivity : AppCompatActivity() {
     }
 
     // 키보드 올리는 메서드
-    fun showSoftInput(focusView: TextInputEditText) {
-        thread {
-            SystemClock.sleep(200)
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(focusView, 0)
-        }
-    }
+//    fun showSoftInput(focusView: TextInputEditText) {
+//        thread {
+//            SystemClock.sleep(200)
+//            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputMethodManager.showSoftInput(focusView, 0)
+//        }
+//    }
 }
