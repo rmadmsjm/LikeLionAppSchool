@@ -74,6 +74,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // ShowActivity Launcher
+        val showContract = ActivityResultContracts.StartActivityForResult()
+        showActivityLauncher = registerForActivityResult(showContract) {
+        }
     }
 
     // Toolbar
