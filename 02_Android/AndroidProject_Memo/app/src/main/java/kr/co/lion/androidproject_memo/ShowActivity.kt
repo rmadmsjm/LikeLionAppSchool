@@ -24,6 +24,7 @@ class ShowActivity : AppCompatActivity() {
 
         initData()
         setToolbar()
+        setView()
     }
 
     // 기본 데이터 및 객체 세팅
@@ -72,34 +73,24 @@ class ShowActivity : AppCompatActivity() {
     fun setView() {
         activityShowBinding.apply {
             // Intent로부터 메모 데이터 객체 추출
-            val intentData = intent.extras
-            if (intentData != null && intentData.containsKey("memoData")) {
-                val memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getParcelableExtra("memoData", MemoClass::class.java)
-                } else {
-                    intent.getParcelableExtra<MemoClass>("memoData")
-                }
-
-                Log.d("ShowActivity", "Title: ${memoData?.title}, Date: ${memoData?.date}, Context: ${memoData?.context}")
-
-                textViewShowTitle.text = memoData?.title
-                textViewShowDate.text = memoData?.date
-                textViewShowContext.text = memoData?.context
+            val memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                intent.getParcelableExtra("memoData", MemoClass::class.java)
             } else {
-                Snackbar.make(activityShowBinding.root, "메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()            }
+                intent.getParcelableExtra<MemoClass>("memoData")
+            }
 
-//            // textViewShowTitle
-//            textViewShowTitle.apply {
-//                text = memoData?.title
-//            }
-//            // textViewShowDate
-//            textViewShowDate.apply {
-//                text = memoData?.date
-//            }
-//            // textViewShowContext
-//            textViewShowContext.apply {
-//                text = memoData?.context
-//            }
+            // textViewShowTitle
+            textViewShowTitle.apply {
+                text = memoData?.title
+            }
+            // textViewShowDate
+            textViewShowDate.apply {
+                text = memoData?.date
+            }
+            // textViewShowContext
+            textViewShowContext.apply {
+                text = memoData?.context
+            }
         }
     }
 }
