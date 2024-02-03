@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     // InputActivity Launcher
     lateinit var inputactivityLauncher: ActivityResultLauncher<Intent>
 
+    // ShowActivity Launcher
+    lateinit var showActivityLauncher: ActivityResultLauncher<Intent>
+
     // 메모 데이터 List
     var memoDataList = mutableListOf<MemoClass>()
 
@@ -121,6 +124,14 @@ class MainActivity : AppCompatActivity() {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     )
+
+                    // 항목 리스너
+                    this.rowRecyclerviewBinding.root.setOnClickListener {
+                        // ShowActivity 실행
+                        val showIntent = Intent(this@MainActivity, ShowActivity::class.java)
+                        showIntent.putExtra("memoData", memoDataList[adapterPosition])
+                        showActivityLauncher.launch(showIntent)
+                    }
                 }
             }
 
