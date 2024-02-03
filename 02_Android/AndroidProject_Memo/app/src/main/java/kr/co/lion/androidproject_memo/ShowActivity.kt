@@ -95,7 +95,7 @@ class ShowActivity : AppCompatActivity() {
         }
     }
 
-    // 삭제 확인 다이얼로그 메서드
+    // 삭제 다이얼로그 메서드
     fun showDialog() {
         val builer = MaterialAlertDialogBuilder(this@ShowActivity).apply {
             setTitle("삭제")
