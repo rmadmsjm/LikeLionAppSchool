@@ -1,13 +1,13 @@
 package kr.co.lion.androidproject_memo
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kr.co.lion.androidproject_memo.databinding.ActivityShowBinding
 
 class ShowActivity : AppCompatActivity() {
@@ -60,6 +60,7 @@ class ShowActivity : AppCompatActivity() {
                             editActivityLauncher.launch(editIntent)
                         }
                         R.id.menuItemShowDelete -> {
+                            showDialog()
                         }
                     }
 
@@ -92,5 +93,20 @@ class ShowActivity : AppCompatActivity() {
                 text = memoData?.context
             }
         }
+    }
+
+    // 삭제 확인 다이얼로그 메서드
+    fun showDialog() {
+        val builer = MaterialAlertDialogBuilder(this@ShowActivity).apply {
+            setTitle("삭제")
+            setMessage("메모를 삭제하겠습니까?")
+            setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                setResult(RESULT_OK)
+                finish()
+            }
+            setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+            }
+        }
+        builer.show()
     }
 }
