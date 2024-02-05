@@ -117,7 +117,7 @@ class InputActivity : AppCompatActivity() {
     // 키보드 올리는 메서드
     fun showSoftInput(focusView: TextInputEditText) {
         thread {
-            SystemClock.sleep(1000)
+            SystemClock.sleep(440)
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(focusView, 0)
         }
