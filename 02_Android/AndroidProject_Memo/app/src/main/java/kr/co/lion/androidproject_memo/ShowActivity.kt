@@ -59,6 +59,7 @@ class ShowActivity : AppCompatActivity() {
                     when(it.itemId) {
                         R.id.menuItemShowEdit -> {
                             val editIntent = Intent(this@ShowActivity, EditActivity::class.java)
+                            editIntent.putExtra("editMemoData", memoData)
                             editActivityLauncher.launch(editIntent)
                         }
                         R.id.menuItemShowDelete -> {
