@@ -83,12 +83,12 @@ class MainActivity : AppCompatActivity() {
                 RESULT_OK -> {
                     if(it.data != null) {
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val deleteMemoData = it.data?.getParcelableExtra("deleteMemoData", MemoClass::class.java)
+                            val deleteMemoData = it.data?.getParcelableExtra("memoData", MemoClass::class.java)
                             memoDataList.remove(deleteMemoData)
 
                             activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
                         } else {
-                            val deleteMemoData = it.data?.getParcelableExtra<MemoClass>("deleteMemoData")
+                            val deleteMemoData = it.data?.getParcelableExtra<MemoClass>("memoData")
                             memoDataList.remove(deleteMemoData)
 
                             activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
