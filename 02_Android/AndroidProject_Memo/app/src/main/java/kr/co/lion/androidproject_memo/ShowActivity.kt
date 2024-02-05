@@ -17,6 +17,8 @@ class ShowActivity : AppCompatActivity() {
     // EditActivity Launcher
     lateinit var editActivityLauncher: ActivityResultLauncher<Intent>
 
+    lateinit var memoData: MemoClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityShowBinding = ActivityShowBinding.inflate(layoutInflater)
@@ -74,39 +76,42 @@ class ShowActivity : AppCompatActivity() {
     fun setView() {
         activityShowBinding.apply {
             // Intent로부터 메모 데이터 객체 추출
-            val memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-                intent.getParcelableExtra("memoData", MemoClass::class.java)
+            memoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("memoData", MemoClass::class.java)!!
             } else {
-                intent.getParcelableExtra<MemoClass>("memoData")
+                intent.getParcelableExtra<MemoClass>("memoData")!!
             }
 
             // textViewShowTitle
             textViewShowTitle.apply {
-                text = memoData?.title
+                text = memoData.title
             }
             // textViewShowDate
             textViewShowDate.apply {
-                text = memoData?.date
+                text = memoData.date
             }
             // textViewShowContext
             textViewShowContext.apply {
-                text = memoData?.context
+                text = memoData.context
             }
         }
     }
 
     // 삭제 다이얼로그 메서드
     fun showDialog() {
-        val builer = MaterialAlertDialogBuilder(this@ShowActivity).apply {
+        val builder = MaterialAlertDialogBuilder(this@ShowActivity).apply {
             setTitle("삭제")
             setMessage("메모를 삭제하겠습니까?")
             setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
-                setResult(RESULT_OK)
+                val deleteIntent = Intent()
+                deleteIntent.putExtra("deleteMemoData", memoData)
+                setResult(RESULT_OK, deleteIntent)
                 finish()
             }
             setNegativeButton("취소") { dialogInterface: DialogInterface, i: Int ->
+                dialogInterface.dismiss()
             }
         }
-        builer.show()
+        builder.show()
     }
 }
