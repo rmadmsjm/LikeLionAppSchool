@@ -78,6 +78,29 @@ class MainActivity : AppCompatActivity() {
         // ShowActivity Launcher
         val showContract = ActivityResultContracts.StartActivityForResult()
         showActivityLauncher = registerForActivityResult(showContract) {
+            // resultCode에 따라 분기
+            when(it.resultCode) {
+                RESULT_OK -> {
+                    if(it.data != null) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val deleteMemoData = it.data?.getParcelableExtra("deleteMemoData", MemoClass::class.java)
+                            memoDataList.remove(deleteMemoData)
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        } else {
+                            val deleteMemoData = it.data?.getParcelableExtra<MemoClass>("deleteMemoData")
+                            memoDataList.remove(deleteMemoData)
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        }
+                        Snackbar.make(activityMainBinding.root, "메모가 삭제되었습니다", Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        Snackbar.make(activityMainBinding.root, "삭제할 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                RESULT_CANCELED -> {
+                }
+            }
         }
     }
 
