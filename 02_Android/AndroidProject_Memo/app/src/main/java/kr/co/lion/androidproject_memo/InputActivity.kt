@@ -81,8 +81,8 @@ class InputActivity : AppCompatActivity() {
             val context = textFieldInputContext.text.toString()
 
             // 작성 날짜
-            val dateForamt = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
-            val currentDate = dateForamt.format(Date(System.currentTimeMillis()))
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd EEEE", Locale.getDefault())
+            val currentDate = dateFormat.format(Date(System.currentTimeMillis()))
             val date = currentDate
 
             // 데이터 유효성 검사
