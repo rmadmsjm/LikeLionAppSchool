@@ -19,6 +19,7 @@ class ShowActivity : AppCompatActivity() {
         activityShowBinding = ActivityShowBinding.inflate(layoutInflater)
         setContentView(activityShowBinding.root)
 
+        setLauncher()
         setToolbar()
         setView()
     }
