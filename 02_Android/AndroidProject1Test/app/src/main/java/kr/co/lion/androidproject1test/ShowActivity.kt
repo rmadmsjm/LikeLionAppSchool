@@ -1,12 +1,18 @@
 package kr.co.lion.androidproject1test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import kr.co.lion.androidproject1test.databinding.ActivityShowBinding
 
 class ShowActivity : AppCompatActivity() {
 
     lateinit var activityShowBinding: ActivityShowBinding
+
+    // ModifyActivity Launcher
+    lateinit var modifyActivityLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +21,14 @@ class ShowActivity : AppCompatActivity() {
 
         setToolbar()
         setView()
+    }
+
+    // Launcher 설정
+    fun setLauncher() {
+        // ModifyActivity Launcher
+        val contract1 = ActivityResultContracts.StartActivityForResult()
+        modifyActivityLauncher = registerForActivityResult(contract1) {
+        }
     }
 
     // 툴바
@@ -33,6 +47,22 @@ class ShowActivity : AppCompatActivity() {
 
                 // 메뉴
                 inflateMenu(R.menu.menu_show)
+                setOnMenuItemClickListener {
+                    // 메뉴 항목 id로 분기
+                    when(it.itemId) {
+                        // 수정
+                        R.id.menu_item_show_modify -> {
+                            val modifyIntent = Intent(this@ShowActivity, ModifyActivity::class.java)
+                            modifyActivityLauncher.launch(modifyIntent)
+                        }
+
+                        // 삭제
+                        R.id.menu_item_show_delete -> {
+                        }
+                    }
+
+                    true
+                }
             }
         }
     }
