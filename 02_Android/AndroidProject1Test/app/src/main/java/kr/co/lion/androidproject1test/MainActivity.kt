@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     // InputActivity Launcher
     lateinit var inputActivityLaucher : ActivityResultLauncher<Intent>
+    // ShowActivity Launcher
+    lateinit var showActivityLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         // InputActivity Launcher
         val contract1 = ActivityResultContracts.StartActivityForResult()
         inputActivityLaucher = registerForActivityResult(contract1) {
+        }
+
+        // ShowActivity Launcher
+        val contract2 = ActivityResultContracts.StartActivityForResult()
+        showActivityLauncher = registerForActivityResult(contract2) {
         }
     }
 
@@ -87,6 +94,12 @@ class MainActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
+
+                // 항목 리스너 (ShowActivity 실행)
+                this.rowMainBinding.root.setOnClickListener {
+                    val showIntnet = Intent(this@MainActivity, ShowActivity::class.java)
+                    showActivityLauncher.launch(showIntnet)
+                }
             }
         }
 
