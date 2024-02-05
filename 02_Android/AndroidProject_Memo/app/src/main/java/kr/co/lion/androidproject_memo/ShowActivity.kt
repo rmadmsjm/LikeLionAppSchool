@@ -105,7 +105,7 @@ class ShowActivity : AppCompatActivity() {
             setMessage("메모를 삭제하겠습니까?")
             setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                 val deleteIntent = Intent()
-                deleteIntent.putExtra("deleteMemoData", memoData)
+                deleteIntent.putExtra("memoData", memoData)
                 setResult(RESULT_OK, deleteIntent)
                 finish()
             }
