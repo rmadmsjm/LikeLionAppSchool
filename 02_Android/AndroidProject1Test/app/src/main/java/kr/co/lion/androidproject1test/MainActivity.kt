@@ -1,8 +1,11 @@
 package kr.co.lion.androidproject1test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -13,13 +16,26 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var activityMainBinding: ActivityMainBinding
 
+    // InputActivity Launcher
+    lateinit var inputActivityLaucher : ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
+        setLauncher()
         setToolbar()
         setView()
+        setEvent()
+    }
+
+    // Launcher 설정
+    fun setLauncher() {
+        // InputActivity Launcher
+        val contract1 = ActivityResultContracts.StartActivityForResult()
+        inputActivityLaucher = registerForActivityResult(contract1) {
+        }
     }
 
     // 툴바
@@ -42,6 +58,18 @@ class MainActivity : AppCompatActivity() {
                 layoutManager = LinearLayoutManager(this@MainActivity)
                 val deco = MaterialDividerItemDecoration(this@MainActivity, MaterialDividerItemDecoration.VERTICAL)
                 addItemDecoration(deco)
+            }
+        }
+    }
+
+    // 이벤트 설정
+    fun setEvent() {
+        activityMainBinding.apply {
+            // FloatActionButton
+            fabMainAdd.setOnClickListener {
+                // inputActivity 실행
+                val inputIntent = Intent(this@MainActivity, InputActivity::class.java)
+                inputActivityLaucher.launch(inputIntent)
             }
         }
     }
