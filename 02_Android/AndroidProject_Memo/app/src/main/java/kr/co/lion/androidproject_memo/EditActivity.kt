@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject_memo
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kr.co.lion.androidproject_memo.databinding.ActivityEditBinding
@@ -8,10 +9,15 @@ class EditActivity : AppCompatActivity() {
 
     lateinit var activityEditBinding: ActivityEditBinding
 
+    lateinit var editMemoData: MemoClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityEditBinding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(activityEditBinding.root)
+
+        setToolbar()
+        setView()
     }
 
     // Toolbar
@@ -42,6 +48,27 @@ class EditActivity : AppCompatActivity() {
 
                     true
                 }
+            }
+        }
+    }
+
+    // View 설정
+    fun setView() {
+        activityEditBinding.apply {
+            // Intent로부터 메모 데이터 객체 추출
+            editMemoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra("editMemoData", MemoClass::class.java)!!
+            } else {
+                intent.getParcelableExtra<MemoClass>("editMemoData")!!
+            }
+
+            // textFieldEditTitle
+            textFieldEditTitle.apply {
+                setText(editMemoData.title)
+            }
+            // textFieldEditContext
+            textFieldEditContext.apply {
+                setText(editMemoData.context)
             }
         }
     }

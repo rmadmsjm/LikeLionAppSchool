@@ -28,6 +28,7 @@
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textFieldEditTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -43,6 +44,7 @@
             app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textFieldEditContext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
