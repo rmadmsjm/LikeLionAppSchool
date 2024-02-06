@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject_memo
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -41,7 +42,10 @@ class EditActivity : AppCompatActivity() {
                     // 메뉴 id로 분기
                     when(it.itemId) {
                         R.id.menuItemEditSubmit -> {
-                            setResult(RESULT_OK)
+                            editData()
+                            val editIntent = Intent()
+                            editIntent.putExtra("editMemoData", editMemoData)
+                            setResult(RESULT_OK, editIntent)
                             finish()
                         }
                     }
@@ -70,6 +74,14 @@ class EditActivity : AppCompatActivity() {
             textFieldEditContext.apply {
                 setText(editMemoData.context)
             }
+        }
+    }
+
+    // 메모 수정 메서드
+    fun editData() {
+        activityEditBinding.apply {
+            editMemoData.title = textFieldEditTitle.text.toString()
+            editMemoData.context = textFieldEditContext.text.toString()
         }
     }
 }
