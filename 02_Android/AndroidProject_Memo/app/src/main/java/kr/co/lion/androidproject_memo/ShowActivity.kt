@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_memo.databinding.ActivityShowBinding
 
 class ShowActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class ShowActivity : AppCompatActivity() {
     lateinit var editActivityLauncher: ActivityResultLauncher<Intent>
 
     lateinit var memoData: MemoClass
+
+    var editState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,38 @@ class ShowActivity : AppCompatActivity() {
         // EditActivity Launcher
         val editContract = ActivityResultContracts.StartActivityForResult()
         editActivityLauncher = registerForActivityResult(editContract) {
+            // resultCode에 따라 분기
+            when(it.resultCode) {
+                RESULT_OK -> {
+                    // 전달된 Intent객체가 있을 때 객체 추출
+                    if(it.data != null) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            memoData = it.data?.getParcelableExtra("editMemoData", MemoClass::class.java)!!
+
+                            activityShowBinding.apply {
+                                textViewShowTitle.text = memoData.title.toString()
+                                textViewShowContext.text = memoData.context.toString()
+                            }
+
+                            editState = true
+                        } else {
+                            memoData = it.data?.getParcelableExtra<MemoClass>("editMemoData")!!
+
+                            activityShowBinding.apply {
+                                textViewShowTitle.text = memoData.title.toString()
+                                textViewShowContext.text = memoData.context.toString()
+                            }
+
+                            editState = true
+                        }
+                    } else {
+                        Snackbar.make(activityShowBinding.root, "수정 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT)
+                    }
+                }
+                RESULT_CANCELED -> {
+                    Snackbar.make(activityShowBinding.root, "메모 수정을 취소했습니다", Snackbar.LENGTH_SHORT)
+                }
+            }
         }
     }
 
@@ -47,8 +82,6 @@ class ShowActivity : AppCompatActivity() {
                 // back button
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
-                    setResult(RESULT_CANCELED)
-                    finish()
                 }
 
                 // 메뉴 설정
