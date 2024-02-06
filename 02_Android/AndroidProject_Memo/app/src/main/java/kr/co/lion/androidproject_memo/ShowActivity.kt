@@ -18,9 +18,17 @@ class ShowActivity : AppCompatActivity() {
     // EditActivity Launcher
     lateinit var editActivityLauncher: ActivityResultLauncher<Intent>
 
+    // 메모 데이터
     lateinit var memoData: MemoClass
 
+    // 메모 수정 상태
     var editState = false
+
+    // 수정 resultCode
+    val RESULT_EDIT = 2
+
+    // adapterPosition
+    var adapterPosition:Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +47,7 @@ class ShowActivity : AppCompatActivity() {
         editActivityLauncher = registerForActivityResult(editContract) {
             // resultCode에 따라 분기
             when(it.resultCode) {
+                // 메모 수정
                 RESULT_OK -> {
                     // 전달된 Intent객체가 있을 때 객체 추출
                     if(it.data != null) {
@@ -61,12 +70,15 @@ class ShowActivity : AppCompatActivity() {
 
                             editState = true
                         }
+
+                        Snackbar.make(activityShowBinding.root, "메모가 수정되었습니다", Snackbar.LENGTH_SHORT).show()
                     } else {
-                        Snackbar.make(activityShowBinding.root, "수정 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT)
+                        Snackbar.make(activityShowBinding.root, "수정 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
                     }
                 }
+                // back
                 RESULT_CANCELED -> {
-                    Snackbar.make(activityShowBinding.root, "메모 수정을 취소했습니다", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(activityShowBinding.root, "메모 수정을 취소했습니다", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -82,6 +94,22 @@ class ShowActivity : AppCompatActivity() {
                 // back button
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
+                    // 메모 수정 상태로 분기
+                    when(editState) {
+                        // 수정된 상태
+                        true -> {
+                            val editMemoIntent = Intent()
+                            editMemoIntent.putExtra("editMemoData", memoData)
+                            editMemoIntent.putExtra("adapterPosition", adapterPosition)
+                            setResult(RESULT_EDIT, editMemoIntent)
+                            finish()
+                        }
+                        // 수정 안 된 상태
+                        false -> {
+                            setResult(RESULT_CANCELED)
+                            finish()
+                        }
+                    }
                 }
 
                 // 메뉴 설정
@@ -92,7 +120,7 @@ class ShowActivity : AppCompatActivity() {
                     when(it.itemId) {
                         R.id.menuItemShowEdit -> {
                             val editIntent = Intent(this@ShowActivity, EditActivity::class.java)
-                            editIntent.putExtra("editMemoData", memoData)
+                            editIntent.putExtra("memoData", memoData)
                             editActivityLauncher.launch(editIntent)
                         }
                         R.id.menuItemShowDelete -> {
@@ -116,6 +144,8 @@ class ShowActivity : AppCompatActivity() {
                 intent.getParcelableExtra<MemoClass>("memoData")!!
             }
 
+            adapterPosition = intent.getIntExtra("adapterPosition", -1)
+
             // textViewShowTitle
             textViewShowTitle.apply {
                 text = memoData.title
@@ -138,7 +168,7 @@ class ShowActivity : AppCompatActivity() {
             setMessage("메모를 삭제하겠습니까?")
             setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
                 val deleteIntent = Intent()
-                deleteIntent.putExtra("memoData", memoData)
+                deleteIntent.putExtra("adapterPosition", adapterPosition)
                 setResult(RESULT_OK, deleteIntent)
                 finish()
             }
