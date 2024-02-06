@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     // 메모 데이터 List
     var memoDataList = mutableListOf<MemoClass>()
 
+    // 수정 resultCode
+    val RESULT_EDIT = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         inputactivityLauncher = registerForActivityResult(inputContract) {
             // resultCode에 따라 분기
             when(it.resultCode) {
+                // 메모 등록
                 RESULT_OK -> {
                     // 전달된 Intent객체가 있을 때 객체 추출
                     if(it.data != null) {
@@ -69,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.make(activityMainBinding.root, "메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
                     }
                 }
+                // back
                 RESULT_CANCELED -> {
                     Snackbar.make(activityMainBinding.root, "메모 작성을 취소했습니다", Snackbar.LENGTH_SHORT).show()
                 }
@@ -80,16 +85,17 @@ class MainActivity : AppCompatActivity() {
         showActivityLauncher = registerForActivityResult(showContract) {
             // resultCode에 따라 분기
             when(it.resultCode) {
+                // 메모 삭제
                 RESULT_OK -> {
                     if(it.data != null) {
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val deleteMemoData = it.data?.getParcelableExtra("memoData", MemoClass::class.java)
-                            memoDataList.remove(deleteMemoData)
+                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
+                            memoDataList.removeAt(adapterPosition!!)
 
                             activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
                         } else {
-                            val deleteMemoData = it.data?.getParcelableExtra<MemoClass>("memoData")
-                            memoDataList.remove(deleteMemoData)
+                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
+                            memoDataList.removeAt(adapterPosition!!)
 
                             activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
                         }
@@ -98,6 +104,33 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.make(activityMainBinding.root, "삭제할 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
                     }
                 }
+                // 메모 수정
+                RESULT_EDIT -> {
+                    if(it.data != null) {
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val editedMemoData = it.data?.getParcelableExtra("editMemoData", MemoClass::class.java)
+                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
+
+                            if(adapterPosition != -1) {
+                                memoDataList[adapterPosition!!] = editedMemoData!!
+                            }
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        } else {
+                            val editedMemoData = it.data?.getParcelableExtra<MemoClass>("editMemoData")
+                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
+
+                            if(adapterPosition != -1) {
+                                memoDataList[adapterPosition!!] = editedMemoData!!
+                            }
+
+                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                        }
+                    } else {
+                        Snackbar.make(activityMainBinding.root, "수정된 메모 업데이트 실패", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+                // back
                 RESULT_CANCELED -> {
                 }
             }
@@ -116,6 +149,7 @@ class MainActivity : AppCompatActivity() {
                 setOnMenuItemClickListener {
                     // 메뉴 id로 분기
                     when(it.itemId) {
+                        // 메모 등록 메뉴 항목
                         R.id.menuItemMainAdd -> {
                             val mainIntent = Intent(this@MainActivity, InputActivity::class.java)
                             inputactivityLauncher.launch(mainIntent)
@@ -158,6 +192,7 @@ class MainActivity : AppCompatActivity() {
                         // ShowActivity 실행
                         val showIntent = Intent(this@MainActivity, ShowActivity::class.java)
                         showIntent.putExtra("memoData", memoDataList[adapterPosition])
+                        showIntent.putExtra("adapterPosition", adapterPosition)
                         showActivityLauncher.launch(showIntent)
                     }
                 }
