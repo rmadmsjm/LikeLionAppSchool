@@ -61,9 +61,9 @@ class EditActivity : AppCompatActivity() {
         activityEditBinding.apply {
             // Intent로부터 메모 데이터 객체 추출
             editMemoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra("editMemoData", MemoClass::class.java)!!
+                intent.getParcelableExtra("memoData", MemoClass::class.java)!!
             } else {
-                intent.getParcelableExtra<MemoClass>("editMemoData")!!
+                intent.getParcelableExtra<MemoClass>("memoData")!!
             }
 
             // textFieldEditTitle
