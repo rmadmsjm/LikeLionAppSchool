@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
         dialogBuilder.show()
     }
 
-    // 검색 필터에 따라 리스트에 데이터 담는 메서드
+    // 검색 필터에 따라 리스트에 데이터 담는 메서드 호출 메서드
     fun setRecyclerViewList() {
         // 기본 다이얼로그, SingleChoice 다이얼로그
         setRecyclerViewListBasic()
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity() {
 //        setRecyclerViewListMulti()
     }
 
-    // 기본 다이얼로그 : 검색 필터에 따라 리스트에 데이터 담기
+    // 기본 다이얼로그, SingleChoice 다이얼로그 : 검색 필터에 따라 리스트에 데이터 담기
     fun setRecyclerViewListBasic() {
         // 리스트 초기화
         recyclerViewList.clear()
