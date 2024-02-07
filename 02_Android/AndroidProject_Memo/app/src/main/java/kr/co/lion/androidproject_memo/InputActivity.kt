@@ -89,7 +89,6 @@ class InputActivity : AppCompatActivity() {
             // 데이터 유효성 검사
             if(title.isEmpty()) {
                 textFieldLayoutTitle.error = "제목을 입력해 주세요"
-                textFieldInputTitle.requestFocus()
                 Util.showSoftInput(this@InputActivity, textFieldInputTitle)
                 if(context.isEmpty()) {
                     textFieldLayoutContext.error = "내용을 입력해 주세요"
@@ -98,7 +97,6 @@ class InputActivity : AppCompatActivity() {
             }
             if(context.isEmpty()) {
                 textFieldLayoutContext.error = "내용을 입력해 주세요"
-                textFieldInputContext.requestFocus()
                 Util.showSoftInput(this@InputActivity, textFieldInputContext)
                 return
             }

@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             when(it.resultCode) {
                 // 메모 등록
                 RESULT_OK -> {
-
                     activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
 
                     Snackbar.make(activityMainBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT).show()

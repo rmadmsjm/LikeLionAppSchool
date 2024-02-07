@@ -81,7 +81,6 @@ class EditActivity : AppCompatActivity() {
             // 데이터 유효성 검사
             if(memoData.title!!.isEmpty()) {
                 textFieldLayoutEditTitle.error = "제목을 입력해 주세요"
-                textFieldLayoutEditTitle.requestFocus()
                 Util.showSoftInput(this@EditActivity, textFieldEditTitle)
                 if(Util.memoDataList[adapterPosition].context!!.isEmpty()) {
                     textFieldLayoutEditContext.error = "내용을 입력해 주세요"
@@ -90,7 +89,6 @@ class EditActivity : AppCompatActivity() {
             }
             if(memoData.context!!.isEmpty()) {
                 textFieldLayoutEditContext.error = "내용을 입력해 주세요"
-                textFieldLayoutEditContext.requestFocus()
                 Util.showSoftInput(this@EditActivity, textFieldEditContext)
                 return
             }
