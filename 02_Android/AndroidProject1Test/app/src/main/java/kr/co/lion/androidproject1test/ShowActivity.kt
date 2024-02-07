@@ -145,4 +145,10 @@ class ShowActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        // 다른 곳 갔다 왔을 경우 출력 내용을 다시 구성
+        setView2()
+    }
 }

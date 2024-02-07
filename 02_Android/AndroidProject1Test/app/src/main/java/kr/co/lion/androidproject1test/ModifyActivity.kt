@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject1test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
@@ -34,6 +35,11 @@ class ModifyActivity : AppCompatActivity() {
 
                 // 메뉴
                 inflateMenu(R.menu.menu_modify)
+                setOnMenuItemClickListener {
+                    modifyData()
+                    finish()
+                    true
+                }
             }
         }
     }
@@ -96,6 +102,41 @@ class ModifyActivity : AppCompatActivity() {
                     textFieldModifyNeckLenght.setText("${giraffe.neckLength}")
                     textFieldModifyRunSpeed.setText("${giraffe.runSpeed}")
                 }
+            }
+        }
+    }
+
+    // 수정 처리
+    fun modifyData() {
+        // 위치값 가져오기
+        val position = intent.getIntExtra("position", 0)
+        // position 번째 객체 가져오기
+        val animal = Util.animalList[position]
+
+        activityModifyBinding.apply {
+            // 공통
+            animal.name = textFieldModifyName.text.toString()
+            animal.age = textFieldModifyAge.text.toString().toInt()
+
+            // 클래스 타입별 분기
+            // 사자
+            if(animal is Lion) {
+                animal.furCnt = textFieldModifyFurCnt.text.toString().toInt()
+                animal.gender = when(buttonGroupModifyGender.checkedButtonId) {
+                    R.id.buttonModifyGender1 -> LionGender.LION_GENDER1
+                    R.id.buttonModifyGender2 -> LionGender.LION_GENDER2
+                    else -> LionGender.LION_GENDER1
+                }
+            }
+            // 호랑이
+            else if(animal is Tiger) {
+                animal.lineCount = textFieldModifyLineCount.text.toString().toInt()
+                animal.weight = sliderModifyWeight.value.toInt()
+            }
+            // 기린
+            else if(animal is Giraffe) {
+                animal.neckLength = textFieldModifyNeckLenght.text.toString().toInt()
+                animal.runSpeed = textFieldModifyRunSpeed.text.toString().toInt()
             }
         }
     }
