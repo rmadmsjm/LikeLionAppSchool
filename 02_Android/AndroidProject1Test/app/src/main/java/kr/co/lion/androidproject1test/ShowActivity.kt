@@ -55,6 +55,9 @@ class ShowActivity : AppCompatActivity() {
                         // 수정
                         R.id.menu_item_show_modify -> {
                             val modifyIntent = Intent(this@ShowActivity, ModifyActivity::class.java)
+                            // 동물 순서값 저장
+                            val position = intent.getIntExtra("position", 0)
+                            modifyIntent.putExtra("position", position)
                             modifyActivityLauncher.launch(modifyIntent)
                         }
 
@@ -125,6 +128,7 @@ class ShowActivity : AppCompatActivity() {
                 append("나이 : ${animal.age}살\n")
 
                 // 스마트 캐스팅 : 특정 조건을 만족하면 자동으로 형변환 됨
+                // 클래스 타입으로 분기
                 if(animal is Lion) {
                     // 사자
                     append("털의 개수 : ${animal.furCnt}개\n")
