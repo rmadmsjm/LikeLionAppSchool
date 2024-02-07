@@ -28,12 +28,6 @@ class MainActivity : AppCompatActivity() {
     // ShowActivity Launcher
     lateinit var showActivityLauncher: ActivityResultLauncher<Intent>
 
-    // 메모 데이터 List
-    var memoDataList = mutableListOf<MemoClass>()
-
-    // 수정 resultCode
-    val RESULT_EDIT = 2
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -53,25 +47,10 @@ class MainActivity : AppCompatActivity() {
             when(it.resultCode) {
                 // 메모 등록
                 RESULT_OK -> {
-                    // 전달된 Intent객체가 있을 때 객체 추출
-                    if(it.data != null) {
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val memoData = it.data?.getParcelableExtra("memoData", MemoClass::class.java)
-                            memoDataList.add(memoData!!)
 
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+                    activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
 
-                        } else {
-                            val memoData = it.data?.getParcelableExtra<MemoClass>("memoData")
-                            memoDataList.add(memoData!!)
-
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
-                        }
-                        
-                        Snackbar.make(activityMainBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT).show()
-                    } else {
-                        Snackbar.make(activityMainBinding.root, "메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
-                    }
+                    Snackbar.make(activityMainBinding.root, "메모가 등록되었습니다", Snackbar.LENGTH_SHORT).show()
                 }
                 // back
                 RESULT_CANCELED -> {
@@ -86,49 +65,14 @@ class MainActivity : AppCompatActivity() {
             // resultCode에 따라 분기
             when(it.resultCode) {
                 // 메모 삭제
-                RESULT_OK -> {
-                    if(it.data != null) {
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
-                            memoDataList.removeAt(adapterPosition!!)
+                ResultCode.RESULT_DELETE.codeNum -> {
+                    activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
 
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
-                        } else {
-                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
-                            memoDataList.removeAt(adapterPosition!!)
-
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
-                        }
-                        Snackbar.make(activityMainBinding.root, "메모가 삭제되었습니다", Snackbar.LENGTH_SHORT).show()
-                    } else {
-                        Snackbar.make(activityMainBinding.root, "삭제할 메모 데이터가 없습니다", Snackbar.LENGTH_SHORT).show()
-                    }
+                    Snackbar.make(activityMainBinding.root, "메모가 삭제되었습니다", Snackbar.LENGTH_SHORT).show()
                 }
                 // 메모 수정
-                RESULT_EDIT -> {
-                    if(it.data != null) {
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            val editedMemoData = it.data?.getParcelableExtra("editMemoData", MemoClass::class.java)
-                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
-
-                            if(adapterPosition != -1) {
-                                memoDataList[adapterPosition!!] = editedMemoData!!
-                            }
-
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
-                        } else {
-                            val editedMemoData = it.data?.getParcelableExtra<MemoClass>("editMemoData")
-                            val adapterPosition = it.data?.getIntExtra("adapterPosition", -1)
-
-                            if(adapterPosition != -1) {
-                                memoDataList[adapterPosition!!] = editedMemoData!!
-                            }
-
-                            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
-                        }
-                    } else {
-                        Snackbar.make(activityMainBinding.root, "수정된 메모 업데이트 실패", Snackbar.LENGTH_SHORT).show()
-                    }
+                ResultCode.RESULT_EDIT.codeNum -> {
+                    activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
                 }
                 // back
                 RESULT_CANCELED -> {
@@ -191,7 +135,6 @@ class MainActivity : AppCompatActivity() {
                     this.rowRecyclerviewBinding.root.setOnClickListener {
                         // ShowActivity 실행
                         val showIntent = Intent(this@MainActivity, ShowActivity::class.java)
-                        showIntent.putExtra("memoData", memoDataList[adapterPosition])
                         showIntent.putExtra("adapterPosition", adapterPosition)
                         showActivityLauncher.launch(showIntent)
                     }
@@ -206,12 +149,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return memoDataList.size
+            return Util.memoDataList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
-            holder.rowRecyclerviewBinding.textViewRowTitle.text = memoDataList[position].title
-            holder.rowRecyclerviewBinding.textViewRowDate.text = memoDataList[position].date
+            holder.rowRecyclerviewBinding.textViewRowTitle.text = Util.memoDataList[position].title
+            holder.rowRecyclerviewBinding.textViewRowDate.text = Util.memoDataList[position].date
         }
     }
 }
