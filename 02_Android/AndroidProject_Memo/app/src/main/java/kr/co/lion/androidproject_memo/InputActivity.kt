@@ -46,6 +46,7 @@ class InputActivity : AppCompatActivity() {
                 setOnMenuItemClickListener {
                     // 메뉴 id로 분기
                     when(it.itemId) {
+                        // 메모 입력 완료
                         R.id.menuItemInputSubmit -> {
                             inputDone()
                         }
@@ -63,7 +64,7 @@ class InputActivity : AppCompatActivity() {
             textFieldInputTitle.requestFocus()
 
             // 키보드 올리기
-            showSoftInput(textFieldInputTitle)
+            Util.showSoftInput(this@InputActivity, textFieldInputTitle)
 
             // 메모 내용 textField 엔터키 클릭 시 입력 완료 처리
             textFieldInputContext.setOnEditorActionListener { v, actionId, event ->
@@ -89,7 +90,7 @@ class InputActivity : AppCompatActivity() {
             if(title.isEmpty()) {
                 textFieldLayoutTitle.error = "제목을 입력해 주세요"
                 textFieldInputTitle.requestFocus()
-                showSoftInput(textFieldInputTitle)
+                Util.showSoftInput(this@InputActivity, textFieldInputTitle)
                 if(context.isEmpty()) {
                     textFieldLayoutContext.error = "내용을 입력해 주세요"
                 }
@@ -98,28 +99,15 @@ class InputActivity : AppCompatActivity() {
             if(context.isEmpty()) {
                 textFieldLayoutContext.error = "내용을 입력해 주세요"
                 textFieldInputContext.requestFocus()
-                showSoftInput(textFieldInputContext)
+                Util.showSoftInput(this@InputActivity, textFieldInputContext)
                 return
             }
 
             // 객체에 데이터 담기
-            val memoData = MemoClass(title, date, context)
+            Util.memoDataList.add(MemoClass(title, date, context))
 
-            // 데이터 전달 Intent
-            val resultIntent = Intent()
-            resultIntent.putExtra("memoData", memoData)
-
-            setResult(RESULT_OK, resultIntent)
+            setResult(RESULT_OK)
             finish()
-        }
-    }
-
-    // 키보드 올리는 메서드
-    fun showSoftInput(focusView: TextInputEditText) {
-        thread {
-            SystemClock.sleep(440)
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(focusView, 0)
         }
     }
 }
