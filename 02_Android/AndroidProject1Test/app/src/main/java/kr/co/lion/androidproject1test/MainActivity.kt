@@ -45,6 +45,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        activityMainBinding.apply {
+            // RecyclerView 갱신
+            recyclerViewMain.adapter?.notifyDataSetChanged()
+        }
+    }
+
     // 툴바
     fun setToolbar() {
         activityMainBinding.apply {
@@ -94,15 +102,10 @@ class MainActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-
-                // 항목 리스너 (ShowActivity 실행)
-                this.rowMainBinding.root.setOnClickListener {
-                    val showIntnet = Intent(this@MainActivity, ShowActivity::class.java)
-                    showActivityLauncher.launch(showIntnet)
-                }
             }
         }
 
+        //재사용 가능한 항목이 없을 때 호출
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderMain {
             val rowMainBinding = RowMainBinding.inflate(layoutInflater)
             val viewHolderMain = ViewHolderMain(rowMainBinding)
@@ -111,23 +114,56 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return 20
+            return Util.animalList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderMain, position: Int) {
-            when(position % 3) {
-                0 -> {
-                    holder.rowMainBinding.textViewRowMainName.text = "사자"
+//            when(position % 3) {
+//                0 -> {
+//                    holder.rowMainBinding.textViewRowMainName.text = "사자"
+//                    holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.lion)
+//                }
+//                1 -> {
+//                    holder.rowMainBinding.textViewRowMainName.text = "호랑이"
+//                    holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.tiger)
+//                }
+//                2 -> {
+//                    holder.rowMainBinding.textViewRowMainName.text = "기린"
+//                    holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.giraffe)
+//                }
+//            }
+
+            // position 번째 객체 추출
+            val animal = Util.animalList[position]
+
+            // 동물 이름 설정
+            holder.rowMainBinding.textViewRowMainName.text = animal.name
+
+            // 동물 타입 이미지 설정
+            // 타입별로 분기
+            when(animal.type) {
+                // 사자
+                AnimalType.ANIMAL_TYPE_LION -> {
                     holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.lion)
                 }
-                1 -> {
-                    holder.rowMainBinding.textViewRowMainName.text = "호랑이"
+
+                // 호랑이
+                AnimalType.ANIMAL_TYPE_TIGER -> {
                     holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.tiger)
                 }
-                2 -> {
-                    holder.rowMainBinding.textViewRowMainName.text = "기린"
+
+                // 기린
+                AnimalType.ANIMAL_TYPE_GIRAFFE -> {
                     holder.rowMainBinding.imageViewRowMainType.setImageResource(R.drawable.giraffe)
                 }
+            }
+
+            // 항목 리스너 (ShowActivity 실행)
+            holder.rowMainBinding.root.setOnClickListener {
+                val showIntnet = Intent(this@MainActivity, ShowActivity::class.java)
+                // 현재 항목의 순서값 담기
+                showIntnet.putExtra("position", position)
+                showActivityLauncher.launch(showIntnet)
             }
         }
     }

@@ -21,7 +21,8 @@ class ShowActivity : AppCompatActivity() {
 
         setLauncher()
         setToolbar()
-        setView()
+        //setView()
+        setView2()
     }
 
     // Launcher 설정
@@ -73,22 +74,70 @@ class ShowActivity : AppCompatActivity() {
         activityShowBinding.apply {
             // textView
             textViewShowInfo.apply {
+                // 항목 순서값 가져오기
+                val position = intent.getIntExtra("position", 0)
+                // position 번째 객체 추출
+                val animal = Util.animalList[position]
+
                 // 공통
-                text = "동물 종류 : \n"
-                append("이름 : \n")
-                append("나이 : 살\n")
+                text = "동물 종류 : ${animal.type.str}\n"
+                append("이름 : ${animal.name}\n")
+                append("나이 : ${animal.age}살\n")
 
-                // 사자
-                append("털의 개수 : 개\n")
-                append("성별 : \n")
+                when(animal.type) {
+                    // 사자
+                    AnimalType.ANIMAL_TYPE_LION -> {
+                        val lion = animal as Lion
+                        append("털의 개수 : ${lion.furCnt}개\n")
+                        append("성별 : ${lion.gender}\n")
+                    }
 
-                // 호랑이
-                append("줄무늬 개수 : 개\n")
-                append("몸무게 : kg\n")
+                    // 호랑이
+                    AnimalType.ANIMAL_TYPE_TIGER -> {
+                        val tiger = animal as Tiger
+                        append("줄무늬 개수 : ${tiger.lineCount}개\n")
+                        append("몸무게 : ${tiger.weight}kg\n")
+                    }
 
-                // 기린
-                append("목의 길이 : cm\n")
-                append("달리는 속도 : km/h\n")
+                    // 기린
+                    AnimalType.ANIMAL_TYPE_GIRAFFE -> {
+                        val giraffe = animal as Giraffe
+                        append("목의 길이 : ${giraffe.neckLength}cm\n")
+                        append("달리는 속도 : ${giraffe.runSpeed}km/h\n")
+                    }
+                }
+            }
+        }
+    }
+
+    fun setView2() {
+        activityShowBinding.apply {
+            // textView
+            textViewShowInfo.apply {
+                // 항목 순서값 가져오기
+                val position = intent.getIntExtra("position", 0)
+                // position 번째 객체 추출
+                val animal = Util.animalList[position]
+
+                // 공통
+                text = "동물 종류 : ${animal.type.str}\n"
+                append("이름 : ${animal.name}\n")
+                append("나이 : ${animal.age}살\n")
+
+                // 스마트 캐스팅 : 특정 조건을 만족하면 자동으로 형변환 됨
+                if(animal is Lion) {
+                    // 사자
+                    append("털의 개수 : ${animal.furCnt}개\n")
+                    append("성별 : ${animal.gender}\n")
+                } else if(animal is Tiger) {
+                    // 호랑이
+                    append("줄무늬 개수 : ${animal.lineCount}개\n")
+                    append("몸무게 : ${animal.weight}kg\n")
+                } else if(animal is Giraffe) {
+                    // 기린
+                    append("목의 길이 : ${animal.neckLength}cm\n")
+                    append("달리는 속도 : ${animal.runSpeed}km/h\n")
+                }
             }
         }
     }
