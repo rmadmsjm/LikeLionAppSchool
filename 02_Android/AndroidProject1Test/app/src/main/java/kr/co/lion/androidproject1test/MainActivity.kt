@@ -27,8 +27,11 @@ class MainActivity : AppCompatActivity() {
     val recyclerViewList = mutableListOf<Animal>()
     // 현재 항목을 구성하기 위해 사용한 객체가 Util.animlList의 몇 번째 객체인지 담을 리스트
     val recyclerViewIndexList = mutableListOf<Int>()
+
     // 현재 선택 되어 있는 필터 타입
     var filterType = FilterType.FILTER_TYPE_ALL
+    // 현재 선택되어 있는 필터 타입 - MultiChoice
+    var filterTypeMulti = booleanArrayOf(true, true, true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +80,12 @@ class MainActivity : AppCompatActivity() {
                         // 필터 메뉴
                         R.id.menu_item_main_filter -> {
                             // 필터 선택을 위한 다이얼로그 띄우기
+                            // 기본 다이얼로그
                             showFilterDialog()
+                            // MultiChoice 다이얼로그
+//                            showFilterDialogMultiChoice()
+                            // SingChoice 다이얼로그
+//                            showFilterDialogSingleChoice()
                         }
                     }
 
@@ -184,13 +192,17 @@ class MainActivity : AppCompatActivity() {
             holder.rowMainBinding.root.setOnClickListener {
                 val showIntnet = Intent(this@MainActivity, ShowActivity::class.java)
                 // 현재 항목의 순서값 담기
-                showIntnet.putExtra("position", position)
+                // showIntnet.putExtra("position", position)
+
+                // 사용자가 선택한 항목을 구성하기 위해 사용한 객체가 Util.animalList 리스트에 몇 번째에 있는 값인지 담기
+                showIntnet.putExtra("position", recyclerViewIndexList[position])
+
                 showActivityLauncher.launch(showIntnet)
             }
         }
     }
 
-    // 필터 다이얼로그를 띄우는 메서드
+    // 기본 필터 다이얼로그 띄우는 메서드
     fun showFilterDialog() {
         val dialogBuilder = MaterialAlertDialogBuilder(this@MainActivity)
         dialogBuilder.setTitle("필터 선택")
@@ -215,18 +227,74 @@ class MainActivity : AppCompatActivity() {
             activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
         }
 
-        // 확인 버튼 필요
-        dialogBuilder.setMultiChoiceItems(itemArray, booleanArrayOf(true, false, true, false)){ dialogInterface: DialogInterface, i: Int, b: Boolean -> }
-
-        // 확인 버튼 필요
-        dialogBuilder.setSingleChoiceItems(itemArray, 0){ dialogInterface: DialogInterface, i: Int -> }
-
         dialogBuilder.setNegativeButton("취소", null)
         dialogBuilder.show()
     }
 
-    // 검색 필터에 따라 리스트에 데이터를 담아주는 메서드
+    // MultiChoice 필터 다이얼로그 띄우는 메서드
+    fun showFilterDialogMultiChoice(){
+        val dialogBuilder = MaterialAlertDialogBuilder(this@MainActivity)
+        dialogBuilder.setTitle("필터 선택")
+
+        // 항목
+        val itemArray = arrayOf("사자", "호랑이", "기린")
+        // 두 번째 : 체크 상태가 변경된 항목의 순서값
+        // 세 번째 : 체크 상태
+        dialogBuilder.setMultiChoiceItems(itemArray, filterTypeMulti) { dialogInterface: DialogInterface, i: Int, b: Boolean ->
+            // 체크가 변경된 항목 번째의 값 변경
+            filterTypeMulti[i] = b
+        }
+
+        dialogBuilder.setNegativeButton("취소", null)
+        dialogBuilder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+            // 데이터를 새로 담기
+            setRecyclerViewList()
+            // 리사이클러뷰를 갱신
+            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+        }
+        dialogBuilder.show()
+    }
+
+    // SingleChoice 필터 다이얼로그 띄우는 메서드
+    fun showFilterDialogSingleChoice() {
+        val dialogBuilder = MaterialAlertDialogBuilder(this@MainActivity)
+        dialogBuilder.setTitle("필터 선택")
+
+        // 항목
+        val itemArray = arrayOf("전체", "사자", "호랑이", "기린")
+        dialogBuilder.setSingleChoiceItems(itemArray, filterType.num) { dialogInterface: DialogInterface, i: Int ->
+            // 리스너의 두 번째 매개변수(i)에는 사용자가 선택한 다이얼로그의 항목의 순서값이 전달됨
+            // 선택한 항목에 대한 필터값 설정
+            // 사용자가 선택한 다이얼로그의 항목 순서값으로 분기
+            filterType = when (i) {
+                0 -> FilterType.FILTER_TYPE_ALL
+                1 -> FilterType.FILTER_TYPE_LION
+                2 -> FilterType.FILTER_TYPE_TIGER
+                3 -> FilterType.FILTER_TYPE_GIAFFE
+                else -> FilterType.FILTER_TYPE_ALL
+            }
+        }
+
+        dialogBuilder.setNegativeButton("취소", null)
+        dialogBuilder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+            // 데이터를 새로 담기
+            setRecyclerViewList()
+            // 리사이클러뷰를 갱신
+            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+        }
+        dialogBuilder.show()
+    }
+
+    // 검색 필터에 따라 리스트에 데이터 담는 메서드
     fun setRecyclerViewList() {
+        // 기본 다이얼로그, SingleChoice 다이얼로그
+        setRecyclerViewListBasic()
+        // MultiChoice 다이얼로그
+//        setRecyclerViewListMulti()
+    }
+
+    // 기본 다이얼로그 : 검색 필터에 따라 리스트에 데이터 담기
+    fun setRecyclerViewListBasic() {
         // 리스트 초기화
         recyclerViewList.clear()
         recyclerViewIndexList.clear()
@@ -279,6 +347,34 @@ class MainActivity : AppCompatActivity() {
                     index++
                 }
             }
+        }
+    }
+
+    // MultiChoice 다이얼로그 :  검색 필터에 따라 리스트에 데이터 담기
+    fun setRecyclerViewListMulti() {
+        // 리스트 초기화
+        recyclerViewList.clear()
+        recyclerViewIndexList.clear()
+
+        // animalList에 담긴 객체 수 만큼 반복
+        var index = 0
+        Util.animalList.forEach {
+            // 동물 타입이 사자이고, 사자가 true라면 담기
+            if(it.type == AnimalType.ANIMAL_TYPE_LION && filterTypeMulti[0] == true) {
+                recyclerViewList.add(it)
+                recyclerViewIndexList.add(index)
+            }
+            // 동물 타입이 호랑이이고, 호랑이가 true라면 담기
+            else if(it.type == AnimalType.ANIMAL_TYPE_TIGER && filterTypeMulti[1] == true) {
+                recyclerViewList.add(it)
+                recyclerViewIndexList.add(index)
+            }
+            // 동물 타입이 기린이고, 기린이 true라면 담기
+            else if(it.type == AnimalType.ANIMAL_TYPE_GIRAFFE && filterTypeMulti[2] == true) {
+                recyclerViewList.add(it)
+                recyclerViewIndexList.add(index)
+            }
+            index++
         }
     }
 }
