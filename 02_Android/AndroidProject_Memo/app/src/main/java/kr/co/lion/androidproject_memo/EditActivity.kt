@@ -10,7 +10,8 @@ class EditActivity : AppCompatActivity() {
 
     lateinit var activityEditBinding: ActivityEditBinding
 
-    lateinit var editMemoData: MemoClass
+    // adapterPosition
+    var adapterPosition:Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +42,9 @@ class EditActivity : AppCompatActivity() {
                 setOnMenuItemClickListener {
                     // 메뉴 id로 분기
                     when(it.itemId) {
+                        // 메모 수정 완료
                         R.id.menuItemEditSubmit -> {
                             editData()
-                            val editIntent = Intent()
-                            editIntent.putExtra("editMemoData", editMemoData)
-                            setResult(RESULT_OK, editIntent)
-                            finish()
                         }
                     }
 
@@ -59,20 +57,15 @@ class EditActivity : AppCompatActivity() {
     // View 설정
     fun setView() {
         activityEditBinding.apply {
-            // Intent로부터 메모 데이터 객체 추출
-            editMemoData = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra("memoData", MemoClass::class.java)!!
-            } else {
-                intent.getParcelableExtra<MemoClass>("memoData")!!
-            }
+            adapterPosition = intent.getIntExtra("adapterPosition", -1)
 
             // textFieldEditTitle
             textFieldEditTitle.apply {
-                setText(editMemoData.title)
+                setText(Util.memoDataList[adapterPosition].title)
             }
             // textFieldEditContext
             textFieldEditContext.apply {
-                setText(editMemoData.context)
+                setText(Util.memoDataList[adapterPosition].context)
             }
         }
     }
@@ -80,8 +73,30 @@ class EditActivity : AppCompatActivity() {
     // 메모 수정 메서드
     fun editData() {
         activityEditBinding.apply {
-            editMemoData.title = textFieldEditTitle.text.toString()
-            editMemoData.context = textFieldEditContext.text.toString()
+            val memoData = Util.memoDataList[adapterPosition]
+
+            memoData.title = textFieldEditTitle.text.toString()
+            memoData.context = textFieldEditContext.text.toString()
+
+            // 데이터 유효성 검사
+            if(memoData.title!!.isEmpty()) {
+                textFieldLayoutEditTitle.error = "제목을 입력해 주세요"
+                textFieldLayoutEditTitle.requestFocus()
+                Util.showSoftInput(this@EditActivity, textFieldEditTitle)
+                if(Util.memoDataList[adapterPosition].context!!.isEmpty()) {
+                    textFieldLayoutEditContext.error = "내용을 입력해 주세요"
+                }
+                return
+            }
+            if(memoData.context!!.isEmpty()) {
+                textFieldLayoutEditContext.error = "내용을 입력해 주세요"
+                textFieldLayoutEditContext.requestFocus()
+                Util.showSoftInput(this@EditActivity, textFieldEditContext)
+                return
+            }
+
+            setResult(RESULT_OK)
+            finish()
         }
     }
 }
