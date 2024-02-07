@@ -63,6 +63,11 @@ class ShowActivity : AppCompatActivity() {
 
                         // 삭제
                         R.id.menu_item_show_delete -> {
+                            // 항목 순서값 가져오기
+                            val position = intent.getIntExtra("position", 0)
+                            // 항목 번째 객체를 리스트에서 제거
+                            Util.animalList.removeAt(position)
+                            finish()
                         }
                     }
 
