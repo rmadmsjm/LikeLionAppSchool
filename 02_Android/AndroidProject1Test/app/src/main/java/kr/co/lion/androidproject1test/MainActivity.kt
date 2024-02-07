@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject1test
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.androidproject1test.databinding.ActivityMainBinding
 import kr.co.lion.androidproject1test.databinding.RowMainBinding
@@ -20,6 +22,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var inputActivityLaucher : ActivityResultLauncher<Intent>
     // ShowActivity Launcher
     lateinit var showActivityLauncher : ActivityResultLauncher<Intent>
+
+    // RecyclerView 구성하기 위한 리스트
+    val recyclerViewList = mutableListOf<Animal>()
+    // 현재 항목을 구성하기 위해 사용한 객체가 Util.animlList의 몇 번째 객체인지 담을 리스트
+    val recyclerViewIndexList = mutableListOf<Int>()
+    // 현재 선택 되어 있는 필터 타입
+    var filterType = FilterType.FILTER_TYPE_ALL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +57,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activityMainBinding.apply {
+            // 필터 타입에 맞는 데이터 담기
+            setRecyclerViewList()
             // RecyclerView 갱신
             recyclerViewMain.adapter?.notifyDataSetChanged()
         }
@@ -61,6 +72,17 @@ class MainActivity : AppCompatActivity() {
                 title = "동물원 관리"
                 // 메뉴
                 inflateMenu(R.menu.menu_main)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        // 필터 메뉴
+                        R.id.menu_item_main_filter -> {
+                            // 필터 선택을 위한 다이얼로그 띄우기
+                            showFilterDialog()
+                        }
+                    }
+
+                    true
+                }
             }
         }
     }
@@ -114,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return Util.animalList.size
+            return recyclerViewList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderMain, position: Int) {
@@ -134,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 //            }
 
             // position 번째 객체 추출
-            val animal = Util.animalList[position]
+            val animal = recyclerViewList[position]
 
             // 동물 이름 설정
             holder.rowMainBinding.textViewRowMainName.text = animal.name
@@ -164,6 +186,98 @@ class MainActivity : AppCompatActivity() {
                 // 현재 항목의 순서값 담기
                 showIntnet.putExtra("position", position)
                 showActivityLauncher.launch(showIntnet)
+            }
+        }
+    }
+
+    // 필터 다이얼로그를 띄우는 메서드
+    fun showFilterDialog() {
+        val dialogBuilder = MaterialAlertDialogBuilder(this@MainActivity)
+        dialogBuilder.setTitle("필터 선택")
+
+        // 항목
+        val itemArray = arrayOf("전체", "사자", "호랑이", "기린")
+        dialogBuilder.setItems(itemArray) { dialogInterface: DialogInterface, i: Int ->
+            // 리스너의 두 번째 매개변수(i)에는 사용자가 선택한 다이얼로그의 항목의 순서값이 전달됨
+            // 선택한 항목에 대한 필터값 설정
+            // 사용자가 선택한 다이얼로그의 항목 순서값으로 분기
+            filterType = when(i) {
+                0 -> FilterType.FILTER_TYPE_ALL
+                1 -> FilterType.FILTER_TYPE_LION
+                2 -> FilterType.FILTER_TYPE_TIGER
+                3 -> FilterType.FILTER_TYPE_GIAFFE
+                else -> FilterType.FILTER_TYPE_ALL
+            }
+
+            // 데이터 새로 담기
+            setRecyclerViewList()
+            // RecyclerView 갱신
+            activityMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+        }
+
+        // 확인 버튼 필요
+        dialogBuilder.setMultiChoiceItems(itemArray, booleanArrayOf(true, false, true, false)){ dialogInterface: DialogInterface, i: Int, b: Boolean -> }
+
+        // 확인 버튼 필요
+        dialogBuilder.setSingleChoiceItems(itemArray, 0){ dialogInterface: DialogInterface, i: Int -> }
+
+        dialogBuilder.setNegativeButton("취소", null)
+        dialogBuilder.show()
+    }
+
+    // 검색 필터에 따라 리스트에 데이터를 담아주는 메서드
+    fun setRecyclerViewList() {
+        // 리스트 초기화
+        recyclerViewList.clear()
+        recyclerViewIndexList.clear()
+
+        // 필터에 따라 분기
+        when(filterType) {
+            // 전체
+            FilterType.FILTER_TYPE_ALL -> {
+                // 모두 담기
+                var index = 0
+                Util.animalList.forEach {
+                    recyclerViewList.add(it)
+                    recyclerViewIndexList.add(index)
+                    index++
+                }
+            }
+            // 사자
+            FilterType.FILTER_TYPE_LION -> {
+                // 동물 타입이 사자인 것만 담기
+                var index = 0
+                Util.animalList.forEach {
+                    if(it.type == AnimalType.ANIMAL_TYPE_LION) {
+                        recyclerViewList.add(it)
+                        recyclerViewIndexList.add(index)
+                    }
+                    index++
+                }
+            }
+            // 호랑이
+            FilterType.FILTER_TYPE_TIGER -> {
+                // 동물 타입이 호랑이 것만 담기
+                var index = 0
+                Util.animalList.forEach {
+                    if(it.type == AnimalType.ANIMAL_TYPE_TIGER) {
+                        recyclerViewList.add(it)
+                        recyclerViewIndexList.add(index)
+                    }
+                    index++
+                }
+            }
+            // 기린
+            FilterType.FILTER_TYPE_GIAFFE -> {
+                // 동물 타입이 기린인 것만 담기
+                var index = 0
+                Util.animalList.forEach {
+                    if(it.type == AnimalType.ANIMAL_TYPE_GIRAFFE) {
+                        recyclerViewList.add(it)
+                        recyclerViewIndexList.add(index)
+                    }
+                    index++
+                }
             }
         }
     }

@@ -59,3 +59,11 @@ enum class LionGender(var num: Int, var str:String) {
     LION_GENDER1(0, "암컷"),
     LION_GENDER2(1, "수컷")
 }
+
+// 필터 타입
+enum class FilterType(var num:Int, var str:String) {
+    FILTER_TYPE_ALL(0, "전체"),
+    FILTER_TYPE_LION(1, "사자"),
+    FILTER_TYPE_TIGER(2, "호랑이"),
+    FILTER_TYPE_GIAFFE(3, "기린")
+}
