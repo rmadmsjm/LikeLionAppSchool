@@ -190,14 +190,32 @@ class MainActivity : AppCompatActivity() {
 
             // 항목 리스너 (ShowActivity 실행)
             holder.rowMainBinding.root.setOnClickListener {
-                val showIntnet = Intent(this@MainActivity, ShowActivity::class.java)
+                val showIntent = Intent(this@MainActivity, ShowActivity::class.java)
                 // 현재 항목의 순서값 담기
-                // showIntnet.putExtra("position", position)
+                // showIntent.putExtra("position", position)
 
                 // 사용자가 선택한 항목을 구성하기 위해 사용한 객체가 Util.animalList 리스트에 몇 번째에 있는 값인지 담기
-                showIntnet.putExtra("position", recyclerViewIndexList[position])
+                showIntent.putExtra("position", recyclerViewIndexList[position])
 
-                showActivityLauncher.launch(showIntnet)
+                val obj = Util.animalList[recyclerViewIndexList[position]]
+
+                // Animal 클래스 Parcelable 구현 안 했을 경우
+                // List의 제네릭이 Animal이므로 객체를 추출하면 Animal 타입으로 변환됨
+                // Animal은 Parcelable을 구현하지 않았기 때문에 Parcelable을 구현한 자식 타입으로 형변환 해서 담음
+                // 스마트 캐스팅
+//                if(obj is Lion) {
+//                    showIntent.putExtra("obj", obj)
+//                } else if(obj is Tiger) {
+//                    showIntent.putExtra("obj", obj)
+//                } else if(obj is Giraffe) {
+//                    showIntent.putExtra("obj", obj)
+//                }
+
+                // List의 제네릭이 Animal이므로 객체를 추출하면 Animal 타입
+                // Animal이 Parcelable을 구현하고 있기때문에 Intent에 담을 수 있음
+                showIntent.putExtra("obj", obj)
+
+                showActivityLauncher.launch(showIntent)
             }
         }
     }

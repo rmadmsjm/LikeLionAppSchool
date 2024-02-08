@@ -1,6 +1,7 @@
 package kr.co.lion.androidproject1test
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -126,6 +127,18 @@ class ShowActivity : AppCompatActivity() {
                 val position = intent.getIntExtra("position", 0)
                 // position 번째 객체 추출
                 val animal = Util.animalList[position]
+
+                // Parcelable 이용
+                val animal2 = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // null을 허용하는 타입이기 때문에 !! 붙임
+                    intent.getParcelableExtra("obj", Animal::class.java)!!
+                } else {
+                    // Animal 클래스가 Parcelable 구현이 안 되어 있으면 추출할 때 문제가 됨
+                    // 따라서 Animal 클래스도 Parcelable 구현해야 함
+                    // intent.getParcelableExtra<>("obj")
+                    intent.getParcelableExtra<Animal>("obj")!!
+                }
+
 
                 // 공통
                 text = "동물 종류 : ${animal.type.str}\n"
