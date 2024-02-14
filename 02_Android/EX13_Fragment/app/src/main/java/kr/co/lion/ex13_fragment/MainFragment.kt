@@ -16,6 +16,9 @@ class MainFragment : Fragment() {
     lateinit var fragmentMainBinding: FragmentMainBinding
     lateinit var mainActivity: MainActivity
 
+    // onCreate() : Fragment 객체 생성 시 한 번만 호출됨
+    // onCreateView() : Fragment 화면이 보일 때마다 호출됨
+    // Fragment를 제거했다 붙이기 때문에 onCreateView() 안에 구현해도 됨
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentMainBinding = FragmentMainBinding.inflate(inflater)
@@ -95,14 +98,14 @@ class MainFragment : Fragment() {
 
         // 항목이 보이면 무조건 호출됨
         override fun onBindViewHolder(holder: ViewHolderMain, position: Int) {
-            holder.rowMainBinding.textViewRowMainName.text = "${mainActivity.studentInfoList[position].name}"
+            holder.rowMainBinding.textViewRowMainName.text = mainActivity.studentInfoList[position].name
 
             // 항목 리스너
             holder.rowMainBinding.root.setOnClickListener {
-                val bundleMain = Bundle()
-                bundleMain.putInt("position", position)
+                val showBundle = Bundle()
+                showBundle.putInt("position", position)
                 // ShowFragment 실행
-                mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, bundleMain)
+                mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, showBundle)
             }
         }
     }

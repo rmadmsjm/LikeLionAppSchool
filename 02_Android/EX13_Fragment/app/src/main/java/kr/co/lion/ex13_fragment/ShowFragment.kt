@@ -20,8 +20,8 @@ class ShowFragment : Fragment() {
         fragmentShowBinding = FragmentShowBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
-        // RecyclerView position 가져오기
-        position = arguments?.getInt("position", -1)!!
+        // RecyclerView position 값 가져오기
+        position = arguments?.getInt("position")!!
 
         settingToolbar()
         settingView()
@@ -49,12 +49,15 @@ class ShowFragment : Fragment() {
     fun settingView() {
         fragmentShowBinding.apply {
             textViewShow.apply {
+                // position번째 객체 가져오기
+                val studentInfo = mainActivity.studentInfoList[position]
+
                 text = ""
-                append("이름 : ${mainActivity.studentInfoList[position].name}\n")
-                append("나이 : ${mainActivity.studentInfoList[position].age}\n")
-                append("국어 점수 : ${mainActivity.studentInfoList[position].kor}\n")
-                append("영어 점수 : ${mainActivity.studentInfoList[position].eng}\n")
-                append("수학 점수 : ${mainActivity.studentInfoList[position].math}\n")
+                append("이름 : ${studentInfo.name}\n")
+                append("나이 : ${studentInfo.age}\n")
+                append("국어 점수 : ${studentInfo.kor}\n")
+                append("영어 점수 : ${studentInfo.eng}\n")
+                append("수학 점수 : ${studentInfo.math}\n")
             }
         }
     }

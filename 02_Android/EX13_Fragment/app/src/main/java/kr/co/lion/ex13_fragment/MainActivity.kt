@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     fun removeFragment(name:FragmentName){
         SystemClock.sleep(200)
 
-        // 지정한 이름인 Fragment를 BackStack에서 제거
+        // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }
