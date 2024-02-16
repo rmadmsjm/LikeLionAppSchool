@@ -52,14 +52,17 @@ class InputFragment : Fragment() {
     // 입력 완료 메서드
     fun inputDone() {
         fragmentInputBinding.apply {
+            // 사용자가 입력한 내용 가져오기
             val name = textFieldInputName.text.toString()
             val age = textFieldInputAge.text.toString().toInt()
             val kor = textFieldInputKor.text.toString().toInt()
             val eng = textFieldInputEng.text.toString().toInt()
             val math = textFieldInputMath.text.toString().toInt()
 
-            // 데이터베이스 저장
+            // 객체에 담기
             val studentModel = StudentModel(0, name, age, kor, eng, math)
+
+            // 데이터베이스 저장
             StudentDao.insertStudent(mainActivity, studentModel)
 
             mainActivity.removeFragment(FragmentName.INPUT_FRAGMENT)

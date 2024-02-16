@@ -27,10 +27,17 @@ class MainFragment : Fragment() {
         fragmentMainBinding = FragmentMainBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingData()
         settingToolbar()
         settingVeiw()
 
         return fragmentMainBinding.root
+    }
+
+    // 데이터 설정
+    fun settingData() {
+        // 학생 정보 가져오기
+        studentList = StudentDao.selectAllStudent(mainActivity)
     }
 
     // Toolbar 설정
@@ -61,8 +68,6 @@ class MainFragment : Fragment() {
         fragmentMainBinding.apply {
             // RecyclerView
             recyclerViewMain.apply {
-                //  RecyclerView 구성을 위한 리스트
-                studentList = StudentDao.selectAllStudent(mainActivity)
                 // 어뎁터
                 adapter = RecyclerViewMainAdapter()
                 // 레이아웃 매니저

@@ -4,6 +4,12 @@ import android.content.Context
 
 class StudentDao {
     companion object {
+        // CRUD -> Create, Read, Update, Delete
+        // Create -> Insert
+        // Read -> Select
+        // Update -> Update
+        // Delete -> Delete
+
         // select one
         fun selectOneStudent(context: Context, idx: Int) : StudentModel {
             // 쿼리문

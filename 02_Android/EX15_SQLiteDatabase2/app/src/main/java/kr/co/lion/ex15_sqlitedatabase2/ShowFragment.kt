@@ -12,6 +12,9 @@ class ShowFragment : Fragment() {
     lateinit var fragmentShowBinding: FragmentShowBinding
     lateinit var mainActivity: MainActivity
 
+    // 학생 정보를 담을 객체
+    lateinit var studentModel: StudentModel
+
     var idx: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -19,10 +22,20 @@ class ShowFragment : Fragment() {
         fragmentShowBinding = FragmentShowBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingData()
         settingToolbar()
         settingView()
 
         return fragmentShowBinding.root
+    }
+
+    // 데이터 설정
+    fun settingData() {
+        // showBundle에서 넘겨준 idx 값 추출
+        idx = arguments?.getInt("idx")!!
+
+        // 학생 데이터 가져오기
+        studentModel = StudentDao.selectOneStudent(mainActivity, idx)
     }
 
     // Toolbar
@@ -45,12 +58,6 @@ class ShowFragment : Fragment() {
     fun settingView() {
         fragmentShowBinding.apply {
             textViewShow.apply {
-                // showBundle에서 넘겨준 idx 추출
-                idx = arguments?.getInt("idx")!!
-
-                // 데이터베이스 읽어오기
-                val studentModel = StudentDao.selectOneStudent(mainActivity, idx)
-
                 text = ""
                 append("이름 : ${studentModel.name}\n")
                 append("나이 : ${studentModel.age}\n")
