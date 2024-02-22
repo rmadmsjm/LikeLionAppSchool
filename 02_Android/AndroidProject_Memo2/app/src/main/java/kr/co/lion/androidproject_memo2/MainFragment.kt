@@ -23,6 +23,8 @@ class MainFragment : Fragment() {
         fragmentMainBinding = FragmentMainBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingToolbar()
+
         replaceFragment(MemoFragmentName.TOTALMEMO_FRAGMENT, false, false, null)
 
         return fragmentMainBinding.root
