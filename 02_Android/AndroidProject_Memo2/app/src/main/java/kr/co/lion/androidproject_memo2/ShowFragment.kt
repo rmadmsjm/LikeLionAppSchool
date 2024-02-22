@@ -38,6 +38,17 @@ class ShowFragment : Fragment() {
                 inflateMenu(R.menu.menu_show)
                 // 메뉴 리스너
                 setOnMenuItemClickListener {
+                    // 메뉴 id로 분기
+                    when(it.itemId) {
+                        // 메모 수정
+                        R.id.menuItemShowEdit -> {
+                            mainActivity.replaceFragment(FragmentName.MODIFY_FRAGMENT, true, true, null)
+                        }
+                        // 메모 삭제
+                        R.id.menuItemShowDelete -> {
+                            mainActivity.removeFragment(FragmentName.SHOW_FRAGMENT)
+                        }
+                    }
                     true
                 }
             }

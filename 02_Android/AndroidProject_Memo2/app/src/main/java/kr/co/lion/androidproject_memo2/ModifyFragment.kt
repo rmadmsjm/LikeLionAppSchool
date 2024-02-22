@@ -39,6 +39,13 @@ class ModifyFragment : Fragment() {
                 inflateMenu(R.menu.menu_modify)
                 // 메뉴 리스너
                 setOnMenuItemClickListener {
+                    // 메뉴 id로 분기
+                    when(it.itemId) {
+                        // 메모 수정 완료
+                        R.id.menuItemModifyDone -> {
+                            mainActivity.removeFragment(FragmentName.MODIFY_FRAGMENT)
+                        }
+                    }
                     true
                 }
             }

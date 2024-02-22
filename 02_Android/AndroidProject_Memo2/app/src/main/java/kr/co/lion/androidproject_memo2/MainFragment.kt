@@ -41,6 +41,21 @@ class MainFragment : Fragment() {
                 inflateMenu(R.menu.menu_main)
                 // 메뉴 리스너
                 setOnMenuItemClickListener {
+                    // 메뉴 id로 분기
+                    when(it.itemId) {
+                        // 메모 추가
+                        R.id.menuItemMainAdd -> {
+                            mainActivity.replaceFragment(FragmentName.INPUT_FRAGMENT, true, true, null)
+                        }
+                        // 캘린더 메모
+                        R.id.menuItemMainCalendar -> {
+                            replaceFragment(MemoFragmentName.CALENDAR_FRAGMENT, false, false, null)
+                        }
+                        // 전체 메모
+                        R.id.menuItemMainTotal -> {
+                            replaceFragment(MemoFragmentName.TOTALMEMO_FRAGMENT, false, false, null)
+                        }
+                    }
                     true
                 }
             }

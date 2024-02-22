@@ -38,6 +38,13 @@ class InputFragment : Fragment() {
                 inflateMenu(R.menu.menu_input)
                 // 메뉴 리스너
                 setOnMenuItemClickListener {
+                    // 메뉴 id로 분기
+                    when(it.itemId) {
+                        // 메모 등록
+                        R.id.menuItemInputDone -> {
+                            mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, null)
+                        }
+                    }
                     true
                 }
             }
