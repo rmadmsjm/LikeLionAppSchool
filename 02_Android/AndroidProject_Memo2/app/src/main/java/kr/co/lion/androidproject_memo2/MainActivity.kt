@@ -20,24 +20,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        replaceFragment(FragmentName.TOTALMEMO_FRAGMENT, false, false, null)
-    }
-
-    // 툴바
-    fun settingToolbar() {
-        activityMainBinding.apply {
-            toolbarMain.apply {
-                // 타이틀
-                title = "메모"
-
-                // 메뉴
-                inflateMenu(R.menu.menu_main)
-                // 메뉴 리스너
-                setOnMenuItemClickListener {
-                    true
-                }
-            }
-        }
+        //replaceFragment(FragmentName.TOTALMEMO_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -60,11 +43,9 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            FragmentName.CALENDAR_FRAGMENT -> {
-                newFragment = CalendarFragment()
+            FragmentName.A_FRAGMENT -> {
             }
-            FragmentName.TOTALMEMO_FRAGMENT -> {
-                newFragment = TotalMemoFragment()
+            FragmentName.B_FRAGMENT -> {
             }
         }
 
@@ -139,6 +120,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 enum class FragmentName(var str: String) {
-    CALENDAR_FRAGMENT("CalendarFragment"),
-    TOTALMEMO_FRAGMENT("TotalMemoFragemnt")
+    A_FRAGMENT(""),
+    B_FRAGMENT("")
 }
