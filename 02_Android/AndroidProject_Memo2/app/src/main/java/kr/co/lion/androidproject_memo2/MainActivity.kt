@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        //replaceFragment(FragmentName.TOTALMEMO_FRAGMENT, false, false, null)
+        replaceFragment(FragmentName.MAIN_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -43,9 +43,17 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            FragmentName.A_FRAGMENT -> {
+            FragmentName.MAIN_FRAGMENT -> {
+                newFragment = MainFragment()
             }
-            FragmentName.B_FRAGMENT -> {
+            FragmentName.INPUT_FRAGMENT -> {
+                newFragment = InputFragment()
+            }
+            FragmentName.SHOW_FRAGMENT -> {
+                newFragment = ShowFragment()
+            }
+            FragmentName.MODIFY_FRAGMENT -> {
+                newFragment = ModifyFragment()
             }
         }
 
@@ -120,6 +128,8 @@ class MainActivity : AppCompatActivity() {
 }
 
 enum class FragmentName(var str: String) {
-    A_FRAGMENT(""),
-    B_FRAGMENT("")
+    MAIN_FRAGMENT("MainFragment"),
+    INPUT_FRAGMENT("InputFragment"),
+    SHOW_FRAGMENT("ShowFragment"),
+    MODIFY_FRAGMENT("ModifyFragment")
 }
