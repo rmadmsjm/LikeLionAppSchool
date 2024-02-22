@@ -14,11 +14,13 @@ class CalendarFragment : Fragment() {
 
     lateinit var fragmentCalendarBinding: FragmentCalendarBinding
     lateinit var mainActivity: MainActivity
+    lateinit var mainFragment: MainFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentCalendarBinding = FragmentCalendarBinding.inflate(inflater)
         mainActivity = activity as MainActivity
+        mainFragment = MainFragment()
 
         settingView()
 
@@ -64,6 +66,13 @@ class CalendarFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolderCalendar, position: Int) {
             holder.rowCalendarBinding.textViewRowCalendarTitle.text = "제목 $position"
             holder.rowCalendarBinding.textViewRowCalendarDate.text = "날짜 $position"
+
+            holder.rowCalendarBinding.root.setOnClickListener {
+                val showBundle = Bundle()
+                showBundle.putInt("positon", position)
+
+                mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, showBundle)
+            }
         }
     }
 }

@@ -65,6 +65,13 @@ class TotalMemoFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolderTotalMemo, position: Int) {
             holder.rowTotalmemoBinding.textViewRowTotalMemoTitle.text = "제목 $position"
             holder.rowTotalmemoBinding.textViewRowTotalMemoDate.text = "날짜 $position"
+
+            holder.rowTotalmemoBinding.root.setOnClickListener {
+                val showBundle = Bundle()
+                showBundle.putInt("positon", position)
+
+                mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, showBundle)
+            }
         }
     }
 }
