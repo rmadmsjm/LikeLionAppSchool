@@ -70,11 +70,11 @@ class MemoDao {
         // insert
         fun insertMemo(context: Context, memoModel: MemoModel) {
             val sql = """insert into MemoTable
-                |(idx, title, content, date)
-                |values (?, ?, ?, ?)
+                |(title, content, date)
+                |values (?, ?, ?)
             """.trimMargin()
 
-            val args = arrayOf(memoModel.idx, memoModel.title, memoModel.content, memoModel.date)
+            val args = arrayOf(memoModel.title, memoModel.content, memoModel.date)
 
             val dbHelper = DBHelper(context)
             dbHelper.writableDatabase.execSQL(sql, args)
