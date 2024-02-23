@@ -32,15 +32,22 @@
                 android:id="@+id/textFieldShowTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
                 android:inputType="text"
                 android:text="제목" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <TextView
+            android:id="@+id/textViewShowDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingStart="15dp"
+            android:text="날짜" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:hint="내용"
             app:endIconMode="clear_text">
 

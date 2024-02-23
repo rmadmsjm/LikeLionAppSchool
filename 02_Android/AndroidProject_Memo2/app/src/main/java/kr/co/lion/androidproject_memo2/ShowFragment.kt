@@ -17,6 +17,7 @@ class ShowFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         settingToolbar()
+        settingView()
 
         return fragmentShowBinding.root
     }
@@ -52,6 +53,18 @@ class ShowFragment : Fragment() {
                     true
                 }
             }
+        }
+    }
+
+    // View 설정
+    fun settingView() {
+        fragmentShowBinding.apply {
+            // 메모 제목 비활성화
+            textFieldShowTitle.isClickable = false
+            textFieldShowTitle.isFocusable = false
+            // 메모 내용 비활성화
+            textFieldShowContent.isClickable = false
+            textFieldShowContent.isFocusable = false
         }
     }
 }
