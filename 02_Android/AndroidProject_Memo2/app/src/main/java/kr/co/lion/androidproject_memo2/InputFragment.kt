@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kr.co.lion.androidproject_memo2.databinding.FragmentInputBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class InputFragment : Fragment() {
 
@@ -42,12 +45,31 @@ class InputFragment : Fragment() {
                     when(it.itemId) {
                         // 메모 등록
                         R.id.menuItemInputDone -> {
-                            mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, null)
+                            inputDone()
                         }
                     }
                     true
                 }
             }
+        }
+    }
+
+    // 입력 완료 메서드
+    fun inputDone() {
+        fragmentInputBinding.apply {
+            val title = textFieldInputTitle.text.toString()
+            val content = textFieldInputContent.text.toString()
+
+            val dateFormat = SimpleDateFormat("yyyy.MM.dd EEEE", Locale.getDefault())
+            val currentDate = dateFormat.format(Date(System.currentTimeMillis()))
+            val date = currentDate
+
+            val memoModel = MemoModel(0, title, content, date)
+
+            MemoDao.insertMemo(mainActivity, memoModel)
+
+            mainActivity.removeFragment(FragmentName.INPUT_FRAGMENT)
+            mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, null)
         }
     }
 }
