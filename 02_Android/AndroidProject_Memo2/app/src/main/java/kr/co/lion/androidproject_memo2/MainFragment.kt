@@ -138,7 +138,7 @@ class MainFragment : Fragment() {
             // Fragment를 교체 (이전 Fragment가 없으면 새롭게 추가하는 역할 수행)
             // 첫 번째 매개 변수 : Fragment를 배치할 FragmentContainerView의 ID
             // 두 번째 매개 변수 : 보여 주고자 하는 Fragment 객체를
-            fragmentTransaction.replace(R.id.containerMain, newFragment!!)
+            fragmentTransaction.replace(R.id.containerMainFragment, newFragment!!)
 
             // addToBackStack 변수의 값이 true면 새롭게 보여질 Fragment를 BackStack에 포함시키기
             if(addToBackStack == true){
