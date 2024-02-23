@@ -16,15 +16,23 @@ class CalendarFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var mainFragment: MainFragment
 
+    var memoList = mutableListOf<MemoModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentCalendarBinding = FragmentCalendarBinding.inflate(inflater)
         mainActivity = activity as MainActivity
         mainFragment = MainFragment()
 
+        settingData()
         settingView()
 
         return fragmentCalendarBinding.root
+    }
+
+    // Data 설정
+    fun settingData() {
+        memoList = MemoDao.selectAllMemo(mainActivity)
     }
 
     // View 설정
@@ -60,12 +68,12 @@ class CalendarFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return memoList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderCalendar, position: Int) {
-            holder.rowCalendarBinding.textViewRowCalendarTitle.text = "제목 $position"
-            holder.rowCalendarBinding.textViewRowCalendarDate.text = "날짜 $position"
+            holder.rowCalendarBinding.textViewRowCalendarTitle.text = memoList[position].title
+            holder.rowCalendarBinding.textViewRowCalendarDate.text = memoList[position].date
 
             holder.rowCalendarBinding.root.setOnClickListener {
                 val showBundle = Bundle()

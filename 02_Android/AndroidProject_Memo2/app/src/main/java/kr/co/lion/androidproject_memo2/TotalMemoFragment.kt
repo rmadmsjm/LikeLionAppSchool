@@ -15,16 +15,23 @@ class TotalMemoFragment : Fragment() {
     lateinit var fragmentTotalMemoBinding: FragmentTotalMemoBinding
     lateinit var mainActivity: MainActivity
 
+    var memoList = mutableListOf<MemoModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentTotalMemoBinding = FragmentTotalMemoBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingData()
         settingView()
 
         return fragmentTotalMemoBinding.root
     }
 
+    // Data 설정
+    fun settingData() {
+        memoList = MemoDao.selectAllMemo(mainActivity)
+    }
 
     // View 설정
     fun settingView() {
@@ -59,12 +66,12 @@ class TotalMemoFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return memoList.size
         }
 
         override fun onBindViewHolder(holder: ViewHolderTotalMemo, position: Int) {
-            holder.rowTotalmemoBinding.textViewRowTotalMemoTitle.text = "제목 $position"
-            holder.rowTotalmemoBinding.textViewRowTotalMemoDate.text = "날짜 $position"
+            holder.rowTotalmemoBinding.textViewRowTotalMemoTitle.text = memoList[position].title
+            holder.rowTotalmemoBinding.textViewRowTotalMemoDate.text = memoList[position].date
 
             holder.rowTotalmemoBinding.root.setOnClickListener {
                 val showBundle = Bundle()
