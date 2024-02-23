@@ -39,7 +39,7 @@ class MemoDao {
         fun selectAllMemo(context: Context) : MutableList<MemoModel> {
             val sql = """select *
                 |from MemoTable
-                |order by idx desc
+                |order by idx asc
             """.trimMargin()
 
             val dbHelper = DBHelper(context)
