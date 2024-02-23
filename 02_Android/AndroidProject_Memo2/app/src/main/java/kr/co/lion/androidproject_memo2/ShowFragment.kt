@@ -11,15 +11,26 @@ class ShowFragment : Fragment() {
 
     lateinit var fragmentShowBinding: FragmentShowBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var memoModel: MemoModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentShowBinding = FragmentShowBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingData()
         settingToolbar()
         settingView()
 
         return fragmentShowBinding.root
+    }
+
+    // Data 설정
+    fun settingData() {
+        val idx = arguments?.getInt("position")!!
+
+        memoModel = MemoDao.selectOneMemo(mainActivity, idx)
     }
 
     // 툴바
@@ -65,6 +76,10 @@ class ShowFragment : Fragment() {
             // 메모 내용 비활성화
             textFieldShowContent.isClickable = false
             textFieldShowContent.isFocusable = false
+
+            textFieldShowTitle.setText(memoModel.title)
+            textFieldShowContent.setText(memoModel.content)
+            textViewShowDate.text = memoModel.date
         }
     }
 }

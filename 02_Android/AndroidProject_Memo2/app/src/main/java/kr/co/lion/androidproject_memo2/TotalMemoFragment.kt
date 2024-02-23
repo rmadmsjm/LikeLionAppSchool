@@ -75,7 +75,7 @@ class TotalMemoFragment : Fragment() {
 
             holder.rowTotalmemoBinding.root.setOnClickListener {
                 val showBundle = Bundle()
-                showBundle.putInt("positon", position)
+                showBundle.putInt("position", position)
 
                 mainActivity.replaceFragment(FragmentName.SHOW_FRAGMENT, true, true, showBundle)
             }
