@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
             // ExifInterface 정보를 읽어올 스트림 추출하기
             val inputStream = contentResolver.openInputStream(uri)!!
-            
+
             // ExifInterface 객체 생성하기
             exifInterface = ExifInterface(inputStream)
         } else {
