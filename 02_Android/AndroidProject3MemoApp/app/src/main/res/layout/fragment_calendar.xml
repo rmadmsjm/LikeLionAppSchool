@@ -8,7 +8,7 @@
     tools:context=".CalendarFragment" >
 
     <CalendarView
-        android:id="@+id/calendarViewMain"
+        android:id="@+id/calendarMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

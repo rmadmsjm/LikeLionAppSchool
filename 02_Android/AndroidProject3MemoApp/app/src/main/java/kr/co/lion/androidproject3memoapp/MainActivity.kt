@@ -1,12 +1,17 @@
 package kr.co.lion.androidproject3memoapp
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject3memoapp.databinding.ActivityMainBinding
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,6 +20,12 @@ class MainActivity : AppCompatActivity() {
     // 프래그먼트를 담을 프로퍼티
     var oldFragment: Fragment? = null
     var newFragment: Fragment? = null
+
+    // MainFragment로 돌아올 때 화면 복원을 위한 프로퍼티
+    // 1) MainFragment를 통해 보여줄 Fragment 이름을 담을 프로퍼티
+    var mainSubFragmentName = MainSubFragmentName.CALENDAR_FRAGMENT
+    // 2) CalendarFragment에서 설정된 날짜를 담을 프로퍼티
+    var calendarNowTime = System.currentTimeMillis()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,5 +141,46 @@ class MainActivity : AppCompatActivity() {
 
         // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    // 키보드 올리고 View 포커스
+    fun showSoftInput(view: View) {
+        // View에 포커스 주기
+        view.requestFocus()
+
+        thread {
+            // 딜레이
+            SystemClock.sleep(200)
+            // 키보드 관리 객체 가져오기
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            // 키보드 올리기
+            inputMethodManager.showSoftInput(view, 0)
+        }
+    }
+
+    // 키보드 내리고 View 포커스 제거
+    fun hideSoftInput() {
+        // 포커스를 가지고 있는 뷰가 있을 경우
+        if(window.currentFocus != null) {
+            // 키보드 관리 객체 가져오기
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            // 키보드 내리기
+            inputMethodManager.hideSoftInputFromWindow(window.currentFocus?.windowToken, 0)
+            // 포커스 제거
+            window.currentFocus?.clearFocus()
+        }
+    }
+
+    // 유효성 검사 다이얼로그 구성 메서드
+    fun showErrorDialog(view: View, title: String, message: String) {
+        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(this)
+
+        materialAlertDialogBuilder.setTitle(title)
+        materialAlertDialogBuilder.setMessage(message)
+        materialAlertDialogBuilder.setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+            showSoftInput(view)
+        }
+
+        materialAlertDialogBuilder.show()
     }
 }

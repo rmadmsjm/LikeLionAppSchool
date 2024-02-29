@@ -16,6 +16,9 @@ class ShowAllFragment : Fragment() {
     lateinit var fragmentShowAllBinding: FragmentShowAllBinding
     lateinit var mainActivity: MainActivity
 
+    // RecyclerView 구성할 memoList
+    var memoList = mutableListOf<MemoModel>()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentShowAllBinding = FragmentShowAllBinding.inflate(inflater)
@@ -30,6 +33,9 @@ class ShowAllFragment : Fragment() {
     fun settingRecyclerShowAll() {
         fragmentShowAllBinding.apply {
             recyclerShowAll.apply {
+                // 데이터 가져오기
+                memoList = MemoDao.selectMemoDataAll(mainActivity)
+
                 // adapter 설정
                 adapter = RecyclerShowAllAdapter()
                 // 레이아웃 매니저 설정
@@ -64,17 +70,22 @@ class ShowAllFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 10
+            return memoList.size
         }
 
         override fun onBindViewHolder(holder: RecyclerShowAllViewHolder, position: Int) {
-            holder.rowShowAllBinding.textShowAllSubject.text = "메모 $position"
-            holder.rowShowAllBinding.textShowAllWriteDate.text = "2024.02.28"
+            // position 번째 객체의 데이터 설정
+            holder.rowShowAllBinding.textShowAllSubject.text = memoList[position].memoSubject
+            holder.rowShowAllBinding.textShowAllWriteDate.text = memoList[position].memoDate
 
             // RecyclerView 항목 리스너
             holder.rowShowAllBinding.root.setOnClickListener {
+                // Bundle 객체에 담기
+                val memoReadBundle = Bundle()
+                memoReadBundle.putInt("memoIdx", memoList[position].memoIdx)
+
                 // 메모 보기 화면 보이도록 함
-                mainActivity.replaceFragment(FragmentName.MEMO_READ_FRAGMENT, true, true, null)
+                mainActivity.replaceFragment(FragmentName.MEMO_READ_FRAGMENT, true, true, memoReadBundle)
             }
         }
     }
