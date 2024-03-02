@@ -46,7 +46,8 @@ class MainActivity : AppCompatActivity() {
             FragmentName.MAIN_FRAGMENT -> {
                 newFragment = MainFragment()
             }
-            FragmentName.B_FRAGMENT -> {
+            FragmentName.MEMO_ADD_FRAGMENT -> {
+                newFragment = MemoAddFragment()
             }
         }
 
