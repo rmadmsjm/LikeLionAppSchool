@@ -46,6 +46,7 @@ class MainFragment : Fragment() {
                             replaceFragment(FragmentMainName.SHOW_ALL_FRAGMENT, false, false, null)
                         }
                         R.id.menuItemMainAdd -> {
+                            mainActivity.replaceFragment(FragmentName.MEMO_ADD_FRAGMENT, true, true, null)
                         }
                     }
 

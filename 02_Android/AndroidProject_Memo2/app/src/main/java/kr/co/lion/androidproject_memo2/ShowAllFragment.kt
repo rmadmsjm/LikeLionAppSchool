@@ -66,6 +66,10 @@ class ShowAllFragment : Fragment() {
         override fun onBindViewHolder(holder: RecycelrViewShowAllViewHolder, position: Int) {
             holder.rowShowAllBinding.textViewRowShowAllTitle.text = "제목 $position"
             holder.rowShowAllBinding.textViewRowShowAllDate.text = "날짜 $position"
+
+            holder.rowShowAllBinding.root.setOnClickListener {
+                mainActivity.replaceFragment(FragmentName.MEMO_READ_FRAGMENT, true, true, null)
+            }
         }
     }
 }

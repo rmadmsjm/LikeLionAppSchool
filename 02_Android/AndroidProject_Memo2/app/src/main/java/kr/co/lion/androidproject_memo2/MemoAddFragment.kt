@@ -17,6 +17,8 @@ class MemoAddFragment : Fragment() {
         fragmentMemoAddBinding = FragmentMemoAddBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingToolbarMemoAdd()
+
         return fragmentMemoAddBinding.root
     }
 

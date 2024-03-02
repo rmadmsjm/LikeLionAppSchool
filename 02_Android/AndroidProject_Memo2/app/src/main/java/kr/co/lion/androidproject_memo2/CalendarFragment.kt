@@ -65,6 +65,10 @@ class CalendarFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecycelrViewCalendarViewHolder, position: Int) {
             holder.rowCalendarBinding.textViewRowCalendarTitle.text = "제목 $position"
+
+            holder.rowCalendarBinding.root.setOnClickListener {
+                mainActivity.replaceFragment(FragmentName.MEMO_READ_FRAGMENT, true, true, null)
+            }
         }
     }
 }
