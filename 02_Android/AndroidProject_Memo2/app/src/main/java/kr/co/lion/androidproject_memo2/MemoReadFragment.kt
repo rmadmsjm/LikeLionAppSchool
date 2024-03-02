@@ -35,6 +35,17 @@ class MemoReadFragment : Fragment() {
                 }
 
                 inflateMenu(R.menu.memo_read_menu)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.menuItemMemoReadModify -> {
+                            mainActivity.replaceFragment(FragmentName.MEMO_MODIFY_FRAGMENT, true, true, null)
+                        }
+                        R.id.menuItemMemoReadDelete -> {
+                        }
+                    }
+
+                    true
+                }
             }
         }
     }

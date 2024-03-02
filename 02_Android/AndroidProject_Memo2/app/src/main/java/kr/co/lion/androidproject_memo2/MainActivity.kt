@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
             FragmentName.MEMO_READ_FRAGMENT -> {
                 newFragment = MemoReadFragment()
             }
+            FragmentName.MEMO_MODIFY_FRAGMENT -> {
+                newFragment = MemoModifyFragment()
+            }
         }
 
         // 새로운 Fragment에 전달할 객체가 있다면 arguments 프로퍼티에 넣어줌

@@ -6,7 +6,8 @@ class Tool {
 enum class FragmentName(var str: String) {
     MAIN_FRAGMENT("MainFragment"),
     MEMO_ADD_FRAGMENT("MemoAddFragment"),
-    MEMO_READ_FRAGMENT("MemoReadFragment")
+    MEMO_READ_FRAGMENT("MemoReadFragment"),
+    MEMO_MODIFY_FRAGMENT("MemoModifyFragment")
 }
 
 enum class FragmentMainName(var str: String) {
