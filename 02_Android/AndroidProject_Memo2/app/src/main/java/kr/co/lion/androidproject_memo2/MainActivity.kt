@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        replaceFragment(FragmentName.MAIN_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -41,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            FragmentName.A_FRAGMENT -> {
+            FragmentName.MAIN_FRAGMENT -> {
+                newFragment = MainFragment()
             }
             FragmentName.B_FRAGMENT -> {
             }
