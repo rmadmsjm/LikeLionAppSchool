@@ -22,14 +22,14 @@ class CalendarFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         settingRecyclerViewCalendar()
-        
+
         return fragmentCalendarBinding.root
     }
 
     // RecycelrView 설정
     fun settingRecyclerViewCalendar() {
-        fragmentCalendarBinding.apply {
-            recyeclerViewCalendar.apply {
+        fragmentCalendarBinding.apply { 
+            recyeclerViewCalendar.apply { 
                 adapter = RecycelrViewCalendarAdapter()
                 layoutManager = LinearLayoutManager(mainActivity)
                 val deco = MaterialDividerItemDecoration(mainActivity, MaterialDividerItemDecoration.VERTICAL)

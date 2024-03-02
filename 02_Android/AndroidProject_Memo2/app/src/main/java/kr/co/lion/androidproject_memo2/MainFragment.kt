@@ -37,6 +37,20 @@ class MainFragment : Fragment() {
                 title = "메모"
 
                 inflateMenu(R.menu.main_menu)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.menuItemMainCalendar -> {
+                            replaceFragment(FragmentMainName.CALENDAR_FRAGMENT, false, false, null)
+                        }
+                        R.id.menuItemMainTotal -> {
+                            replaceFragment(FragmentMainName.SHOW_ALL_FRAGMENT, false, false, null)
+                        }
+                        R.id.menuItemMainAdd -> {
+                        }
+                    }
+
+                    true
+                }
             }
         }
     }
@@ -65,6 +79,7 @@ class MainFragment : Fragment() {
                 newFragment = CalendarFragment()
             }
             FragmentMainName.SHOW_ALL_FRAGMENT -> {
+                newFragment = ShowAllFragment()
             }
         }
 
