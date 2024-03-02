@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
-
-        replaceFragment(FragmentName.MAIN_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -43,17 +41,9 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            FragmentName.MAIN_FRAGMENT -> {
-                newFragment = MainFragment()
+            FragmentName.A_FRAGMENT -> {
             }
-            FragmentName.INPUT_FRAGMENT -> {
-                newFragment = InputFragment()
-            }
-            FragmentName.SHOW_FRAGMENT -> {
-                newFragment = ShowFragment()
-            }
-            FragmentName.MODIFY_FRAGMENT -> {
-                newFragment = ModifyFragment()
+            FragmentName.B_FRAGMENT -> {
             }
         }
 
@@ -125,11 +115,4 @@ class MainActivity : AppCompatActivity() {
         // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
-}
-
-enum class FragmentName(var str: String) {
-    MAIN_FRAGMENT("MainFragment"),
-    INPUT_FRAGMENT("InputFragment"),
-    SHOW_FRAGMENT("ShowFragment"),
-    MODIFY_FRAGMENT("ModifyFragment")
 }
