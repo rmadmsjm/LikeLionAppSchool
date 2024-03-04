@@ -19,7 +19,7 @@ class MemoModifyFragment : Fragment() {
 
         settingToolbarMemoModify()
         settingTextField()
-        
+
         return fragmentMemoModifyBinding.root
     }
 
