@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                 newFragment = JoinFragment()
             }
             FragmentName.ADD_USER_INFO_FRAGMENT -> {
+                newFragment = AddUserInfoFragment()
             }
         }
 

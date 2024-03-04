@@ -18,6 +18,7 @@ class JoinFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         settingToolbar()
+        settingView()
 
         return fragmentJoinBinding.root
     }
@@ -32,6 +33,15 @@ class JoinFragment : Fragment() {
                 setNavigationOnClickListener {
                     mainActivity.removeFragment(FragmentName.JOIN_FRAGMENT)
                 }
+            }
+        }
+    }
+
+    // View 설정
+    fun settingView() {
+        fragmentJoinBinding.apply {
+            buttonJoinNext.setOnClickListener {
+                mainActivity.replaceFragment(FragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
             }
         }
     }
