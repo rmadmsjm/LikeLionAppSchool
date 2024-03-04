@@ -3,11 +3,14 @@ package kr.co.lion.androidproject_board
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject_board.databinding.ActivityMainBinding
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -125,5 +128,32 @@ class MainActivity : AppCompatActivity() {
 
         // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    // 키보드 올리고 View 포커스
+    fun showSoftInput(view: View) {
+        // view에 포커스
+        view.requestFocus()
+
+        thread {
+            SystemClock.sleep(200)
+            // 키보드 관리 객체 가져오기
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            // 키보드 올리기
+            inputMethodManager.showSoftInput(view, 0)
+        }
+    }
+
+    // 키보드 내리고 View 포커스 제거
+    fun hideSoftInput() {
+        // 포커스를 가지고 있는 뷰가 있을 경우
+        if(window.currentFocus != null) {
+            // 키보드 관리 객체 가져오기
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            // 키보드 내리기
+            inputMethodManager.hideSoftInputFromWindow(window.currentFocus?.windowToken, 0)
+            // 포커스 제거
+            window.currentFocus?.clearFocus()
+        }
     }
 }
