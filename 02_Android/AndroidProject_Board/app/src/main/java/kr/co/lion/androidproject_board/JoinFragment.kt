@@ -47,7 +47,7 @@ class JoinFragment : Fragment() {
 
                 if(chk == true) {
                     // 키보드 내리기
-                    mainActivity.hideSoftInput()
+                    //mainActivity.hideSoftInput()
 
                     mainActivity.replaceFragment(FragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
                 }
@@ -117,6 +117,8 @@ class JoinFragment : Fragment() {
             }
 
             if(emptyView != null) {
+                mainActivity.showSoftInput(emptyView)
+
                 return false
             }
 

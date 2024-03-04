@@ -109,6 +109,8 @@ class AddUserInfoFragment : Fragment() {
             }
 
             if(emptyView != null) {
+                mainActivity.showSoftInput(emptyView)
+
                 return false
             }
 
