@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.checkbox.MaterialCheckBox
 import kr.co.lion.androidproject_board.databinding.FragmentAddUserInfoBinding
 
 class AddUserInfoFragment : Fragment() {
@@ -21,6 +22,7 @@ class AddUserInfoFragment : Fragment() {
         settingToolbar()
         settingTextField()
         settingButtonGender()
+        settingCheckBox()
         settingButtonAddUserInfoSignUp()
 
         return fragmentAddUserInfoBinding.root
@@ -78,6 +80,53 @@ class AddUserInfoFragment : Fragment() {
     fun settingButtonGender() {
         fragmentAddUserInfoBinding.apply {
             buttonToggleGroupAddUserInfoGender.check(R.id.buttonAddUserInfoGenderMale)
+        }
+    }
+
+    // 체크박스 설정
+    fun settingCheckBox() {
+        fragmentAddUserInfoBinding.apply {
+            val checkBoxList = listOf(
+                checkBoxAddUserInfoHobbyExercise,
+                checkBoxAddUserInfoHobbyReading,
+                checkBoxAddUserInfoHobbyMovie,
+                checkBoxAddUserInfoHobbyCooking,
+                checkBoxAddUserInfoHobbyMusic,
+                checkBoxAddUserInfoHobbyEtc
+            )
+
+            // 전체 체크박스
+            (checkBoxAddUserInfoHobbyTotal as MaterialCheckBox).addOnCheckedStateChangedListener { checkBox, state ->
+                when(state) {
+                    MaterialCheckBox.STATE_CHECKED -> {
+                        checkBoxList.forEach {
+                            it.isChecked = true
+                        }
+                    }
+                    MaterialCheckBox.STATE_UNCHECKED -> {
+                        checkBoxList.forEach {
+                            it.isChecked = false
+                        }
+                    }
+                }
+            }
+
+            // 취미 체크박스
+            checkBoxList.forEach {
+                it.setOnClickListener {
+                    val isChecked = checkBoxList.all { it.isChecked }
+                    val isUnChecked = checkBoxList.all { !it.isChecked }
+
+                    // 전체 체크박스의 상태 업데이트
+                    if(isChecked) {
+                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_CHECKED
+                    } else if(isUnChecked) {
+                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_UNCHECKED
+                    } else {
+                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_INDETERMINATE
+                    }
+                }
+            }
         }
     }
 
