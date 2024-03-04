@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        replaceFragment(FragmentName.LOGIN_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
             FragmentName.LOGIN_FRAGMENT -> {
+                newFragment = LoginFragment()
             }
             FragmentName.JOIN_FRAGMENT -> {
             }
