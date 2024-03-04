@@ -18,6 +18,7 @@ class LoginFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         settingToolbar()
+        settingView()
 
         return fragmentLoginBinding.root
     }
@@ -27,6 +28,15 @@ class LoginFragment : Fragment() {
         fragmentLoginBinding.apply {
             toolbarLogin.apply {
                 title = "로그인"
+            }
+        }
+    }
+
+    // View 설정
+    fun settingView() {
+        fragmentLoginBinding.apply {
+            buttonLoginSignUp.setOnClickListener {
+                mainActivity.replaceFragment(FragmentName.JOIN_FRAGMENT, true, true, null)
             }
         }
     }
