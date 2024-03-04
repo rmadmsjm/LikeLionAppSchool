@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.AndroidProject4BoardApp" parent="Base.Theme.AndroidProject4BoardApp" />
+
+    <!-- Splash Screen Theme -->
+    <style name="AppTheme.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidProject4BoardApp</item>
+    </style>
 </resources>
