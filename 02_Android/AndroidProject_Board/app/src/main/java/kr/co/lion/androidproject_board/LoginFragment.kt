@@ -17,6 +17,17 @@ class LoginFragment : Fragment() {
         fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
+        settingToolbar()
+
         return fragmentLoginBinding.root
+    }
+
+    // 툴바 설정
+    fun settingToolbar() {
+        fragmentLoginBinding.apply {
+            toolbarLogin.apply {
+                title = "로그인"
+            }
+        }
     }
 }
