@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject4boardapp.databinding.ActivityMainBinding
+import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        // 첫 화면
+        replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -48,7 +52,8 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            MainFragmentName.A_FRAGMENT -> {
+            MainFragmentName.LOGIN_FRAGMENT -> {
+                newFragment = LoginFragment()
             }
             MainFragmentName.B_FRAGMENT -> {
             }
