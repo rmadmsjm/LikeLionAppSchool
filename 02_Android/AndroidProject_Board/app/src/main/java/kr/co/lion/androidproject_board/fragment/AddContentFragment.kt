@@ -38,6 +38,20 @@ class AddContentFragment : Fragment() {
                 }
 
                 inflateMenu(R.menu.menu_add_content)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.menuItemAddContentCarmera -> {
+                        }
+                        R.id.menuItemAddContentAlbum -> {
+                        }
+                        R.id.menuItemAddContentReset -> {
+                        }
+                        R.id.menuItemAddContentSubmit -> {
+                            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+                        }
+                    }
+                    true
+                }
             }
         }
     }
