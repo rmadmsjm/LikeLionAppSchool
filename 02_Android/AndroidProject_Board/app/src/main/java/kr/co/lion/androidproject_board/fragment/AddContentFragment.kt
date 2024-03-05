@@ -1,0 +1,44 @@
+package kr.co.lion.androidproject_board.fragment
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import kr.co.lion.androidproject_board.ContentActivity
+import kr.co.lion.androidproject_board.ContentFragmentName
+import kr.co.lion.androidproject_board.R
+import kr.co.lion.androidproject_board.databinding.FragmentAddContentBinding
+import kr.co.lion.androidproject_board.databinding.FragmentMainBinding
+
+class AddContentFragment : Fragment() {
+
+    lateinit var fragmentAddContentBinding: FragmentAddContentBinding
+    lateinit var contentActivity: ContentActivity
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        fragmentAddContentBinding = FragmentAddContentBinding.inflate(inflater)
+        contentActivity = activity as ContentActivity
+
+        settingToolbar()
+
+        return fragmentAddContentBinding.root
+    }
+
+    // 툴바 설정
+    fun settingToolbar() {
+        fragmentAddContentBinding.apply {
+            toolbarAddContent.apply {
+                title = "게시글 작성"
+
+                setNavigationIcon(R.drawable.arrow_back_24px)
+                setNavigationOnClickListener {
+                    contentActivity.removeFragment(ContentFragmentName.ADD_CONTENT_FRAGMENT)
+                }
+
+                inflateMenu(R.menu.menu_add_content)
+            }
+        }
+    }
+}

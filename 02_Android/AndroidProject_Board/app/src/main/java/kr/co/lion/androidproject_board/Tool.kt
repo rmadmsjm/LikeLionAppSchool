@@ -11,5 +11,5 @@ enum class FragmentName(var str: String) {
 
 enum class ContentFragmentName(var str: String) {
     MAIN_FRAGMENT("MainFragment"),
-    B_FRAGMENT("B")
+    ADD_CONTENT_FRAGMENT("AddContentFragment")
 }

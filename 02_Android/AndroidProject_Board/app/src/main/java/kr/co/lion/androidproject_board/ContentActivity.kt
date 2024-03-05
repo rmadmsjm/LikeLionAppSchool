@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject_board.databinding.ActivityContentBinding
 import kr.co.lion.androidproject_board.databinding.HeaderContentDrawerBinding
+import kr.co.lion.androidproject_board.fragment.AddContentFragment
 import kr.co.lion.androidproject_board.fragment.MainFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -111,7 +112,8 @@ class ContentActivity : AppCompatActivity() {
             ContentFragmentName.MAIN_FRAGMENT -> {
                 newFragment = MainFragment()
             }
-            ContentFragmentName.B_FRAGMENT -> {
+            ContentFragmentName.ADD_CONTENT_FRAGMENT -> {
+                newFragment = AddContentFragment()
             }
         }
 

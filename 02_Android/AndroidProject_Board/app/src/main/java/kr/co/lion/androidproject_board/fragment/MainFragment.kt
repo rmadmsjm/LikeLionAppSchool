@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kr.co.lion.androidproject_board.ContentActivity
+import kr.co.lion.androidproject_board.ContentFragmentName
 import kr.co.lion.androidproject_board.R
 import kr.co.lion.androidproject_board.databinding.FragmentMainBinding
 
@@ -37,6 +38,14 @@ class MainFragment : Fragment() {
                 }
 
                 inflateMenu(R.menu.menu_main)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.menuItemMainAdd -> {
+                            contentActivity.replaceFragment(ContentFragmentName.ADD_CONTENT_FRAGMENT, true, true, null)
+                        }
+                    }
+                    true
+                }
             }
         }
     }
