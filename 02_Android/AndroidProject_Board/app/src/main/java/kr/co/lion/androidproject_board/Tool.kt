@@ -10,6 +10,6 @@ enum class FragmentName(var str: String) {
 }
 
 enum class ContentFragmentName(var str: String) {
-    A_FRAGMENT("A"),
+    MAIN_FRAGMENT("MainFragment"),
     B_FRAGMENT("B")
 }
