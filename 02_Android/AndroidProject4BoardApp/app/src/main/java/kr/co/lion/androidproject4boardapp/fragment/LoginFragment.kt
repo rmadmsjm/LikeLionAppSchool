@@ -1,10 +1,12 @@
 package kr.co.lion.androidproject4boardapp.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.MainActivity
 import kr.co.lion.androidproject4boardapp.MainFragmentName
 import kr.co.lion.androidproject4boardapp.R
@@ -22,6 +24,7 @@ class LoginFragment : Fragment() {
 
         settingToolbar()
         settingButtonLoginJoin()
+        settingButtonLoginSubmit()
 
         return fragmentLoginBinding.root
     }
@@ -43,6 +46,22 @@ class LoginFragment : Fragment() {
                 setOnClickListener {
                     // JoinFragment가 보이게 함
                     mainActivity.replaceFragment(MainFragmentName.JOIN_FRAGMENT, true, true, null)
+                }
+            }
+        }
+    }
+
+    // 로그인 버튼
+    fun settingButtonLoginSubmit() {
+        fragmentLoginBinding.apply {
+            buttonLoginSubmit.apply {
+                setOnClickListener {
+                    // ContentActivity 실행
+                    val contentIntent = Intent(mainActivity, ContentActivity::class.java)
+                    startActivity(contentIntent)
+
+                    // MainActivity 종료
+                    mainActivity.finish()
                 }
             }
         }
