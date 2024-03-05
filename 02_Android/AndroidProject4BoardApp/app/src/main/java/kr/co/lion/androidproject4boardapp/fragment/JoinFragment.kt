@@ -8,41 +8,35 @@ import android.view.ViewGroup
 import kr.co.lion.androidproject4boardapp.MainActivity
 import kr.co.lion.androidproject4boardapp.MainFragmentName
 import kr.co.lion.androidproject4boardapp.R
-import kr.co.lion.androidproject4boardapp.databinding.FragmentLoginBinding
+import kr.co.lion.androidproject4boardapp.databinding.FragmentJoinBinding
 
-class LoginFragment : Fragment() {
+class JoinFragment : Fragment() {
 
-    lateinit var fragmentLoginBinding: FragmentLoginBinding
+    lateinit var fragmentJoinBinding: FragmentJoinBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
+        fragmentJoinBinding = FragmentJoinBinding.inflate(inflater)
         mainActivity = activity as MainActivity
 
         settingToolbar()
-        settingButtonLoginJoin()
 
-        return fragmentLoginBinding.root
+        return fragmentJoinBinding.root
     }
 
     // 툴바 설정
     fun settingToolbar() {
-        fragmentLoginBinding.apply {
-            toolbarLogin.apply {
+        fragmentJoinBinding.apply {
+            toolbarJoin.apply {
                 // 타이틀
-                title = "로그인"
-            }
-        }
-    }
+                title = "회원가입"
 
-    // 회원 가입 버튼
-    fun settingButtonLoginJoin() {
-        fragmentLoginBinding.apply {
-            buttonLoginJoin.apply {
-                setOnClickListener {
-                    // JoinFragment가 보이게 함
-                    mainActivity.replaceFragment(MainFragmentName.JOIN_FRAGMENT, true, true, null)
+                // back
+                setNavigationIcon(R.drawable.arrow_back_24px)
+                setNavigationOnClickListener {
+                    // 이전 화면으로 이동
+                    mainActivity.removeFragment(MainFragmentName.JOIN_FRAGMENT)
                 }
             }
         }

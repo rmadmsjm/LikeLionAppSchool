@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject4boardapp.databinding.ActivityMainBinding
+import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
 import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
 
 class MainActivity : AppCompatActivity() {
@@ -52,10 +53,13 @@ class MainActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
+            // 로그인 화면
             MainFragmentName.LOGIN_FRAGMENT -> {
                 newFragment = LoginFragment()
             }
-            MainFragmentName.B_FRAGMENT -> {
+            // 회원가입 화면 1
+            MainFragmentName.JOIN_FRAGMENT -> {
+                newFragment = JoinFragment()
             }
         }
 
