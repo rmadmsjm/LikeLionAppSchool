@@ -11,6 +11,7 @@ import kr.co.lion.androidproject_board.databinding.HeaderContentDrawerBinding
 import kr.co.lion.androidproject_board.fragment.AddContentFragment
 import kr.co.lion.androidproject_board.fragment.MainFragment
 import kr.co.lion.androidproject_board.fragment.ModifyContentFragment
+import kr.co.lion.androidproject_board.fragment.ModifyUserFragment
 import kr.co.lion.androidproject_board.fragment.ReadContentFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -77,6 +78,10 @@ class ContentActivity : AppCompatActivity() {
                         }
                         // 사용자 정보 수정
                         R.id.menuItemContentDrawerModifyUserInfo -> {
+                            // NavigationView 닫기
+                            drawerLayoutContent.close()
+
+                            replaceFragment(ContentFragmentName.MODIFY_USER_FRAGMENT, true, true, null)
                         }
                         // 로그아웃
                         R.id.menuItemContentDrawerLogout -> {
@@ -122,6 +127,9 @@ class ContentActivity : AppCompatActivity() {
             }
             ContentFragmentName.MODIFY_CONTENT_FRAGMENT -> {
                 newFragment = ModifyContentFragment()
+            }
+            ContentFragmentName.MODIFY_USER_FRAGMENT -> {
+                newFragment = ModifyUserFragment()
             }
         }
 

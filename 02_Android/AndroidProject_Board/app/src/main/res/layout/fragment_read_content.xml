@@ -95,6 +95,7 @@
                     android:id="@+id/textFieldReadContentText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:cursorVisible="false"
                     android:focusable="false"
                     android:inputType="text|textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
