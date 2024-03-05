@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject4boardapp.databinding.ActivityMainBinding
+import kr.co.lion.androidproject4boardapp.fragment.AddUserInfoFragment
 import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
 import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
 
@@ -60,6 +61,10 @@ class MainActivity : AppCompatActivity() {
             // 회원가입 화면 1
             MainFragmentName.JOIN_FRAGMENT -> {
                 newFragment = JoinFragment()
+            }
+            // 회원가입 화면 2
+            MainFragmentName.ADD_USER_INFO_FRAGMENT -> {
+                newFragment = AddUserInfoFragment()
             }
         }
 

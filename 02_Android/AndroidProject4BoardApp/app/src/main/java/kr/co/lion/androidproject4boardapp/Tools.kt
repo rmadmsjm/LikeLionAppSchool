@@ -8,5 +8,6 @@ class Tools {
 // MainActivity에 보여질 Fragment의 이름
 enum class MainFragmentName(var str: String) {
     LOGIN_FRAGMENT("LoginFragment"),
-    JOIN_FRAGMENT("JoinFragment")
+    JOIN_FRAGMENT("JoinFragment"),
+    ADD_USER_INFO_FRAGMENT("AddUserInfoFragment")
 }
