@@ -10,6 +10,7 @@ import kr.co.lion.androidproject_board.databinding.ActivityContentBinding
 import kr.co.lion.androidproject_board.databinding.HeaderContentDrawerBinding
 import kr.co.lion.androidproject_board.fragment.AddContentFragment
 import kr.co.lion.androidproject_board.fragment.MainFragment
+import kr.co.lion.androidproject_board.fragment.ModifyContentFragment
 import kr.co.lion.androidproject_board.fragment.ReadContentFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -118,6 +119,9 @@ class ContentActivity : AppCompatActivity() {
             }
             ContentFragmentName.READ_CONTENT_FRAGMENT -> {
                 newFragment = ReadContentFragment()
+            }
+            ContentFragmentName.MODIFY_CONTENT_FRAGMENT -> {
+                newFragment = ModifyContentFragment()
             }
         }
 

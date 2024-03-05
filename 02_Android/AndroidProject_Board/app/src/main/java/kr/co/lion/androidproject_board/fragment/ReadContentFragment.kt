@@ -34,9 +34,20 @@ class ReadContentFragment : Fragment() {
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
                     contentActivity.removeFragment(ContentFragmentName.READ_CONTENT_FRAGMENT)
+                    contentActivity.removeFragment(ContentFragmentName.ADD_CONTENT_FRAGMENT)
                 }
 
                 inflateMenu(R.menu.menu_read_content)
+                setOnMenuItemClickListener {
+                    when(it.itemId) {
+                        R.id.menuItemReadContentModify -> {
+                            contentActivity.replaceFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT, true, true, null)
+                        }
+                        R.id.menuItemReadContentDelete -> {
+                        }
+                    }
+                    true
+                }
             }
         }
     }
