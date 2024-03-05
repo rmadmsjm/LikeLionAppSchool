@@ -13,6 +13,10 @@
         android:theme="@style/AppTheme.Starting"
         tools:targetApi="31">
         <activity
+            android:name=".ContentActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.AndroidProject_Board"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

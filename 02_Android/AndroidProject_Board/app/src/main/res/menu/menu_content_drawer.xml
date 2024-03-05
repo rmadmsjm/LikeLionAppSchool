@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="게시판">
+        <menu
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <item
+                android:id="@+id/menuItemContentDrawerAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/clear_all_24px"
+                android:title="전체 게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentDrawerFree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/compost_24px"
+                android:title="자유 게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentDrawerFun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/package_24px"
+                android:title="유머 게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentDrawerCurrentAffairs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/format_list_bulleted_24px"
+                android:title="시사 게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentDrawerSports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:icon="@drawable/panorama_24px"
+                android:title="스포츠 게시판"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menuItemContentDrawerModifyUserInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/person_24px"
+        android:title="사용자 정보 수정"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuItemContentDrawerLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/logout_24px"
+        android:title="로그아웃"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuItemContentDrawerSignOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/warning_24px"
+        android:title="회원탈퇴"
+        app:showAsAction="ifRoom" />
+</menu>
