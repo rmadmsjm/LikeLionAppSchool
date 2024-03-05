@@ -1,5 +1,6 @@
-package kr.co.lion.androidproject_board
+package kr.co.lion.androidproject_board.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.Snackbar
+import kr.co.lion.androidproject_board.ContentActivity
+import kr.co.lion.androidproject_board.FragmentName
+import kr.co.lion.androidproject_board.MainActivity
 import kr.co.lion.androidproject_board.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -45,6 +49,11 @@ class LoginFragment : Fragment() {
                 if(chk == true) {
                     // 키보드 내리기
                     mainActivity.hideSoftInput()
+
+                    val contentIntent = Intent(mainActivity, ContentActivity::class.java)
+                    startActivity(contentIntent)
+
+                    mainActivity.finish()
 
                     Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
                 }

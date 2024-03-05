@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:transitionGroup="true"
-    tools:context=".JoinFragment">
+    tools:context=".fragment.JoinFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarJoin"
@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="아이디"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/person_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldJoinId"
@@ -39,7 +40,7 @@
         <Button
             android:id="@+id/buttonJoinIdcheck"
             style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="아이디 중복 확인"
@@ -52,13 +53,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="비밀번호"
-            app:endIconMode="clear_text">
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/key_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldJoinPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text|textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,13 +69,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="비밀번호 확인"
-            app:endIconMode="clear_text">
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/key_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldJoinPasswordCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text|textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

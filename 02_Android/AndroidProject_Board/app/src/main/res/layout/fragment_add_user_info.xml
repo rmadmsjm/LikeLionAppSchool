@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:transitionGroup="true"
-    tools:context=".AddUserInfoFragment" >
+    tools:context=".fragment.AddUserInfoFragment" >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarAddUserInfo"
@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="닉네임"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/person_add_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldAddUserInfoNickname"
@@ -42,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="나이"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/face_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldAddUserInfoAge"
@@ -55,19 +57,21 @@
             android:id="@+id/buttonToggleGroupAddUserInfoGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
             <Button
-                style="?attr/materialButtonOutlinedStyle"
                 android:id="@+id/buttonAddUserInfoGenderMale"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="남자" />
 
             <Button
-                style="?attr/materialButtonOutlinedStyle"
                 android:id="@+id/buttonAddUserInfoGenderFemale"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

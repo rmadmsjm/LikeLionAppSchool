@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:transitionGroup="true"
-    tools:context=".LoginFragment">
+    tools:context=".fragment.LoginFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarLogin"
@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="아이디"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/person_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldLoginId"
@@ -42,13 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="비밀번호"
-            app:endIconMode="clear_text">
+            app:endIconMode="password_toggle"
+            app:startIconDrawable="@drawable/key_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textFieldLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text|textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox

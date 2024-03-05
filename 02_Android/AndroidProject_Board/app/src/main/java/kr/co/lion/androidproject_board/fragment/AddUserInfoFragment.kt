@@ -1,4 +1,4 @@
-package kr.co.lion.androidproject_board
+package kr.co.lion.androidproject_board.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.checkbox.MaterialCheckBox
+import kr.co.lion.androidproject_board.FragmentName
+import kr.co.lion.androidproject_board.MainActivity
+import kr.co.lion.androidproject_board.R
 import kr.co.lion.androidproject_board.databinding.FragmentAddUserInfoBinding
 
 class AddUserInfoFragment : Fragment() {

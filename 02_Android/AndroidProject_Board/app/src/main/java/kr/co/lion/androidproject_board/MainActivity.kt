@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject_board.databinding.ActivityMainBinding
+import kr.co.lion.androidproject_board.fragment.AddUserInfoFragment
+import kr.co.lion.androidproject_board.fragment.JoinFragment
+import kr.co.lion.androidproject_board.fragment.LoginFragment
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
