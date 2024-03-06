@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.androidproject4boardapp.ContentActivity
+import kr.co.lion.androidproject4boardapp.ContentFragmentName
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.databinding.FragmentMainBinding
 import kr.co.lion.androidproject4boardapp.databinding.RowMainBinding
@@ -57,6 +58,17 @@ class MainFragment : Fragment() {
 
                 // 메뉴
                 inflateMenu(R.menu.menu_main_search)
+                setOnMenuItemClickListener {
+                    // 메뉴 항목 id로 분기
+                    when(it.itemId) {
+                        R.id.menuItemMainSearchAdd -> {
+                            // 게시글 작성 화면 나타나게 하기
+                            contentActivity.replaceFragment(ContentFragmentName.ADD_CONTENT_FRAGMENT, true, true, null)
+                        }
+                    }
+
+                    true
+                }
             }
 
             searchViewMain.apply {

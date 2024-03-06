@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject4boardapp.databinding.ActivityContentBinding
 import kr.co.lion.androidproject4boardapp.databinding.HeaderContentDrawerBinding
+import kr.co.lion.androidproject4boardapp.fragment.AddContentFragment
 import kr.co.lion.androidproject4boardapp.fragment.MainFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -105,7 +106,9 @@ class ContentActivity : AppCompatActivity() {
             ContentFragmentName.MAIN_FRAGMENT -> {
                 newFragment = MainFragment()
             }
-            ContentFragmentName.B_FRAGMENT -> {
+            // 게시글 작성 화면
+            ContentFragmentName.ADD_CONTENT_FRAGMENT -> {
+                newFragment = AddContentFragment()
             }
         }
 
