@@ -22,6 +22,7 @@ class AddContentFragment : Fragment() {
         contentActivity = activity as ContentActivity
 
         settingToolbar()
+        settingMenuAddContentBoardType()
 
         return fragmentAddContentBinding.root
     }
@@ -52,6 +53,18 @@ class AddContentFragment : Fragment() {
                     }
                     true
                 }
+            }
+        }
+    }
+
+    // 게시판 선택 메뉴 설정
+    fun settingMenuAddContentBoardType() {
+        fragmentAddContentBinding.apply {
+            menuAddContentBoardType.apply {
+                val items = arrayOf("자유 게시판", "유머 게시판", "시사 게시판", "스포츠 게시판")
+                setSimpleItems(items)
+
+                setText("자유 게시판", false)
             }
         }
     }
