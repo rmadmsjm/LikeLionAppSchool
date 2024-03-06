@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
 import kr.co.lion.androidproject4boardapp.databinding.ActivityContentBinding
 import kr.co.lion.androidproject4boardapp.databinding.HeaderContentDrawerBinding
+import kr.co.lion.androidproject4boardapp.fragment.MainFragment
 
 class ContentActivity : AppCompatActivity() {
 
@@ -23,6 +24,9 @@ class ContentActivity : AppCompatActivity() {
         setContentView(activityContentBinding.root)
 
         settingNavigationView()
+
+        // MainFragment가 보이도록 함
+        replaceFragment(ContentFragmentName.MAIN_FRAGMENT, false, false, null)
     }
 
     // 네비게이션 뷰 설정
@@ -97,7 +101,9 @@ class ContentActivity : AppCompatActivity() {
         // 이름으로 분기
         // Fragment의 객체를 생성해 변수에 담기
         when(name){
-            ContentFragmentName.A_FRAGMENT -> {
+            // 게시글 목록 화면
+            ContentFragmentName.MAIN_FRAGMENT -> {
+                newFragment = MainFragment()
             }
             ContentFragmentName.B_FRAGMENT -> {
             }
