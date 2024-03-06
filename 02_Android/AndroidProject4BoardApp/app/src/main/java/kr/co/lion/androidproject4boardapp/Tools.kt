@@ -11,3 +11,9 @@ enum class MainFragmentName(var str: String) {
     JOIN_FRAGMENT("JoinFragment"),
     ADD_USER_INFO_FRAGMENT("AddUserInfoFragment")
 }
+
+// ContentActivity에 보여질 Fragment의 이름
+enum class ContentFragmentName(var str: String) {
+    A_FRAGMENT("A"),
+    B_FRAGMENT("B")
+}
