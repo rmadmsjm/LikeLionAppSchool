@@ -21,6 +21,7 @@ class ModifyContentFragment : Fragment() {
         contentActivity = activity as ContentActivity
 
         settingToolbar()
+        settingMenuModifyContnetBoardType()
 
         return fragmentModifyContentBinding.root
     }
@@ -37,6 +38,18 @@ class ModifyContentFragment : Fragment() {
                 }
 
                 inflateMenu(R.menu.menu_modify_content)
+            }
+        }
+    }
+
+    // 게시판 선택 메뉴 설정
+    fun settingMenuModifyContnetBoardType() {
+        fragmentModifyContentBinding.apply {
+            menuModifyContentBoardType.apply {
+                val items = arrayOf("자유 게시판", "유머 게시판", "시사 게시판", "스포츠 게시판")
+                setSimpleItems(items)
+
+                setText("자유 게시판", false)
             }
         }
     }
