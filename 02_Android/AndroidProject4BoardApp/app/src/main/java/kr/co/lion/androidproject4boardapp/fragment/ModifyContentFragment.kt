@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
 import kr.co.lion.androidproject4boardapp.R
@@ -21,6 +22,7 @@ class ModifyContentFragment : Fragment() {
         contentActivity = activity as ContentActivity
 
         settingToolbar()
+        settingBackButton()
 
         return fragmentModifyContentBinding.root
     }
@@ -35,7 +37,7 @@ class ModifyContentFragment : Fragment() {
                 // 네비게이션
                 setNavigationIcon(R.drawable.arrow_back_24px)
                 setNavigationOnClickListener {
-                    contentActivity.removeFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT)
+                    backProcess()
                 }
 
                 // 메뉴
@@ -61,5 +63,20 @@ class ModifyContentFragment : Fragment() {
                 }
             }
         }
+    }
+
+    // BackButton 동작 설정
+    fun settingBackButton() {
+        contentActivity.onBackPressedDispatcher.addCallback {
+            // 뒤로 가기 처리 메서드 호출
+            backProcess()
+            // 콜백 제거
+            remove()
+        }
+    }
+
+    // 뒤로 가기 처리
+    fun backProcess() {
+        contentActivity.removeFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT)
     }
 }
