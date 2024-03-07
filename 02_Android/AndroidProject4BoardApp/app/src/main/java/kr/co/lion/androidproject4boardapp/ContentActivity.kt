@@ -11,6 +11,7 @@ import kr.co.lion.androidproject4boardapp.databinding.HeaderContentDrawerBinding
 import kr.co.lion.androidproject4boardapp.fragment.AddContentFragment
 import kr.co.lion.androidproject4boardapp.fragment.MainFragment
 import kr.co.lion.androidproject4boardapp.fragment.ModifyContentFragment
+import kr.co.lion.androidproject4boardapp.fragment.ModifyUserFragment
 import kr.co.lion.androidproject4boardapp.fragment.ReadContentFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -76,6 +77,20 @@ class ContentActivity : AppCompatActivity() {
                             // NavigationView 닫기
                             drawerLayoutContent.close()
                         }
+                        // 사용자 정보 수정
+                        R.id.menuItemContentNavigationModifyUserInfo -> {
+                            // 사용자 정보 수정 화면으로 이동
+                            replaceFragment(ContentFragmentName.MODIFY_USER_FRAGMENT, false, false, null)
+
+                            // NavigationView 닫기
+                            drawerLayoutContent.close()
+                        }
+                        // 로그아웃
+                        R.id.menuItemContentNavigationLogout -> {
+                        }
+                        // 회원 탈퇴
+                        R.id.menuItemContentNavigationSignOut -> {
+                        }
                     }
 
                     true
@@ -116,8 +131,13 @@ class ContentActivity : AppCompatActivity() {
             ContentFragmentName.READ_CONTENT_FRAGMENT -> {
                 newFragment = ReadContentFragment()
             }
+            // 게시글 수정 화면
             ContentFragmentName.MODIFY_CONTENT_FRAGMENT -> {
                 newFragment = ModifyContentFragment()
+            }
+            // 사용자 정보 수정 화면
+            ContentFragmentName.MODIFY_USER_FRAGMENT -> {
+                newFragment = ModifyUserFragment()
             }
         }
 
