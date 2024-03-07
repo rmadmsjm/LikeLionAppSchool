@@ -48,6 +48,7 @@ class ReadContentFragment : Fragment() {
                         // 댓글
                         R.id.menuItemReadContentReply -> {
                             // 댓글 보여줄 BottomSheet 띄우기
+                            showBottomSheet()
                         }
                         // 수정
                         R.id.menuItemReadContentModify -> {
@@ -79,5 +80,9 @@ class ReadContentFragment : Fragment() {
         contentActivity.removeFragment(ContentFragmentName.ADD_CONTENT_FRAGMENT)
     }
 
-
+    // 댓글 보여줄 BottomSheet 띄우기
+    fun showBottomSheet() {
+        val readContentBottomFragment = ReadContentBottomFragment()
+        readContentBottomFragment.show(contentActivity.supportFragmentManager, "ReplyBottomSheet")
+    }
 }
