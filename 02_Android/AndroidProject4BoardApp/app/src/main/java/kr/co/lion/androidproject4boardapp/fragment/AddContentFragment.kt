@@ -54,6 +54,8 @@ class AddContentFragment : Fragment() {
                         }
                         // 완료
                         R.id.menuItemAddContentDone -> {
+                            // ReadContentFragment로 이동
+                            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
                         }
                     }
                     true

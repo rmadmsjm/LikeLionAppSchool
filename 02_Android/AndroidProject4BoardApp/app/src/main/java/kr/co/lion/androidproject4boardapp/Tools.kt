@@ -15,5 +15,6 @@ enum class MainFragmentName(var str: String) {
 // ContentActivity에 보여질 Fragment의 이름
 enum class ContentFragmentName(var str: String) {
     MAIN_FRAGMENT("MainFragment"),
-    ADD_CONTENT_FRAGMENT("AddContentFragment")
+    ADD_CONTENT_FRAGMENT("AddContentFragment"),
+    READ_CONTENT_FRAGMENT("ReadContentFragment")
 }
