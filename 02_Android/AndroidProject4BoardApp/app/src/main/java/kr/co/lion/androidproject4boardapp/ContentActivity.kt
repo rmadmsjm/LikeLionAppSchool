@@ -10,6 +10,7 @@ import kr.co.lion.androidproject4boardapp.databinding.ActivityContentBinding
 import kr.co.lion.androidproject4boardapp.databinding.HeaderContentDrawerBinding
 import kr.co.lion.androidproject4boardapp.fragment.AddContentFragment
 import kr.co.lion.androidproject4boardapp.fragment.MainFragment
+import kr.co.lion.androidproject4boardapp.fragment.ModifyContentFragment
 import kr.co.lion.androidproject4boardapp.fragment.ReadContentFragment
 
 class ContentActivity : AppCompatActivity() {
@@ -114,6 +115,9 @@ class ContentActivity : AppCompatActivity() {
             // 게시글 읽기 확면
             ContentFragmentName.READ_CONTENT_FRAGMENT -> {
                 newFragment = ReadContentFragment()
+            }
+            ContentFragmentName.MODIFY_CONTENT_FRAGMENT -> {
+                newFragment = ModifyContentFragment()
             }
         }
 

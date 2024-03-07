@@ -52,6 +52,8 @@ class ReadContentFragment : Fragment() {
                         }
                         // 수정
                         R.id.menuItemReadContentModify -> {
+                            // 수정 화면으로 이동
+                            contentActivity.replaceFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT, true, true, null)
                         }
                         // 삭제
                         R.id.menuItemReadContentDelete -> {
