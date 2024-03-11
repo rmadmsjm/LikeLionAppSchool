@@ -6,20 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_board.FragmentName
+import kr.co.lion.androidproject_board.Gender
 import kr.co.lion.androidproject_board.MainActivity
 import kr.co.lion.androidproject_board.R
+import kr.co.lion.androidproject_board.Tool
 import kr.co.lion.androidproject_board.databinding.FragmentAddUserInfoBinding
+import kr.co.lion.androidproject_board.viewmodel.AddUserInfoViewModel
 
 class AddUserInfoFragment : Fragment() {
 
     lateinit var fragmentAddUserInfoBinding: FragmentAddUserInfoBinding
     lateinit var mainActivity: MainActivity
+    lateinit var addUserInfoViewModel: AddUserInfoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        fragmentAddUserInfoBinding = FragmentAddUserInfoBinding.inflate(inflater)
+        fragmentAddUserInfoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_user_info, container, false)
+        addUserInfoViewModel = AddUserInfoViewModel()
+        fragmentAddUserInfoBinding.addUserInfoViewModel = addUserInfoViewModel
+        fragmentAddUserInfoBinding.lifecycleOwner = this
+
         mainActivity = activity as MainActivity
 
         settingToolbar()
@@ -53,11 +63,13 @@ class AddUserInfoFragment : Fragment() {
 
                 if(chk == true) {
                     // 키보드 내리기
-                    mainActivity.hideSoftInput()
+                    Tool.hideSoftInput(mainActivity)
 
                     mainActivity.replaceFragment(FragmentName.LOGIN_FRAGMENT, false, false, null)
                     mainActivity.removeFragment(FragmentName.JOIN_FRAGMENT)
                     mainActivity.removeFragment(FragmentName.ADD_USER_INFO_FRAGMENT)
+
+                    Snackbar.make(fragmentAddUserInfoBinding.root, "회원가입이 완료되었습니다ㅇㅇㅇ", Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -65,9 +77,16 @@ class AddUserInfoFragment : Fragment() {
 
     // 입력 요소 설정
     fun settingTextField() {
+        // 입력 요소 초기화
+        addUserInfoViewModel.apply {
+            textFieldAddUserInfoNickname.value = ""
+            textFieldAddUserInfoAge.value = ""
+            settingGender(Gender.MALE)
+        }
+
         fragmentAddUserInfoBinding.apply {
             // 첫 번째 요소에 포커스
-            mainActivity.showSoftInput(textFieldAddUserInfoNickname)
+            Tool.showSoftInput(mainActivity, textFieldAddUserInfoNickname)
 
             // 에러 메시지가 보여지는 상황에서 값을 입력했을 때 에러 메세지 없애기
             textFieldAddUserInfoNickname.addTextChangedListener {
@@ -81,87 +100,53 @@ class AddUserInfoFragment : Fragment() {
 
     // 성별 Button 설정
     fun settingButtonGender() {
-        fragmentAddUserInfoBinding.apply {
-            buttonToggleGroupAddUserInfoGender.check(R.id.buttonAddUserInfoGenderMale)
-        }
+        addUserInfoViewModel.settingGender(Gender.MALE)
     }
 
     // 체크박스 설정
     fun settingCheckBox() {
-        fragmentAddUserInfoBinding.apply {
-            val checkBoxList = listOf(
-                checkBoxAddUserInfoHobbyExercise,
-                checkBoxAddUserInfoHobbyReading,
-                checkBoxAddUserInfoHobbyMovie,
-                checkBoxAddUserInfoHobbyCooking,
-                checkBoxAddUserInfoHobbyMusic,
-                checkBoxAddUserInfoHobbyEtc
-            )
-
-            // 전체 체크박스
-            (checkBoxAddUserInfoHobbyTotal as MaterialCheckBox).addOnCheckedStateChangedListener { checkBox, state ->
-                when(state) {
-                    MaterialCheckBox.STATE_CHECKED -> {
-                        checkBoxList.forEach {
-                            it.isChecked = true
-                        }
-                    }
-                    MaterialCheckBox.STATE_UNCHECKED -> {
-                        checkBoxList.forEach {
-                            it.isChecked = false
-                        }
-                    }
-                }
-            }
-
-            // 취미 체크박스
-            checkBoxList.forEach {
-                it.setOnClickListener {
-                    val isChecked = checkBoxList.all { it.isChecked }
-                    val isUnChecked = checkBoxList.all { !it.isChecked }
-
-                    // 전체 체크박스의 상태 업데이트
-                    if(isChecked) {
-                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_CHECKED
-                    } else if(isUnChecked) {
-                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_UNCHECKED
-                    } else {
-                        checkBoxAddUserInfoHobbyTotal.checkedState = MaterialCheckBox.STATE_INDETERMINATE
-                    }
-                }
-            }
+        addUserInfoViewModel.apply {
+            checkBoxAddUserInfoHobbyExercise.value = false
+            checkBoxAddUserInfoHobbyReading.value = false
+            checkBoxAddUserInfoHobbyMovie.value = false
+            checkBoxAddUserInfoHobbyCooking.value = false
+            checkBoxAddUserInfoHobbyMusic.value = false
+            checkBoxAddUserInfoHobbyEtc.value = false
         }
     }
 
     // 유효성 검사
     fun checkTextField() : Boolean {
-        fragmentAddUserInfoBinding.apply {
-            var emptyView: View? = null
+        val userNickname = addUserInfoViewModel.textFieldAddUserInfoNickname.value!!
+        val userAge = addUserInfoViewModel.textFieldAddUserInfoAge.value!!
+        var emptyView: View? = null
 
+        fragmentAddUserInfoBinding.apply {
             // 닉네임
-            if(textFieldAddUserInfoNickname.text.toString().trim().isEmpty()) {
+            if(userNickname.trim().isEmpty()) {
                 textInputLayoutAddUserInfoNickname.error = "닉네임을 입력해주세요"
 
                 if(emptyView == null) {
-                    emptyView = textFieldAddUserInfoNickname
+                    emptyView = fragmentAddUserInfoBinding.textFieldAddUserInfoNickname
                 }
-            } else {
-                textInputLayoutAddUserInfoNickname.isErrorEnabled = false
             }
+            //else {
+                //textInputLayoutAddUserInfoNickname.isErrorEnabled = false
+            //}
 
             // 나이
-            if(textFieldAddUserInfoAge.text.toString().trim().isEmpty()) {
+            if(userAge.trim().isEmpty()) {
                 textInputLayoutAddUserInfoAge.error = "나이를 입력해주세요"
 
                 if(emptyView == null) {
-                    emptyView = textFieldAddUserInfoAge
+                    emptyView = fragmentAddUserInfoBinding.textFieldAddUserInfoAge
                 }
-            } else {
-                textInputLayoutAddUserInfoAge.isErrorEnabled = false
-            }
+            } //else {
+               // textInputLayoutAddUserInfoAge.isErrorEnabled = false
+           // }
 
             if(emptyView != null) {
-                mainActivity.showSoftInput(emptyView)
+                Tool.showSoftInput(mainActivity, emptyView!!)
 
                 return false
             }

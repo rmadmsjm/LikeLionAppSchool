@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_board.ContentActivity
 import kr.co.lion.androidproject_board.FragmentName
 import kr.co.lion.androidproject_board.MainActivity
+import kr.co.lion.androidproject_board.Tool
 import kr.co.lion.androidproject_board.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -48,7 +49,7 @@ class LoginFragment : Fragment() {
 
                 if(chk == true) {
                     // 키보드 내리기
-                    mainActivity.hideSoftInput()
+                    Tool.hideSoftInput(mainActivity)
 
                     val contentIntent = Intent(mainActivity, ContentActivity::class.java)
                     startActivity(contentIntent)

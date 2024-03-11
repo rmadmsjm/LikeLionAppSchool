@@ -65,3 +65,13 @@ enum class ContentFragmentName(var str: String) {
     MODIFY_CONTENT_FRAGMENT("ModifyContentFragment"),
     MODIFY_USER_FRAGMENT("ModifyUserFragment")
 }
+
+enum class Gender(var str: String) {
+    MALE("male"),
+    FEMALE("female")
+}
+
+enum class ErrorType {
+    NICKNAME,
+    AGE
+}
