@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
                     val contentIntent = Intent(mainActivity, ContentActivity::class.java)
                     startActivity(contentIntent)
 
-                    Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(), "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
 
                     mainActivity.finish()
                 }
@@ -82,18 +82,16 @@ class LoginFragment : Fragment() {
 
     // 입력 요소 설정
     fun settingTextField() {
-        loginViewModel.apply {
-            textFieldLoginId.value = ""
-            textFieldLoginPassword.value = ""
-        }
+        loginViewModel.textFieldLoginId.value = ""
+        loginViewModel.textFieldLoginPassword.value = ""
 
         fragmentLoginBinding.apply {
             // 에러 메시지가 보여지는 상황에서 값을 입력했을 때 에러 메세지 없애기
             textFieldLoginId.addTextChangedListener {
-                textInputLayoutLoginId.isErrorEnabled = false
+                loginViewModel!!.textInputLayoutLoginIdErrorEnabled.value = false
             }
             textFieldLoginPassword.addTextChangedListener {
-                textInputLayoutLoginPassword.isErrorEnabled = false
+                loginViewModel!!.textInputLayoutLoginPwErrorEnabled.value = false
             }
         }
     }
@@ -104,22 +102,22 @@ class LoginFragment : Fragment() {
         val userPw = loginViewModel.textFieldLoginPassword.value!!
         var emptyView: View? = null
 
-        fragmentLoginBinding.apply {
+        loginViewModel.apply {
             // 아이디
             if(userId.trim().isEmpty()) {
-                textInputLayoutLoginId.error = "아이디를 입력해주세요"
+                settingTextInputLayoutLoginIdErrorMessage("아이디를 입력해주세요")
 
                 if(emptyView == null) {
-                    emptyView = textFieldLoginId
+                    emptyView = fragmentLoginBinding.textFieldLoginId
                 }
             }
 
             // 비밀번호
             if(userPw.trim().isEmpty()) {
-                textInputLayoutLoginPassword.error = "비밀번호를 입력해주세요"
+                settingTextInputLayoutLoginPwErrorMessage("비밀번호를 입력해주세요")
 
                 if(emptyView == null) {
-                    emptyView = textInputLayoutLoginPassword
+                    emptyView = fragmentLoginBinding.textInputLayoutLoginPassword
                 }
             }
 
