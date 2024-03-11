@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="addUserInfoViewModel"
+            type="kr.co.lion.androidproject4boardapp.viewmodel.AddUserInfoViewModel" />
+    </data>
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -39,7 +45,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                    tools:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={addUserInfoViewModel.textFieldAddUserInfoNickname}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -51,9 +58,11 @@
                 app:startIconDrawable="@drawable/face_24px">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldAddUserInfoAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text|textPassword"
+                    android:inputType="number|numberDecimal"
+                    android:text="@={addUserInfoViewModel.textFieldAddUserInfoAge}"
                     tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:selectionRequired="true"
-                app:singleSelection="true">
+                app:singleSelection="true"
+                android:checkedButtonId="@={addUserInfoViewModel.toggleAddUserInfoGender}">
 
                 <Button
                     android:id="@+id/buttonAddUserInfoMale"
@@ -84,9 +94,8 @@
                     tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <view
+            <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/materialDivider"
-                class="com.google.android.material.divider.MaterialDivider"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="10dp"
@@ -98,7 +107,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="취미"
-                tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                tools:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:checkedState="@{addUserInfoViewModel.checkBoxAddUserInfoAllState}"
+                android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoAll}"
+                android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxAllChanged()}"/>
 
             <LinearLayout
                 android:id="@+id/checkBoxGroupAddUserInfo1"
@@ -113,21 +125,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="운동" />
+                    android:text="운동"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby1}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/checkBoxAddUserInfoHobby2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="독서" />
+                    android:text="독서"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby2}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/checkBoxAddUserInfoHobby3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="영화 감상" />
+                    android:text="영화 감상"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby3}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
 
             </LinearLayout>
 
@@ -145,21 +163,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="요리" />
+                    android:text="요리"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby4}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/checkBoxAddUserInfoHobby5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="음악" />
+                    android:text="음악"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby5}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/checkBoxAddUserInfoHobby6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="기타" />
+                    android:text="기타"
+                    android:checked="@={addUserInfoViewModel.checkBoxAddUserInfoHobby6}"
+                    android:onClickListener="@{(view) -> addUserInfoViewModel.onCheckBoxChanged()}"/>
             </LinearLayout>
 
             <Button

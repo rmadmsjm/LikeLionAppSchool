@@ -67,3 +67,9 @@ enum class ContentFragmentName(var str: String) {
     MODIFY_CONTENT_FRAGMENT("ModifyContentFragment"),
     MODIFY_USER_FRAGMENT("ModifyUserFragment")
 }
+
+// 남자 또는 여자를 나타내는 값 정의
+enum class Gender(var str:String){
+    MALE("male"),
+    FEMALE("female")
+}
