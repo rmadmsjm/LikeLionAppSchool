@@ -70,8 +70,3 @@ enum class Gender(var str: String) {
     MALE("male"),
     FEMALE("female")
 }
-
-enum class ErrorType {
-    NICKNAME,
-    AGE
-}

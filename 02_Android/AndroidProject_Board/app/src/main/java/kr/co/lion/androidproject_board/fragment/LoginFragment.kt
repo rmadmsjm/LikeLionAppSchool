@@ -7,21 +7,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import kr.co.lion.androidproject_board.ContentActivity
 import kr.co.lion.androidproject_board.FragmentName
 import kr.co.lion.androidproject_board.MainActivity
+import kr.co.lion.androidproject_board.R
 import kr.co.lion.androidproject_board.Tool
 import kr.co.lion.androidproject_board.databinding.FragmentLoginBinding
+import kr.co.lion.androidproject_board.viewmodel.LoginViewModel
+import kotlin.math.log
 
 class LoginFragment : Fragment() {
 
     lateinit var fragmentLoginBinding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
+    lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
+        fragmentLoginBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        loginViewModel = LoginViewModel()
+        fragmentLoginBinding.loginViewModel = loginViewModel
+        fragmentLoginBinding.lifecycleOwner = this
+
         mainActivity = activity as MainActivity
 
         settingToolbar()
@@ -54,9 +63,9 @@ class LoginFragment : Fragment() {
                     val contentIntent = Intent(mainActivity, ContentActivity::class.java)
                     startActivity(contentIntent)
 
-                    mainActivity.finish()
-
                     Snackbar.make(fragmentLoginBinding.root, "로그인 되었습니다", Snackbar.LENGTH_SHORT).show()
+
+                    mainActivity.finish()
                 }
             }
         }
@@ -73,6 +82,11 @@ class LoginFragment : Fragment() {
 
     // 입력 요소 설정
     fun settingTextField() {
+        loginViewModel.apply {
+            textFieldLoginId.value = ""
+            textFieldLoginPassword.value = ""
+        }
+
         fragmentLoginBinding.apply {
             // 에러 메시지가 보여지는 상황에서 값을 입력했을 때 에러 메세지 없애기
             textFieldLoginId.addTextChangedListener {
@@ -86,11 +100,13 @@ class LoginFragment : Fragment() {
 
     // 유효성 검사
     fun checkTextField() : Boolean {
-        fragmentLoginBinding.apply {
-            var emptyView: View? = null
+        val userId = loginViewModel.textFieldLoginId.value!!
+        val userPw = loginViewModel.textFieldLoginPassword.value!!
+        var emptyView: View? = null
 
+        fragmentLoginBinding.apply {
             // 아이디
-            if(textFieldLoginId.text.toString().trim().isEmpty()) {
+            if(userId.trim().isEmpty()) {
                 textInputLayoutLoginId.error = "아이디를 입력해주세요"
 
                 if(emptyView == null) {
@@ -99,7 +115,7 @@ class LoginFragment : Fragment() {
             }
 
             // 비밀번호
-            if(textFieldLoginPassword.text.toString().trim().isEmpty()) {
+            if(userPw.trim().isEmpty()) {
                 textInputLayoutLoginPassword.error = "비밀번호를 입력해주세요"
 
                 if(emptyView == null) {

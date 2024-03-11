@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="loginViewModel"
+            type="kr.co.lion.androidproject_board.viewmodel.LoginViewModel" />
+    </data>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,7 +42,8 @@
                 android:id="@+id/textFieldLoginId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={loginViewModel.textFieldLoginId}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +59,8 @@
                 android:id="@+id/textFieldLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textPassword" />
+                android:inputType="text|textPassword"
+                android:text="@={loginViewModel.textFieldLoginPassword}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
