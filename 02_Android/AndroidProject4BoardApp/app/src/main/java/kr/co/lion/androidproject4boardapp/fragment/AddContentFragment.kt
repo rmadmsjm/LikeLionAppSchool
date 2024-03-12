@@ -87,8 +87,12 @@ class AddContentFragment : Fragment() {
                         }
                         // 완료
                         R.id.menuItemAddContentDone -> {
-                            // ReadContentFragment로 이동
-                            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+                            val chk = checkInputForm()
+
+                            if(chk == true) {
+                                // ReadContentFragment로 이동
+                                contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+                            }
                         }
                     }
                     true
@@ -208,5 +212,24 @@ class AddContentFragment : Fragment() {
         albumIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeType)
         // 액티비티 실행
         albumLauncher.launch(albumIntent)
+    }
+
+    // 입력 요소 유효성 검사
+    fun checkInputForm(): Boolean {
+        // 입력한 내용 가져오기
+        val subject = addContentViewModel.textFieldAddContentSubject.value!!
+        val text = addContentViewModel.textFieldAddContentText.value!!
+
+        if(subject.isEmpty()) {
+            Tools.showErrorDialog(contentActivity, fragmentAddContentBinding.textFieldAddContentSubject, "제목 입력 오류", "제목을 입력해주세요")
+            return false
+        }
+
+        if(text.isEmpty()) {
+            Tools.showErrorDialog(contentActivity, fragmentAddContentBinding.textFieldAddContentText, "내용 입력 오류", "내용을 입력해주세요")
+            return false
+        }
+
+        return true
     }
 }
