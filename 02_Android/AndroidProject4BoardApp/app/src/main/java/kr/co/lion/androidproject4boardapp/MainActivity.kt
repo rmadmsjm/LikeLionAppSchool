@@ -11,6 +11,7 @@ import kr.co.lion.androidproject4boardapp.databinding.ActivityMainBinding
 import kr.co.lion.androidproject4boardapp.fragment.AddUserInfoFragment
 import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
 import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
+import android.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +20,12 @@ class MainActivity : AppCompatActivity() {
     // Fragment 주소값을 담는 프로퍼티
     var oldFragment: Fragment? = null
     var newFragment: Fragment? = null
+
+    // 확인할 권한 목록
+    val permissionList = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_MEDIA_LOCATION
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +36,9 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        // 권한 확인
+        requestPermissions(permissionList, 0)
 
         // 첫 화면
         replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
