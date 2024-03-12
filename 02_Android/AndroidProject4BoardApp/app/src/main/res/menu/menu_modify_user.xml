@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menuItemModifyUserReset"
+        android:icon="@drawable/restart_alt_24px"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuItemModifyUserDone"
         android:icon="@drawable/done_24px"
         android:title="완료"
