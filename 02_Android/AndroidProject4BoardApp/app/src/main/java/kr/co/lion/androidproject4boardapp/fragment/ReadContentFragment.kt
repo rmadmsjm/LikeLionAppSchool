@@ -6,23 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.databinding.DataBindingUtil
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.databinding.FragmentReadContentBinding
+import kr.co.lion.androidproject4boardapp.viewmodel.ReadContentViewModel
 
 class ReadContentFragment : Fragment() {
 
     lateinit var fragmentReadContentBinding: FragmentReadContentBinding
     lateinit var contentActivity: ContentActivity
+    lateinit var readContentViewModel: ReadContentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        fragmentReadContentBinding = FragmentReadContentBinding.inflate(inflater)
+        // fragmentReadContentBinding = FragmentReadContentBinding.inflate(inflater)
+        fragmentReadContentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_read_content, container, false)
+        readContentViewModel = ReadContentViewModel()
+        fragmentReadContentBinding.readContentViewModel = readContentViewModel
+        fragmentReadContentBinding.lifecycleOwner = this
+
         contentActivity = activity as ContentActivity
 
         settingToolbar()
         settingBackButton()
+        settingInputForm()
 
         return fragmentReadContentBinding.root
     }
@@ -86,5 +95,14 @@ class ReadContentFragment : Fragment() {
     fun showBottomSheet() {
         val readContentBottomFragment = ReadContentBottomFragment()
         readContentBottomFragment.show(contentActivity.supportFragmentManager, "ReplyBottomSheet")
+    }
+
+    // 입력 요소 설정
+    fun settingInputForm() {
+        readContentViewModel.textFieldReadContentSubject.value = "제목"
+        readContentViewModel.textFieldReadContentSubject.value = "자유 게시판"
+        readContentViewModel.textFieldReadContentNickname.value = "닉네임"
+        readContentViewModel.textFieldReadContentDate.value = "2024-03-12"
+        readContentViewModel.textFieldReadContentText.value = "내용"
     }
 }
