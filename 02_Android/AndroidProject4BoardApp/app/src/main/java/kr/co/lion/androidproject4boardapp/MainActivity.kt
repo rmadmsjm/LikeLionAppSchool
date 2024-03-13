@@ -12,6 +12,13 @@ import kr.co.lion.androidproject4boardapp.fragment.AddUserInfoFragment
 import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
 import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
 import android.Manifest
+import android.util.Log
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +46,13 @@ class MainActivity : AppCompatActivity() {
 
         // 권한 확인
         requestPermissions(permissionList, 0)
+
+        /*
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = fsTest()
+            Log.d("test1234", "result : $result")
+        }
+         */
 
         // 첫 화면
         replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
@@ -146,4 +160,38 @@ class MainActivity : AppCompatActivity() {
         // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
+    /*
+    suspend fun fsTest():Long{
+        var result = 0L
+
+        // 컬렉션에 접근
+        val collection = Firebase.firestore.collection("c1")
+
+        // 코루틴 가동
+        val job1 = CoroutineScope(Dispatchers.IO).launch {
+            // 컬렉션에 접근하여 모든 문서를 가져오기
+            // 코루틴 내부에서 await을 사용하면 작업이 완료될 때 까지 대기했다가 작업이 완료되면 값을 반환 받을 수 있음
+            val data = collection.get().await()
+
+            // 가져온 문서의 수 만큼 반복
+            data.documents?.forEach {
+                // 문서로부터 필드값을 가져와 출력
+                val f1 = it?.getString("f1")
+                val f2 = it?.getLong("f2")
+
+                result += f2!!
+
+                Log.d("test1234", "f1 : $f1")
+                Log.d("test1234", "f2 : $f2")
+            }
+        }
+
+        // 코루틴 수행이 모두 끝날 때 까지 대기하게 함
+        // 코루틴 내부의 코드가 다 끝난 다음 return 이 수행될 수 있도록 함
+        job1.join()
+
+        return result
+    }
+     */
 }

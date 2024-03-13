@@ -32,7 +32,6 @@ class LoginFragment : Fragment() {
         settingToolbar()
         settingButtonLoginJoin()
         settingButtonLoginSubmit()
-        checkInputForm()
 
         return fragmentLoginBinding.root
     }
