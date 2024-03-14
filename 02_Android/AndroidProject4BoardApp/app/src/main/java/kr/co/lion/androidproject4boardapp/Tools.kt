@@ -166,9 +166,15 @@ enum class ContentFragmentName(var str: String) {
 }
 
 // 남자 또는 여자를 나타내는 값 정의
-enum class Gender(var str:String){
-    MALE("male"),
-    FEMALE("female")
+enum class Gender(var str:String, var num: Int){
+    MALE("male", 1),
+    FEMALE("female", 2)
+}
+
+// 회원 상태를 나타내는 값 정의
+enum class UserState(var str: String, var num: Int) {
+    USER_STATE_NOMAL("정상", 1),
+    USER_STATE_SIGNOUT("탈퇴", 2),
 }
 
 // 게시판 종류 나타내는 값 정의
