@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject4boardapp.dao
 
+import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.CoroutineScope
@@ -58,6 +59,47 @@ class UserDao {
                 collectionReference.add(userModel)
             }
             job1.join()
+        }
+
+        // 아이디 중복 확인
+        // 입력한 아이디가 저장되어 있는 문서가 있는지 확인
+        // 사용할 수 있는 아이디라면 true, 아니라면 false
+        suspend fun checkUserIdExist(joinUserID: String): Boolean {
+            var chk = false
+
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("UserData")
+                // UserId 필드가 사용자가 입력한 아이디와 같은 문서 가져오기
+                // -> ⭐ 문서 객체를 가지고 있는 리스트 반환
+                // -> 가져온 게 없어도 리스트로 반환
+                // -> 리스트의 문서 개수가 0일 경우, 존재하지 않는 것
+                // whereArrayContains, whereIn : 지정한 배열에 있는 값이 포함되어 있는 것들
+                // whereEqualTo : 같은것
+                // whereGreaterThan : 큰것
+                // whereGreaterThanOrEqualTo : 크거나 같은 것
+                // whereLessThan : 작은 것
+                // whereLessThanOrEqualTo : 작거나 같은 것
+                // whereNotEqualTo : 다른 것
+                // (필드의 이름, 값) 형태로 넣기
+                val querySnapshot = collectionReference.whereEqualTo("userId", joinUserID).get().await()
+                // Log.d("test1234", "$querySnapshot")
+
+                // 문서가 들어있는 리스트의 문서 개수
+                // Log.d("test1234", "${querySnapshot.documents.size}")
+
+                // 반환되는 리스트에 담긴 문서 객체가 없다면 존재하는 아이디로 취급
+                chk = querySnapshot.isEmpty
+                /*
+                if(querySnapshot.isEmpty) {
+                    chk = true
+                }
+                 */
+            }
+
+            job1.join()
+
+            return chk
         }
     }
 }

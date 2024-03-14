@@ -1,16 +1,22 @@
 package kr.co.lion.androidproject4boardapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.MainActivity
 import kr.co.lion.androidproject4boardapp.MainFragmentName
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.Tools
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentJoinBinding
 import kr.co.lion.androidproject4boardapp.viewmodel.JoinViewModel
 
@@ -160,7 +166,24 @@ class JoinFragment : Fragment() {
         fragmentJoinBinding.apply {
             buttonJoinCheckId.apply {
                 setOnClickListener {
-                    checkUserIdExist = true
+                    CoroutineScope(Dispatchers.IO).launch {
+                        checkUserIdExist = UserDao.checkUserIdExist(joinViewModel?.textFieldJoinUserId?.value!!)
+                        // Log.d("test1234", "$checkUserIdExist")
+
+                        if(checkUserIdExist == false) {
+                            joinViewModel?.textFieldJoinUserId?.value = ""
+                            Tools.showErrorDialog(mainActivity, fragmentJoinBinding.textFieldJoinUserId,
+                                "아이디 입력 오류", "존재하는 아이디 입니다\n다른 아이디로 입력해주세요")
+                        } else {
+                            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
+                            materialAlertDialogBuilder.setTitle("아이디 중복 확인")
+                            materialAlertDialogBuilder.setMessage("사용 가능한 아이디 입니다")
+                            materialAlertDialogBuilder.setPositiveButton("확인", null)
+                            materialAlertDialogBuilder.show()
+                        }
+                    }
+
+                    // checkUserIdExist = true
                 }
             }
         }
