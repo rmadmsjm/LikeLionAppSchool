@@ -85,10 +85,12 @@ class JoinFragment : Fragment() {
                     // 입력이 모두 잘 되어있을 경우
                     if(chk == true) {
                         // 키보를 내리기
-                        Tools.hideSoftInput(mainActivity)
+                        // Tools.hideSoftInput(mainActivity)
 
                         // AddUserInfoFragment 보이게 함
-                        mainActivity.replaceFragment(MainFragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
+                        // mainActivity.replaceFragment(MainFragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
+
+                        joinNext()
                     }
                 }
             }
@@ -162,5 +164,19 @@ class JoinFragment : Fragment() {
                 }
             }
         }
+    }
+
+    // 다음 회원 정보 입력으로 이동
+    fun joinNext() {
+        // 사용자가 입력한 데이터 담기
+        val joinBundle = Bundle()
+        joinBundle.putString("joinUserId", joinViewModel.textFieldJoinUserId.value!!)
+        joinBundle.putString("joinUserPw", joinViewModel.textFieldJoinUserPw.value!!)
+
+        // 키보를 내리기
+        Tools.hideSoftInput(mainActivity)
+
+        // AddUserInfoFragment 보이게 함
+        mainActivity.replaceFragment(MainFragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
     }
 }
