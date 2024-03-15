@@ -12,6 +12,7 @@ import kr.co.lion.androidproject4boardapp.fragment.AddUserInfoFragment
 import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
 import kr.co.lion.androidproject4boardapp.fragment.LoginFragment
 import android.Manifest
+import android.content.Intent
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -53,6 +54,31 @@ class MainActivity : AppCompatActivity() {
             Log.d("test1234", "result : $result")
         }
          */
+
+        // 자동 로그인 시 저장된 사용자 정보 가져오기
+        val shardPreferences = getSharedPreferences("AutoLogin", MODE_PRIVATE)
+        val loginUserIdx = shardPreferences.getInt("loginUserIdx", -1)
+        val loginUserNickname = shardPreferences.getString("loginUserNickname", null)
+
+        // 자동 로그인 시 저장된 사용자 인덱스 값이 없을 경우 (자동 로그인을 체크하지 않았다면)
+        if(loginUserIdx == -1) {
+            // 첫 화면을 띄우기
+            replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
+        }
+        // 그렇지 않은 경우
+        else {
+            // ContentActivity를 실행한다.
+            val contentIntent = Intent(this, ContentActivity::class.java)
+
+            // 로그인한 사용자의 정보를 전달
+            contentIntent.putExtra("loginUserIdx", loginUserIdx)
+            contentIntent.putExtra("loginUserNickName", loginUserNickname)
+
+            startActivity(contentIntent)
+            // MainActivity 종료
+            finish()
+        }
+
 
         // 첫 화면
         replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)

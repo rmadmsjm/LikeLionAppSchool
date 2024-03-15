@@ -1,6 +1,7 @@
 package kr.co.lion.androidproject4boardapp.dao
 
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.CoroutineScope
@@ -100,6 +101,30 @@ class UserDao {
             job1.join()
 
             return chk
+        }
+
+        // 아이디를 통해 사용자 정보 가져오기
+        suspend fun getUserDataById(userId: String): UserModel? {
+            // 사용자 정보 객체 담을 변수
+            var userModel: UserModel? = null
+
+            var job1 = CoroutineScope(Dispatchers.IO).launch {
+                // UserData 컬렉션 접근 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("UserData")
+                // UserId 필드가 매개변수로 들어오는 userId와 같은 문서 가져오기
+                val querySnapshot = collectionReference.whereEqualTo("userId", userId).get().await()
+                // 만약 가져온 것이 있다면
+                if(querySnapshot.isEmpty == false) {
+                    // 가져온 문서 객체가 들어있는 리스트에서 첫 번째 객체 추출
+                    // 아이디가 동일한 사용자는 없기 때문에 무조건 하나만 나옴
+                    userModel = querySnapshot.documents[0].toObject(UserModel::class.java)
+                    // Log.d("test1234", "${loginUserModel}")
+                }
+            }
+
+            job1.join()
+
+            return userModel
         }
     }
 }
