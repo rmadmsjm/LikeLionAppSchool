@@ -29,6 +29,15 @@ class AddContentViewModel : ViewModel() {
         }
     }
 
+    // MutableLiveData에 담긴 버튼의 ID 값을 통해 게시판 타입 값 반환
+    fun gettingContentType(): ContentType = when(toggleAddContentType.value) {
+        R.id.buttonAddContentType1 -> ContentType.TYPE_FREE
+        R.id.buttonAddContentType2 -> ContentType.TYPE_HUMOR
+        R.id.buttonAddContentType3 -> ContentType.TYPE_SOCIETY
+        R.id.buttonAddContentType4 -> ContentType.TYPE_SPORTS
+        else -> ContentType.TYPE_ALL
+    }
+
     companion object {
         // toggleAddContentType 에 값을 설정했을 때 checkedButtonId 속성에 값을 반영해 줄 때 호출(순방향)
         @BindingAdapter("android:checkedButtonId")

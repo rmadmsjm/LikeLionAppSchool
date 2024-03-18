@@ -15,14 +15,23 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
+import kr.co.lion.androidproject4boardapp.ContentState
 import kr.co.lion.androidproject4boardapp.ContentType
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.Tools
+import kr.co.lion.androidproject4boardapp.dao.ContentDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentAddContentBinding
+import kr.co.lion.androidproject4boardapp.model.ContentModel
 import kr.co.lion.androidproject4boardapp.viewmodel.AddContentViewModel
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AddContentFragment : Fragment() {
 
@@ -36,6 +45,9 @@ class AddContentFragment : Fragment() {
 
     // 촬영된 사진이 저장된 경로 정보를 가지고 있는 Uri 객체
     lateinit var contentUri: Uri
+
+    // 이미지 첨부한 적 있는지
+    var isAddPicture = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -90,8 +102,11 @@ class AddContentFragment : Fragment() {
                             val chk = checkInputForm()
 
                             if(chk == true) {
+                                // 글 데이터 업로드
+                                uploadContentData()
+
                                 // ReadContentFragment로 이동
-                                contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+                                // contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
                             }
                         }
                     }
@@ -108,6 +123,7 @@ class AddContentFragment : Fragment() {
         addContentViewModel.settingContentType(ContentType.TYPE_FREE)
 
         fragmentAddContentBinding.imageViewAddContent.setImageResource(R.drawable.panorama_24px)
+        isAddPicture = false
 
         Tools.showSoftInput(contentActivity, fragmentAddContentBinding.textFieldAddContentSubject)
     }
@@ -129,6 +145,7 @@ class AddContentFragment : Fragment() {
                 val bitmap3 = Tools.resizeBitmap(bitmap2, 1024)
 
                 fragmentAddContentBinding.imageViewAddContent.setImageBitmap(bitmap3)
+                isAddPicture = true
 
                 // 사진 파일 삭제
                 val file = File(contentUri.path)
@@ -195,6 +212,7 @@ class AddContentFragment : Fragment() {
                     val bitmap3 = Tools.resizeBitmap(bitmap2, 1024)
 
                     fragmentAddContentBinding.imageViewAddContent.setImageBitmap(bitmap3)
+                    isAddPicture = true
                 }
             }
         }
@@ -231,5 +249,48 @@ class AddContentFragment : Fragment() {
         }
 
         return true
+    }
+
+    // 글 작성 처리
+    fun uploadContentData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            // 서버에서의 첨부 이미지 파일 이름
+            var serverFileName: String? = null
+
+            // 첨부된 이미지가 있다면
+            if(isAddPicture == true) {
+                // imageView의 이미지 데이터를 파일로 저장하기
+                Tools.saveImageViewData(contentActivity, fragmentAddContentBinding.imageViewAddContent, "uploadTemp.jpg")
+                // 서버 파일 이름
+                serverFileName = "image_${System.currentTimeMillis()}.jpg"
+                // 서버로 업로드하기
+                ContentDao.uploadImage(contentActivity, "uploadTemp.jpg", serverFileName)
+            }
+
+            // 게시글 시퀀스 값 가져오기
+            val contentSequence = ContentDao.getContentSequence()
+            // 게시글 시퀀스 값 업데이트
+            ContentDao.updateContentSequence(contentSequence + 1)
+
+            // 업로드할 정보 담기
+            val contentIdx = contentSequence + 1
+            val contentSubject = addContentViewModel.textFieldAddContentSubject.value!!
+            val contentType = addContentViewModel.gettingContentType().num
+            val contentText = addContentViewModel.textFieldAddContentText.value!!
+            val contentImage = serverFileName
+            val contentWriterIdx = contentActivity.loginUserIdx
+            val sdf = SimpleDateFormat("yyyy.MM.dd")
+            val contentWriteDate = sdf.format(Date())
+            val contentState = ContentState.CONTENT_STATE_NORMAL.number
+
+            val contentModel = ContentModel(contentIdx, contentSubject, contentType, contentText, contentImage, contentWriterIdx, contentWriteDate, contentState)
+
+            // 업로드
+            ContentDao.insertContentData(contentModel)
+
+            // ReadContentFragment로 이동
+            Tools.hideSoftInput(contentActivity)
+            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+        }
     }
 }

@@ -182,12 +182,12 @@ class JoinFragment : Fragment() {
                             materialAlertDialogBuilder.show()
                         }
                     }
-
                     // checkUserIdExist = true
                 }
             }
         }
     }
+
 
     // 다음 회원 정보 입력으로 이동
     fun joinNext() {
