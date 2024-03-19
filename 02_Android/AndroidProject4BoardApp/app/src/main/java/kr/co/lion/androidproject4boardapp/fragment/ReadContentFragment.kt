@@ -7,9 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
+import kr.co.lion.androidproject4boardapp.ContentType
 import kr.co.lion.androidproject4boardapp.R
+import kr.co.lion.androidproject4boardapp.dao.ContentDao
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentReadContentBinding
 import kr.co.lion.androidproject4boardapp.viewmodel.ReadContentViewModel
 
@@ -18,6 +24,9 @@ class ReadContentFragment : Fragment() {
     lateinit var fragmentReadContentBinding: FragmentReadContentBinding
     lateinit var contentActivity: ContentActivity
     lateinit var readContentViewModel: ReadContentViewModel
+
+    // 현재 글 번호를 담을 변수
+    var contentIdx = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -28,6 +37,9 @@ class ReadContentFragment : Fragment() {
         fragmentReadContentBinding.lifecycleOwner = this
 
         contentActivity = activity as ContentActivity
+
+        // 글 번호 담기
+        contentIdx = arguments?.getInt("contentIdx")!!
 
         settingToolbar()
         settingBackButton()
@@ -99,10 +111,40 @@ class ReadContentFragment : Fragment() {
 
     // 입력 요소 설정
     fun settingInputForm() {
-        readContentViewModel.textFieldReadContentSubject.value = "제목"
-        readContentViewModel.textFieldReadContentSubject.value = "자유 게시판"
-        readContentViewModel.textFieldReadContentNickname.value = "닉네임"
-        readContentViewModel.textFieldReadContentDate.value = "2024-03-12"
-        readContentViewModel.textFieldReadContentText.value = "내용"
+        // imageView 보이지 않게 함
+        fragmentReadContentBinding.imageViewReadContent.visibility = View.INVISIBLE
+
+        // 데이터를 받아오는데 걸리는 시간 때문에 입력 요소에 띄어쓰기
+        readContentViewModel.textFieldReadContentSubject.value = " "
+        readContentViewModel.textFieldReadContentType.value = " "
+        readContentViewModel.textFieldReadContentNickname.value = " "
+        readContentViewModel.textFieldReadContentDate.value = " "
+        readContentViewModel.textFieldReadContentText.value = " "
+
+        CoroutineScope(Dispatchers.Main).launch {
+            // 현재 글 번호에 해당하는 글 데이터 가져오기
+            val contentModel = ContentDao.selectContentData(contentIdx)
+
+            // 글을 작성한 사용자의 번호를 통해 사용자 정보 가져오기
+            val userModel = UserDao.gettingUserInfoByUserIdx(contentModel?.contentWriterIdx!!)
+
+            // 가져온 데이터 보여주기
+            readContentViewModel.textFieldReadContentSubject.value = contentModel?.contentSubject
+            readContentViewModel.textFieldReadContentType.value = when(contentModel?.contentType) {
+                ContentType.TYPE_FREE.num -> ContentType.TYPE_FREE.str
+                ContentType.TYPE_HUMOR.num -> ContentType.TYPE_HUMOR.str
+                ContentType.TYPE_SOCIETY.num -> ContentType.TYPE_SOCIETY.str
+                ContentType.TYPE_SPORTS.num -> ContentType.TYPE_SPORTS.str
+                else -> ""
+            }
+            readContentViewModel.textFieldReadContentNickname.value = userModel?.userNickname
+            readContentViewModel.textFieldReadContentDate.value = contentModel?.contentWriteDate
+            readContentViewModel.textFieldReadContentText.value = contentModel?.contentText
+
+            // 이미지 데이터 보여주기
+            if(contentModel?.contentImage != null) {
+                ContentDao.gettingContentImage(contentActivity, contentModel.contentImage!!, fragmentReadContentBinding.imageViewReadContent)
+            }
+        }
     }
 }

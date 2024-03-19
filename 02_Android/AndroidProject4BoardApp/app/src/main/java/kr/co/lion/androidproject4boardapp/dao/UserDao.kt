@@ -3,6 +3,7 @@ package kr.co.lion.androidproject4boardapp.dao
 import android.util.Log
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +123,25 @@ class UserDao {
                 }
             }
 
+            job1.join()
+
+            return userModel
+        }
+
+        // 사용자 번호를 통해 사용자 정보를 가져와 반환
+        suspend fun gettingUserInfoByUserIdx(userIdx:Int) : UserModel? {
+
+            var userModel:UserModel? = null
+
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // UserData 컬렉션 접근 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("UserData")
+                // userIdx 필드가 매개변수로 들어오는 userIdx와 같은 문서 가져오기
+                val querySnapshot = collectionReference.whereEqualTo("userIdx", userIdx).get().await()
+                // 가져온 문서객체가 들어 있는 리스트에서 첫 번째 객체 추출하기
+                // 회원 번호가 동일한 사용는 없기 때문에 무조건 하나만 나오기 때문
+                userModel = querySnapshot.documents[0].toObject(UserModel::class.java)
+            }
             job1.join()
 
             return userModel

@@ -289,8 +289,14 @@ class AddContentFragment : Fragment() {
             ContentDao.insertContentData(contentModel)
 
             // ReadContentFragment로 이동
+            // 키보드 숨기기
             Tools.hideSoftInput(contentActivity)
-            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, null)
+
+            // 글 번호 담기
+            val readBundle = Bundle()
+            readBundle.putInt("contentIdx", contentIdx)
+
+            contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, readBundle)
         }
     }
 }
