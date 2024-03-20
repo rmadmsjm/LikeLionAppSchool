@@ -8,26 +8,54 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
 import kr.co.lion.androidproject4boardapp.R
+import kr.co.lion.androidproject4boardapp.dao.ContentDao
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentMainBinding
 import kr.co.lion.androidproject4boardapp.databinding.RowMainBinding
+import kr.co.lion.androidproject4boardapp.model.ContentModel
+import kr.co.lion.androidproject4boardapp.model.UserModel
 
 class MainFragment : Fragment() {
 
     lateinit var fragmentMainBinding: FragmentMainBinding
     lateinit var contentActivity: ContentActivity
 
+    // 메인 화면의 RecyclerView 구성을 위한 리스트
+    var mainList = mutableListOf<ContentModel>()
+    // 검색 화면의 ReycyclerView 구성을 위한 리스트
+    var searchList = mutableListOf<ContentModel>()
+    // 사용자 정보를 담을 리스트
+    var userList = mutableListOf<UserModel>()
+
+    // 게시판 종류를 담을 프로퍼티
+    var contentType = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         fragmentMainBinding = FragmentMainBinding.inflate(inflater)
         contentActivity = activity as ContentActivity
 
+        // 게시판 종류 값 담기
+        contentType = arguments?.getInt("typeNum")!!
+
         settingToolbar()
         settingSearchBar()
         settingRecycelrViewMain()
         settingRecycelrViewMainSearch()
+        gettingMainData()
+
+        /*
+        ContentDao의 게시글 목록 가져오기에서 firebase index 설정하기 위해 실행하려고 추가했던 코드
+        CoroutineScope(Dispatchers.Main).launch {
+            ContentDao.gettingContentList(0)
+        }
+         */
 
         return fragmentMainBinding.root
     }
@@ -37,7 +65,7 @@ class MainFragment : Fragment() {
         fragmentMainBinding.apply {
             toolbarMain.apply {
                 // 타이틀
-                title = "전체 게시판"
+                title = arguments?.getString("typeName")
 
                 // 네비게이션
                 setNavigationIcon(R.drawable.menu_24px)
@@ -125,12 +153,29 @@ class MainFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 100
+            return mainList.size
         }
 
         override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-            holder.rowMainBinding.textViewRowMainSubject.text = "제목 $position"
-            holder.rowMainBinding.textViewRowMainNicname.text = "작성자 $position"
+            holder.rowMainBinding.textViewRowMainSubject.text = mainList[position].contentSubject
+
+            // 사용자의 수만큼 반복
+            userList.forEach {
+                // 사용자 번호와 작성자 번호가 같으면 출력하고 중단
+                if(it.userIdx == mainList[position].contentWriterIdx) {
+                    holder.rowMainBinding.textViewRowMainNicname.text = it.userNickname
+                    return@forEach
+                }
+            }
+
+            // 항목을 눌렀을 때 동작할 리스너 연결
+            holder.rowMainBinding.root.setOnClickListener {
+                // 필요한 데이터 담기
+                val readBundle = Bundle()
+                readBundle.putInt("contentIdx", mainList[position].contentIdx)
+                // 글 읽는 화면으로 이동
+                contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, readBundle)
+            }
         }
     }
 
@@ -163,6 +208,18 @@ class MainFragment : Fragment() {
         override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
             holder.rowMainBinding.textViewRowMainSubject.text = "제목 $position"
             holder.rowMainBinding.textViewRowMainNicname.text = "작성자 $position"
+        }
+    }
+
+    // 서버에서 현재 게시판의 데이터를 가져와 메인 화면의 RecyclerView 갱신하기
+    fun gettingMainData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            // 서버에서 데이터 가져오기
+            mainList = ContentDao.gettingContentList(contentType)
+            // 사용자 정보 가져오기
+            userList = UserDao.getUserAll()
+            // RecyclerView 갱신
+            fragmentMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
         }
     }
 }

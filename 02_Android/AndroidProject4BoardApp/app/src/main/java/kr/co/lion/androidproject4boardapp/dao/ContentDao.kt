@@ -6,12 +6,16 @@ import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kr.co.lion.androidproject4boardapp.ContentState
+import kr.co.lion.androidproject4boardapp.ContentType
 import kr.co.lion.androidproject4boardapp.model.ContentModel
 import kr.co.lion.androidproject4boardapp.model.UserModel
 import java.io.File
@@ -121,13 +125,46 @@ class ContentDao {
                 val querySnapshot = collectionReference.whereEqualTo("contentIdx", contentIdx).get().await()
                 // 가져온 글 정보를 객체에 담아 변환 받기
                 // contentIdx가 같은 글은 존재할 수 없기 때문에 첫 번째 객체를 바로 추출해서 사용함
-                // toObject() : 지정한 클래스를 가지고 객체를 만든 다음 가져온 데이터의 필드의 이름과 동일한 이름의 프롶퍼티에 필드의 값을 담음
+                // toObject() : 지정한 클래스를 가지고 객체를 만든 다음 가져온 데이터의 필드의 이름과 동일한 이름의 프로퍼티에 필드의 값을 담음
                 contentModel = querySnapshot.documents[0].toObject(ContentModel::class.java)
             }
 
             job1.join()
 
             return contentModel
+        }
+
+        // 게시글 목록 가져오기
+        suspend fun gettingContentList(contentType: Int): MutableList<ContentModel> {
+            // 게시글 정보를 담을 리스트
+            val contentList = mutableListOf<ContentModel>()
+
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("ContentData")
+                // 게시글 상태가 정상이고, 게시글 번호를 기준으로 내림차순 정렬이 되도록 데이터 가져오는 쿼리 생성
+                // 게시글 상태 정상인 것
+                var query = collectionReference.whereEqualTo("contentState", ContentState.CONTENT_STATE_NORMAL.number)
+                // 게시글 번호를 기준으로 내림차순 정렬
+                query = query.orderBy("contentIdx", Query.Direction.DESCENDING)
+                // 만약 전체 게시판이 아닐 경우 게시판 타입이 일치하는 것 가져오기
+                if(contentType != ContentType.TYPE_ALL.num) {
+                    query = query.whereEqualTo("contentType", contentType)
+                }
+                // 가져오는 문서
+                val querySnapshot = query.get().await()
+                // 가져온 문서의 수만큼 반복
+                querySnapshot.forEach {
+                    // 현재 번째의 문서를 객체로 받아오기
+                    val contentModel = it.toObject(ContentModel::class.java)
+                    // 리스트에 객체 담기
+                    contentList.add(contentModel)
+                }
+            }
+
+            job1.join()
+
+            return contentList
         }
     }
 }

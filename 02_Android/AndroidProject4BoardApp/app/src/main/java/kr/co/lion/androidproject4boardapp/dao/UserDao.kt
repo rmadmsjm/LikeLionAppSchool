@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.joinAll
@@ -129,7 +130,7 @@ class UserDao {
         }
 
         // 사용자 번호를 통해 사용자 정보를 가져와 반환
-        suspend fun gettingUserInfoByUserIdx(userIdx:Int) : UserModel? {
+        suspend fun gettingUserInfoByUserIdx(userIdx:Int): UserModel? {
 
             var userModel:UserModel? = null
 
@@ -145,6 +146,28 @@ class UserDao {
             job1.join()
 
             return userModel
+        }
+
+        // 모든 사용자의 정보 가져오기
+        suspend fun getUserAll(): MutableList<UserModel> {
+            // 사용자 정보 담을 리스트
+            val userList = mutableListOf<UserModel>()
+
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 모든 사용자 정보 가져오기
+                val querySnapshot = Firebase.firestore.collection("UserData").get().await()
+                // 가져온 문서의 수만큼 반복
+                querySnapshot.forEach {
+                    // UserModel 객체에 담기
+                    val userModel = it.toObject(UserModel::class.java)
+                    // 리스트에 담기
+                    userList.add(userModel)
+                }
+            }
+
+            job1.join()
+
+            return userList
         }
     }
 }
