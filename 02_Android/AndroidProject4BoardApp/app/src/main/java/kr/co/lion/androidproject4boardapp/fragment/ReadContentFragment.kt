@@ -63,6 +63,12 @@ class ReadContentFragment : Fragment() {
 
                 // 메뉴
                 inflateMenu(R.menu.menu_read_content)
+                // 모든 메뉴 보이지 않게 만듦
+                // 글 정보를 가져온 다음 메뉴를 노출 시킴
+                menu.findItem(R.id.menuItemReadContentReply).isVisible = false
+                menu.findItem(R.id.menuItemReadContentModify).isVisible = false
+                menu.findItem(R.id.menuItemReadContentDelete).isVisible = false
+
                 setOnMenuItemClickListener {
                     // 메뉴 id로 분기
                     when(it.itemId) {
@@ -124,6 +130,15 @@ class ReadContentFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             // 현재 글 번호에 해당하는 글 데이터 가져오기
             val contentModel = ContentDao.selectContentData(contentIdx)
+
+            // 로그인한 사용자와 글을 작성한 사용자의 일치에 따라 메뉴를 보여줌
+            // 같을 경우 수정과 삭제 메뉴 보이도록 함
+            if(contentActivity.loginUserIdx == contentModel?.contentWriterIdx) {
+                fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentModify).isVisible = true
+                fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentDelete).isVisible = true
+            } else {
+                fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentReply).isVisible = true
+            }
 
             // 글을 작성한 사용자의 번호를 통해 사용자 정보 가져오기
             val userModel = UserDao.gettingUserInfoByUserIdx(contentModel?.contentWriterIdx!!)
