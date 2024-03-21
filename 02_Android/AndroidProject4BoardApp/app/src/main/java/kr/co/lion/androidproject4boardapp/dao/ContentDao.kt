@@ -166,5 +166,26 @@ class ContentDao {
 
             return contentList
         }
+
+        // 글 상태 변경하기
+        suspend fun updateContentState(contentIdx: Int, newState: ContentState) {
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("ContentData")
+                // 글 번호가 contentIdx에 해당하는 문서에 접근할 수 있는 객체 가져오기
+                // 컬렉션이 가지고 있는 문서 중 contentIdx 필드가 지정된 글 번호 값과 같은 Document 가져오기
+                val query = collectionReference.whereEqualTo("contentIdx", contentIdx).get().await()
+
+                // 저장할 데이터를 담을 HsahMap 만들기
+                val map = mutableMapOf<String, Long>()
+                map["contentState"] = newState.number.toLong()
+                // 저장
+                // 가져온 문서 중 첫 번째 문서에 접근하여 데이터 수정
+                // contentIdx가 같은 글은 존재할 수 없기 때문에 첫 번째 객체를 바로 추출해서 사용함
+                query.documents[0].reference.set(map)
+            }
+
+            job1.join()
+        }
     }
 }

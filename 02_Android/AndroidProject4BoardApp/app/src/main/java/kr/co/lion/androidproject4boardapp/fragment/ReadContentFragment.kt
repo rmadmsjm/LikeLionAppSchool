@@ -1,5 +1,6 @@
 package kr.co.lion.androidproject4boardapp.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
+import kr.co.lion.androidproject4boardapp.ContentState
 import kr.co.lion.androidproject4boardapp.ContentType
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.dao.ContentDao
@@ -84,6 +87,21 @@ class ReadContentFragment : Fragment() {
                         }
                         // 삭제
                         R.id.menuItemReadContentDelete -> {
+                            // 삭제 확인 다이얼로그
+                            MaterialAlertDialogBuilder(contentActivity).apply {
+                                setTitle("삭제하기")
+                                setMessage("삭제하면 복원할 수 없습니다.\n삭제하시겠습니까?")
+                                setNegativeButton("취소", null)
+                                setPositiveButton("확인") { dialogInterface: DialogInterface, i: Int ->
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        // 글 상태 삭제로 변경
+                                        ContentDao.updateContentState(contentIdx, ContentState.COTTENT_STATE_REMOVE)
+                                        // 글 목록으로 돌아가기
+                                        backProcess()
+                                    }
+                                }
+                                show()
+                            }
                         }
                     }
                     true
