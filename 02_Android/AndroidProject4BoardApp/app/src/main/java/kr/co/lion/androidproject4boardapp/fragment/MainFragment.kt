@@ -1,6 +1,8 @@
 package kr.co.lion.androidproject4boardapp.fragment
 
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.ContentActivity
 import kr.co.lion.androidproject4boardapp.ContentFragmentName
 import kr.co.lion.androidproject4boardapp.R
+import kr.co.lion.androidproject4boardapp.Tools
 import kr.co.lion.androidproject4boardapp.dao.ContentDao
 import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentMainBinding
@@ -102,6 +105,22 @@ class MainFragment : Fragment() {
             searchViewMain.apply {
                 // SearchView에 보여줄 메시지
                 hint = "검색어를 입력해주세요"
+
+                // 검색 시 사용하는 키보드의 엔터키를 눌러 동작하는 리스너
+                editText.setOnEditorActionListener { v, actionId, event ->
+                    // Log.d("test1234", "$event")
+                    // 이벤트 2번 발생 -> 눌렀을 때만 발생하도록 설정해야 함
+
+                    // 눌렀을 때만 동작하도록 설정
+                    if(event != null && event.action == KeyEvent.ACTION_DOWN) {
+                        // 검색 결과를 가져와 보여주는 메서드 호출
+                        gettingSearchData()
+                    }
+
+                    // true : 키보드 올라와 있음
+                    // false : 키보드 내려감
+                    false
+                }
             }
         }
     }
@@ -202,12 +221,29 @@ class MainFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return 100
+            return searchList.size
         }
 
         override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-            holder.rowMainBinding.textViewRowMainSubject.text = "제목 $position"
-            holder.rowMainBinding.textViewRowMainNicname.text = "작성자 $position"
+            holder.rowMainBinding.textViewRowMainSubject.text = searchList[position].contentSubject
+
+            // 사용자의 수만큼 반복
+            userList.forEach {
+                // 사용자 번호와 작성자 번호가 같으면 출력하고 중단
+                if(it.userIdx == searchList[position].contentWriterIdx) {
+                    holder.rowMainBinding.textViewRowMainNicname.text = it.userNickname
+                    return@forEach
+                }
+            }
+
+            // 항목을 눌렀을 때 동작할 리스너 연결
+            holder.rowMainBinding.root.setOnClickListener {
+                // 필요한 데이터 담기
+                val readBundle = Bundle()
+                readBundle.putInt("contentIdx", searchList[position].contentIdx)
+                // 글 읽는 화면으로 이동
+                contentActivity.replaceFragment(ContentFragmentName.READ_CONTENT_FRAGMENT, true, true, readBundle)
+            }
         }
     }
 
@@ -220,6 +256,33 @@ class MainFragment : Fragment() {
             userList = UserDao.getUserAll()
             // RecyclerView 갱신
             fragmentMainBinding.recyclerViewMain.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    // 검색 결과의 데이터를 가져와 검색 화면 RecyclerView 갱신하기
+    fun gettingSearchData() {
+        // 검색어 가져오기
+        // searchView의 입력 요소(editText)를 추출해 사용자가 입력한 내용 가져오기
+        val keyword = fragmentMainBinding.searchViewMain.editText.text.toString()
+
+        // 검색 결과를 가지고 있는 리스트 비우기
+        searchList.clear()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            // 현재 게시판에 해당하는 게시글 모두 가져오기
+            val tempList = ContentDao.gettingContentList(contentType)
+            // 사용자 정보 가져오기
+            userList = UserDao.getUserAll()
+            // 가져온 게시글 데이터 중에서 검색어를 포함하는 제목의 글 데이터만 담기
+            tempList.forEach {
+                if(it.contentSubject.contains(keyword)) {
+                    // 검색 결과 리스트에 담기
+                    searchList.add(it)
+                }
+            }
+
+            // RecyclerView 갱신
+            fragmentMainBinding.recyclerViewMainSearch.adapter?.notifyDataSetChanged()
         }
     }
 }
