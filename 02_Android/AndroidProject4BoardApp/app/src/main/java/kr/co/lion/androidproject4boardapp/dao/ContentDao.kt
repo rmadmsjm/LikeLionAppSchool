@@ -46,7 +46,7 @@ class ContentDao {
 
         // 이미지 데이터 받아오기
         suspend fun gettingContentImage(context: Context, imageFileName: String, imageView: ImageView) {
-            CoroutineScope(Dispatchers.IO).launch {
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
                 // 이미지에 젖ㅂ근할 수 있는 객체 가져오기
                 val storageRef = Firebase.storage.reference.child("image/$imageFileName")
                 // 이미지의 주소를 가지고 있는 Uri 객체 받아오기
@@ -58,6 +58,8 @@ class ContentDao {
                     imageView.visibility = View.VISIBLE
                 }
             }
+
+            job1.join()
 
             // 이미지는 용량이 매우 클 수 있음
             // 즉 이미지 데이터를 내려받는데 시간이 오래 걸릴 수 있음
@@ -176,13 +178,45 @@ class ContentDao {
                 // 컬렉션이 가지고 있는 문서 중 contentIdx 필드가 지정된 글 번호 값과 같은 Document 가져오기
                 val query = collectionReference.whereEqualTo("contentIdx", contentIdx).get().await()
 
-                // 저장할 데이터를 담을 HsahMap 만들기
+                // 저장할 데이터를 담을 HashMap 만들기
                 val map = mutableMapOf<String, Long>()
                 map["contentState"] = newState.number.toLong()
                 // 저장
                 // 가져온 문서 중 첫 번째 문서에 접근하여 데이터 수정
                 // contentIdx가 같은 글은 존재할 수 없기 때문에 첫 번째 객체를 바로 추출해서 사용함
                 query.documents[0].reference.set(map)
+            }
+
+            job1.join()
+        }
+
+        // 글 데이터 수정하기
+        suspend fun updateContentData(contentModel: ContentModel, isRemoveImage: Boolean) {
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("ContentData")
+                // 글 번호가 contentIdx에 해당하는 문서에 접근할 수 있는 객체 가져오기
+                // 컬렉션이 가지고 있는 문서 중 수정할 글 정보 가져오기
+                val query = collectionReference.whereEqualTo("contentIdx", contentModel.contentIdx).get().await()
+
+                // 저장할 데이터를 담을 HashMap 만들기
+                val map = mutableMapOf<String, Any?>()
+                map["contentSubject"] = contentModel.contentSubject
+                map["contentType"] = contentModel.contentType
+                map["contentText"] = contentModel.contentText
+                if(contentModel.contentImage != null) {
+                    map["contentImage"] = contentModel.contentImage!!
+                }
+
+                // 사용자가 이미지를 삭제했을 경우
+                if(isRemoveImage == true) {
+                    map["contentImage"] = null
+                }
+
+                // 저장
+                // 가져온 문서 중 첫 번째 문서에 접근하여 데이터 수정
+                // contentIdx가 같은 글은 존재할 수 없기 때문에 첫 번째 객체를 바로 추출해서 사용함
+                query.documents[0].reference.update(map)
             }
 
             job1.join()

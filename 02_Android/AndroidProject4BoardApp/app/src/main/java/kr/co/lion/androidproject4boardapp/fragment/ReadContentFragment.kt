@@ -82,8 +82,11 @@ class ReadContentFragment : Fragment() {
                         }
                         // 수정
                         R.id.menuItemReadContentModify -> {
+                            val modifyBundle = Bundle()
+                            modifyBundle.putInt("contentIdx", contentIdx)
+
                             // 수정 화면으로 이동
-                            contentActivity.replaceFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT, true, true, null)
+                            contentActivity.replaceFragment(ContentFragmentName.MODIFY_CONTENT_FRAGMENT, true, true, modifyBundle)
                         }
                         // 삭제
                         R.id.menuItemReadContentDelete -> {
