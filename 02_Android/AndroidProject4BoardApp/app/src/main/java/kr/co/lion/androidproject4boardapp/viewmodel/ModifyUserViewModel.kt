@@ -45,6 +45,14 @@ class ModifyUserViewModel : ViewModel() {
         }
     }
 
+    // 성별 값 반환하는 메서드
+    // 선택되어 있는 버튼의 아이디로 분기
+    fun gettingGender() = when(toggleModifyUserInfoGender.value) {
+        R.id.buttonModifyUserInfoMale -> Gender.MALE.num
+        R.id.buttonModifyUserInfoFemale -> Gender.FEMALE.num
+        else -> 0
+    }
+
     // 체크박스 전체 상태 설정
     fun setCheckAll(checked: Boolean) {
         checkBoxModifyUserInfoHobby1.value = checked

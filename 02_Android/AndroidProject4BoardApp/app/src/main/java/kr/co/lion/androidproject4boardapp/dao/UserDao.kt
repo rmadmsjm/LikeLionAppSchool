@@ -169,5 +169,38 @@ class UserDao {
 
             return userList
         }
+
+        // 사용자 정보 수정하는 메서드
+        suspend fun updateUserData(userModel: UserModel, isChangePassword: Boolean) {
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체 가져오기
+                val collectionReference = Firebase.firestore.collection("UserData")
+                // 컬랙션이 가지고 있는 문서 중 수정할 사용자 정보 가져오기
+                val query =
+                    collectionReference.whereEqualTo("UserIdx", userModel.userIdx).get().await()
+
+                // 저장할 데이터를 담을 HashMap 만들기
+                val map = mutableMapOf<String, Any?>()
+                map["userNickName"] = userModel.userNickname
+                map["userAge"] = userModel.userAge
+                map["userGender"] = userModel.userGender
+                map["userHobby1"] = userModel.userHobby1
+                map["userHobby2"] = userModel.userHobby2
+                map["userHobby3"] = userModel.userHobby3
+                map["userHobby4"] = userModel.userHobby4
+                map["userHobby5"] = userModel.userHobby5
+                map["userHobby6"] = userModel.userHobby6
+
+                // 비밀번호를 변경한 경우
+                if (isChangePassword) {
+                    map["userPw"] = userModel.userPw
+                }
+                // 저장
+                // 가져온 문서 중 첫 번째 문서에 접근하여 데이터 수정
+                query.documents[0].reference.update(map)
+            }
+
+            job1.join()
+        }
     }
 }
