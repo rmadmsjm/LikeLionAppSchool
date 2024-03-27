@@ -1,5 +1,7 @@
 package kr.co.lion.androidproject4boardapp
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -124,6 +126,7 @@ class ContentActivity : AppCompatActivity() {
                         }
                         // 로그아웃
                         R.id.menuItemContentNavigationLogout -> {
+                            logoutProcess()
                         }
                         // 회원 탈퇴
                         R.id.menuItemContentNavigationSignOut -> {
@@ -245,5 +248,31 @@ class ContentActivity : AppCompatActivity() {
 
         // 지정한 이름의 Fragment를 BackStack에서 제거
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    // 로그아웃 처리
+    fun logoutProcess() {
+        // 로그인 사용자와 관련된 프로퍼티 초기화
+        loginUserIdx = 0
+        loginUserNickname = ""
+
+        // SharedPreferences에 자동 로그인 정보가 있을 경우 삭제
+        val sharedPreferences = getSharedPreferences("AutoLogin", Context.MODE_PRIVATE)
+        // 자동 로그인 정보 가져오기
+        val tempUserIdx = sharedPreferences.getInt("loginUserIdx", -1)
+        // 자동 로그인 정보가 있는 경우
+        if(tempUserIdx != -1) {
+            // 정보 삭제
+            val editor = sharedPreferences.edit()
+            editor.remove("loginUserIdx")
+            editor.remove("loginUserNickname")
+            editor.apply()
+        }
+
+        // MainActivity 실행하고 현재 Activity 종료
+        val mainIntent = Intent(this, MainActivity::class.java)
+        startActivity(mainIntent)
+
+        finish()
     }
 }
