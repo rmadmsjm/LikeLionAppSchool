@@ -8,6 +8,10 @@ import android.os.SystemClock
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.ActivityContentBinding
 import kr.co.lion.androidproject4boardapp.databinding.HeaderContentDrawerBinding
 import kr.co.lion.androidproject4boardapp.fragment.AddContentFragment
@@ -127,9 +131,12 @@ class ContentActivity : AppCompatActivity() {
                         // 로그아웃
                         R.id.menuItemContentNavigationLogout -> {
                             logoutProcess()
+                            startMainActivity()
                         }
                         // 회원 탈퇴
                         R.id.menuItemContentNavigationSignOut -> {
+                            signoutProcess()
+                            startMainActivity()
                         }
                     }
 
@@ -268,7 +275,22 @@ class ContentActivity : AppCompatActivity() {
             editor.remove("loginUserNickname")
             editor.apply()
         }
+    }
 
+    // 회원 탈퇴
+    fun signoutProcess() {
+        // 로그아웃 처리
+        val siginoutUserIdx = loginUserIdx
+        logoutProcess()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            // 탈퇴 상태로 사용자의 상태 변경
+            UserDao.updateUserState(siginoutUserIdx, UserState.USER_STATE_SIGNOUT)
+        }
+    }
+
+    // 현재 Activity 종료 후 MainActivity 실행
+    fun startMainActivity() {
         // MainActivity 실행하고 현재 Activity 종료
         val mainIntent = Intent(this, MainActivity::class.java)
         startActivity(mainIntent)

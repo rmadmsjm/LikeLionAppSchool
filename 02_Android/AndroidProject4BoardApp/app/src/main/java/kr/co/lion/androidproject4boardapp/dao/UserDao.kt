@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kr.co.lion.androidproject4boardapp.ContentState
+import kr.co.lion.androidproject4boardapp.UserState
 import kr.co.lion.androidproject4boardapp.model.UserModel
 
 class UserDao {
@@ -200,6 +202,24 @@ class UserDao {
                 query.documents[0].reference.update(map)
             }
 
+            job1.join()
+        }
+
+        // 사용자 상태 변경하기
+        suspend fun updateUserState(userIdx: Int, newState: UserState) {
+            val job1 = CoroutineScope(Dispatchers.IO).launch {
+                // 컬렉션에 접근할 수 있는 객체를 가져오기
+                val collectionReference = Firebase.firestore.collection("UserData")
+                // 컬렉션이 가지고 있는 문서 중 userIdx 필드가 지정된 사용자 번호값과 같은 Document 가져오기
+                val query = collectionReference.whereEqualTo("userIdx", userIdx).get().await()
+
+                // 저장할 데이터를 담을 HashMap 만들기
+                val map = mutableMapOf<String, Any>()
+                map["userState"] = newState.num.toLong()
+                // 저장
+                // 가져온 문서 중 첫 번째 문서에 접근하여 데이터 수정하기
+                query.documents[0].reference.update(map)
+            }
             job1.join()
         }
     }
