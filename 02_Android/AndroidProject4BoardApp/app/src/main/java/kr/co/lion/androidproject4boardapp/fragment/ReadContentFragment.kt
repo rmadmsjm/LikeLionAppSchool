@@ -30,6 +30,8 @@ class ReadContentFragment : Fragment() {
 
     // 현재 글 번호를 담을 변수
     var contentIdx = 0
+    // 글 작성자와 로그인한 사람이 같은지
+    var isContentWriter = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -68,7 +70,7 @@ class ReadContentFragment : Fragment() {
                 inflateMenu(R.menu.menu_read_content)
                 // 모든 메뉴 보이지 않게 만듦
                 // 글 정보를 가져온 다음 메뉴를 노출 시킴
-                menu.findItem(R.id.menuItemReadContentReply).isVisible = false
+                // menu.findItem(R.id.menuItemReadContentReply).isVisible = false
                 menu.findItem(R.id.menuItemReadContentModify).isVisible = false
                 menu.findItem(R.id.menuItemReadContentDelete).isVisible = false
 
@@ -132,7 +134,7 @@ class ReadContentFragment : Fragment() {
 
     // 댓글 보여줄 BottomSheet 띄우기
     fun showBottomSheet() {
-        val readContentBottomFragment = ReadContentBottomFragment()
+        val readContentBottomFragment = ReadContentBottomFragment(isContentWriter, contentIdx)
         readContentBottomFragment.show(contentActivity.supportFragmentManager, "ReplyBottomSheet")
     }
 
@@ -157,9 +159,10 @@ class ReadContentFragment : Fragment() {
             if(contentActivity.loginUserIdx == contentModel?.contentWriterIdx) {
                 fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentModify).isVisible = true
                 fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentDelete).isVisible = true
-            } else {
-                fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentReply).isVisible = true
             }
+//            else {
+//                fragmentReadContentBinding.toolbarReadContent.menu.findItem(R.id.menuItemReadContentReply).isVisible = true
+//            }
 
             // 글을 작성한 사용자의 번호를 통해 사용자 정보 가져오기
             val userModel = UserDao.gettingUserInfoByUserIdx(contentModel?.contentWriterIdx!!)
@@ -176,6 +179,9 @@ class ReadContentFragment : Fragment() {
             readContentViewModel.textFieldReadContentNickname.value = userModel?.userNickname
             readContentViewModel.textFieldReadContentDate.value = contentModel?.contentWriteDate
             readContentViewModel.textFieldReadContentText.value = contentModel?.contentText
+
+            // 글 작성자와 로그인한 사람이 같은지 확인하기
+            isContentWriter = contentActivity.loginUserIdx == contentModel.contentWriterIdx
 
             // 이미지 데이터 보여주기
             if(contentModel?.contentImage != null) {
