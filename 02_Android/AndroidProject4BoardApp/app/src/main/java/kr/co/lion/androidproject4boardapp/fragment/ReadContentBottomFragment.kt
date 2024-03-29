@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +22,13 @@ import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.ReplyState
 import kr.co.lion.androidproject4boardapp.Tools
 import kr.co.lion.androidproject4boardapp.dao.ReplyDao
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentReadContentBottomBinding
 import kr.co.lion.androidproject4boardapp.databinding.RowReadContentReplayBinding
 import kr.co.lion.androidproject4boardapp.model.ReplyModel
+import kr.co.lion.androidproject4boardapp.model.UserModel
 import kr.co.lion.androidproject4boardapp.viewmodel.ReadContentBottomViewModel
+import kr.co.lion.androidproject4boardapp.viewmodel.RowReadContentReplyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -33,6 +37,10 @@ class ReadContentBottomFragment(var isContentWriter: Boolean, var contentIdx: In
     lateinit var fragmentReadContentBottomBinding: FragmentReadContentBottomBinding
     lateinit var contentActivity: ContentActivity
     lateinit var readContentBottomViewModel: ReadContentBottomViewModel
+
+    // 댓글 정보를 가지고 있는 리스트
+    var replyList = mutableListOf<ReplyModel>()
+    var userList = mutableListOf<UserModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -46,6 +54,7 @@ class ReadContentBottomFragment(var isContentWriter: Boolean, var contentIdx: In
 
         settingTextField()
         settingRecyclerViewReadContentBottom()
+        gettingReplyData()
 
         // readContentBottomViewModel.textFieldAddContentReply.value = "테스트 댓글 입니다."
 
@@ -83,20 +92,51 @@ class ReadContentBottomFragment(var isContentWriter: Boolean, var contentIdx: In
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomViewHolder {
-            val rowReadContentReplayBinding = RowReadContentReplayBinding.inflate(layoutInflater)
+            // val rowReadContentReplayBinding = RowReadContentReplayBinding.inflate(layoutInflater)
+            val rowReadContentReplayBinding = DataBindingUtil.inflate<RowReadContentReplayBinding>(layoutInflater,
+                R.layout.row_read_content_replay, parent, false)
+            val rowReadContentReplyViewModel = RowReadContentReplyViewModel()
+            rowReadContentReplayBinding.rowReadContentReplyViewModel = rowReadContentReplyViewModel
+            rowReadContentReplayBinding.lifecycleOwner = this@ReadContentBottomFragment
+
             val bottomViewHolder = BottomViewHolder(rowReadContentReplayBinding)
 
             return bottomViewHolder
         }
 
         override fun getItemCount(): Int {
-            return 100
+            return replyList.size
         }
 
         override fun onBindViewHolder(holder: BottomViewHolder, position: Int) {
-            holder.rowReadContentReplayBinding.textViewRowReplyText.text = "댓글 $position"
-            holder.rowReadContentReplayBinding.textViewRowReplyNickname.text = "작성자 $position"
-            holder.rowReadContentReplayBinding.textViewRowReplyDate.text = "2024.03.07"
+            holder.rowReadContentReplayBinding.rowReadContentReplyViewModel?.textViewRowReplyText?.value = replyList[position].replyText
+
+            userList.forEach {
+                if(it.userIdx == replyList[position].replyWriterIdx){
+                    holder.rowReadContentReplayBinding.rowReadContentReplyViewModel?.textViewRowReplyNickname?.value = it.userNickname
+                    return@forEach
+                }
+            }
+
+            holder.rowReadContentReplayBinding.rowReadContentReplyViewModel?.textViewRowReplyDate?.value = replyList[position].replyWriteDate
+
+            // 로그인한 사람과 댓글 작성한 사람이 같지 않다면 삭제 버튼 보이지 않게 하기
+            if(contentActivity.loginUserIdx != replyList[position].replyWriterIdx) {
+                holder.rowReadContentReplayBinding.buttonRowReplyDelete.isVisible = false
+                // 삭제 버튼 리스너 제거
+                holder.rowReadContentReplayBinding.buttonRowReplyDelete.setOnClickListener(null)
+            } else {
+                holder.rowReadContentReplayBinding.buttonRowReplyDelete.isVisible = true
+                // 삭제 버튼 리스너 설정
+                holder.rowReadContentReplayBinding.buttonRowReplyDelete.setOnClickListener {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        // 댓글 삭제
+                        ReplyDao.updateReplyState(replyList[position].replyIdx, ReplyState.REPLY_SATE_DELETE)
+                        // 데이터를 다시 받아와 RecyclerView 갱신
+                        gettingReplyData()
+                    }
+                }
+            }
         }
     }
 
@@ -179,6 +219,9 @@ class ReadContentBottomFragment(var isContentWriter: Boolean, var contentIdx: In
 
                             // 입력 요소 비우기
                             readContentBottomViewModel?.textFieldAddContentReply?.value = ""
+
+                            // RecylerView 갱신
+                            gettingReplyData()
                         }
 
                         // false를 반환하여 키보드 내려가게 하기
@@ -187,6 +230,18 @@ class ReadContentBottomFragment(var isContentWriter: Boolean, var contentIdx: In
                     }
                 }
             }
+        }
+    }
+
+    // 서버로부터 데이터를 가져와 RecyclerView 갱신
+    fun gettingReplyData(){
+        CoroutineScope(Dispatchers.Main).launch {
+            // 댓글 정보를 가져온다
+            replyList = ReplyDao.gettingReplyList(contentIdx)
+            // 사용자 정보를 가져온다.
+            userList = UserDao.getUserAll()
+            // 리사이클러뷰를 갱신한다.
+            fragmentReadContentBottomBinding.recyclerViewAddContentReply.adapter?.notifyDataSetChanged()
         }
     }
 }

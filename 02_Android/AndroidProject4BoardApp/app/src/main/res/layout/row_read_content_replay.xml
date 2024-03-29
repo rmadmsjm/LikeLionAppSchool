@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="rowReadContentReplyViewModel"
+            type="kr.co.lion.androidproject4boardapp.viewmodel.RowReadContentReplyViewModel" />
+    </data>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +25,7 @@
             android:id="@+id/textViewRowReplyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@{rowReadContentReplyViewModel.textViewRowReplyText}"
             tools:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
@@ -27,14 +33,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="TextView" />
+            android:text="@{rowReadContentReplyViewModel.textViewRowReplyNickname}" />
 
         <TextView
             android:id="@+id/textViewRowReplyDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="TextView" />
+            android:text="@{rowReadContentReplyViewModel.textViewRowReplyDate}" />
     </LinearLayout>
 
     <Button
