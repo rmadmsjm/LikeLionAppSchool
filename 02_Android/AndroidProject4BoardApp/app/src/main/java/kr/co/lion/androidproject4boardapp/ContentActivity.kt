@@ -61,7 +61,7 @@ class ContentActivity : AppCompatActivity() {
                 addHeaderView(headerContentDrawerBinding.root)
 
                 // 사용자 닉네임 설정
-                headerContentDrawerBinding.headerContentDrawerNickName.text = "삼사오"
+                headerContentDrawerBinding.headerContentDrawerNickName.text = loginUserNickname
 
                 // 메뉴 눌렀을 때 동작하는 리스너
                 setNavigationItemSelectedListener {
