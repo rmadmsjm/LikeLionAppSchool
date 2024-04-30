@@ -17,7 +17,7 @@ void main(){
   // 리스트가 관리하는 값(혹은 객체)의 개수
   print("list3이 관리하는 값의 개수 : ${list3.length}");
 
-  // 리스트에 값(혹은 객체)를 추가한다.
+  // 리스트에 값(혹은 객체) 추가
   list3.add(400);
   print("list3 : $list3");
 
@@ -139,8 +139,7 @@ void main(){
   Answers answers1 = Answers.yes;
   print(answers1);
 
-  // switch 사용시 enum 타입을 지정하면
-  // enum 에 지정된 모든 값에 대한 case를 작성하도록 강제한다.
+  // switch 사용시 enum 타입을 지정하면 enum 에 지정된 모든 값에 대한 case를 작성하도록 강제함
   switch(answers1){
     case Answers.yes :
       print("예쑤~~");
