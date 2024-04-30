@@ -57,6 +57,10 @@ void main() {
 
   t200.val1 = -1000;
   print('t200.val1 : ${t200.val1}');
+
+  var t500 = TestClass500(100, 200);
+  print("t500.memberA : ${t500.memberA}");
+  print("t500.memberB : ${t500.memberB}");
 }
 
 // 클래스
@@ -118,4 +122,17 @@ class TestClass4 {
     print("member_a1 : $member_a1");
     print("_member_a2 : $_member_a2");
   }
+}
+
+class TestClass500 {
+  late int memberA;
+  late int memberB;
+
+  // TestClass500(memberA, memberB){
+  //   this.memberA = memberA;
+  //   this.memberB = memberB;
+  // }
+
+  // 생성자로 전달되는 값이 맴버 변수에 바로 담기게 됨
+  TestClass500(this.memberA, this.memberB);
 }
