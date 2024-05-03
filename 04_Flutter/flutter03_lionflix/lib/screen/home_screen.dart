@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/widget/home_carousel_slider.dart';
 import 'package:flutter03_lionflix/widget/home_top_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HomeTopAppBar(),
+      body: HomeCarouselSlider(),
     );
   }
 }
