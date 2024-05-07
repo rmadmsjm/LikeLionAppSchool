@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/screen/detail_screen.dart';
 
 class SearchListView extends StatefulWidget {
   const SearchListView({super.key});
@@ -12,8 +13,8 @@ class _SearchListViewState extends State<SearchListView> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 10,
-      // itemBuilder: (context, index) => makeListItem(context)
-      itemBuilder: (context, index) => makeListItem2(),
+      itemBuilder: (context, index) => makeListItem(context)
+      // itemBuilder: (context, index) => makeListItem2(),
     );
   }
 }
@@ -24,6 +25,12 @@ Widget makeListItem(BuildContext context) {
     padding: EdgeInsets.only(top: 10),
     child: InkWell(
       onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DetailScreen(),
+            fullscreenDialog: true
+          )
+        );
       },
       child: Row(
         children: [
