@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/screen/detail_screen.dart';
 
 class HomeBoxSlider extends StatefulWidget {
   const HomeBoxSlider({super.key});
@@ -23,7 +24,7 @@ class _HomeBoxSliderState extends State<HomeBoxSlider> {
               scrollDirection: Axis.horizontal,
               itemCount: 10,
               itemBuilder: (context, index) {
-                return makeListItem();
+                return makeListItem(context);
               },
             ),
           )
@@ -34,9 +35,19 @@ class _HomeBoxSliderState extends State<HomeBoxSlider> {
 }
 
 // ListView의 항목 하나를 구헝하는 함수
-Widget makeListItem() {
-  return Container(
-    padding: EdgeInsets.only(right: 10),
-    child: Image.asset('lib/assets/images/movie8.jpg'),
+Widget makeListItem(BuildContext context) {
+  return InkWell(
+    onTap: () {
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => DetailScreen(),
+              fullscreenDialog: true
+          )
+      );
+    },
+    child: Container(
+      padding: EdgeInsets.only(right: 10),
+      child: Image.asset('lib/assets/images/movie2.jpg'),
+    ),
   );
 }
