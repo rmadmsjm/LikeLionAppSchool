@@ -12,7 +12,8 @@ class _SearchListViewState extends State<SearchListView> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: 10,
-      itemBuilder: (context, index) => makeListItem(context)
+      // itemBuilder: (context, index) => makeListItem(context)
+      itemBuilder: (context, index) => makeListItem2(),
     );
   }
 }
@@ -53,5 +54,18 @@ Widget makeListItem(BuildContext context) {
         ],
       ),
     ),
+  );
+}
+
+// ListTile 사용 예
+// https://api.flutter.dev/flutter/material/ListTile-class.html
+Widget makeListItem2() {
+  return ListTile(
+    leading: Image.asset('lib/assets/images/movie6.jpg'),
+    title: Text('영화 제목 1'),
+    subtitle: Text('출연진 : 배우1, 배우2, 배우3\n제작진 : 제작1, 제작2'),
+    isThreeLine: true,
+    onTap: () {
+    },
   );
 }
