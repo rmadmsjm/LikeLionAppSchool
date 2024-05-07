@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/screen/detail_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeCarouselSlider extends StatefulWidget {
@@ -128,7 +129,17 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
               Column(
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // DetailScreen 띄우기
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            // 보여질 다음 화면 설정
+                            builder: (context) => DetailScreen(),
+                            // 다이얼로그로 보여지게 함
+                            fullscreenDialog: true
+                          )
+                        );
+                      },
                       icon: Icon(Icons.info)
                   ),
                   Text(
