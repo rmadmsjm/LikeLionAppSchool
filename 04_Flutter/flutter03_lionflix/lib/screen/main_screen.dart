@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter03_lionflix/provider/tab_page_index_provider.dart';
 import 'package:flutter03_lionflix/screen/home_screen.dart';
+import 'package:flutter03_lionflix/screen/search_screen.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
     return Container(
       child: [
         HomeScreen(),
-        Center(child: Text('Search')),
+        SearchScreen(),
         Center(child: Text('Saved')),
         Center(child: Text('more')),
       ][currentPageIndex],
