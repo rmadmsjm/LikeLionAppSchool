@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
         HomeScreen(),
         SearchScreen(),
         LikeScreen(),
-        Center(child: Text('more')),
+        Center(child: Text("more")),
       ][currentPageIndex],
     );
   }

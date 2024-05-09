@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../widget/like_top_app_bar.dart';
+import 'package:flutter03_lionflix/widget/like_list_view.dart';
+import 'package:flutter03_lionflix/widget/like_top_app_bar.dart';
 
 class LikeScreen extends StatefulWidget {
   const LikeScreen({super.key});
@@ -14,6 +14,12 @@ class _LikeScreenState extends State<LikeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LikeTopAppBar(),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        child: Expanded(
+          child: LikeListView(),
+        ),
+      ),
     );
   }
 }
