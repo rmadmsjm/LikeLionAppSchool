@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widget/like_top_app_bar.dart';
+
 class LikeScreen extends StatefulWidget {
   const LikeScreen({super.key});
 
@@ -10,6 +12,8 @@ class LikeScreen extends StatefulWidget {
 class _LikeScreenState extends State<LikeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: LikeTopAppBar(),
+    );
   }
 }
