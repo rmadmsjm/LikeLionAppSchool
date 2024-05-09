@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 // 영화 데이터 전체 가져오기
 Future<List<Map<String, dynamic>>> getMovieData() async {
@@ -16,4 +18,16 @@ Future<List<Map<String, dynamic>>> getMovieData() async {
   }
 
   return results;
+}
+
+// 이미지 데이터 가져오기
+Future<Image> getImageData(String fileName) async {
+  // 이미지 가져올 수 있는 주소 가져오기
+  String imageUrl = await FirebaseStorage.instance.ref('poster/$fileName').getDownloadURL();
+  // print(imageUrl);
+
+  // 이미지 관리하는 객체
+  Image resultImage = Image.network(imageUrl);
+
+  return resultImage;
 }

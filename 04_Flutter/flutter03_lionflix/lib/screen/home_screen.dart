@@ -13,6 +13,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // 영화 데이터 담을 상태 변수
+  List<Map<String, dynamic>> movieData = [];
+  // 영화 포스터 담을 상태 변수
+  List<Image> posterData = [];
+
   // 화면이 보여질 때마다 호출되는 함수
   // initState()에 async 붙이면 오류 발생함
   // Android의 onResume() 과 비슷
@@ -28,7 +33,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getData() async {
     // 영화 데이터 가져오기
     var tempMovieData = await getMovieData();
-    print('home screen : $tempMovieData');
+    // print('home screen : $tempMovieData');
+    // getImageData(tempMovieData[0]['movie_poster']);
+
+    // 영화 수만큼 이미지 객체 만들기
+    posterData = List<Image>.generate(
+        // 리스트가 담을 객체 개수
+        tempMovieData.length,
+        // 리스트가 담을 객체 생성해 반환
+        // index에는 순서값이 들어옴
+        (index) => Image.asset('lib/assets/images/loading.gif')
+    );
+
+    // 영화 데이터를 통해 상태 설정
+    setState(() {
+      movieData = tempMovieData;
+    });
+
+    // 포스터 데이터를 받아오면 상태 설정
+    for(int i = 0; i < tempMovieData.length; i++) {
+      // i번째 영화 포스터 객체 가져오기
+      var tempImage = await getImageData(tempMovieData[i]['movie_poster']);
+      // 받아온 이미지 객체를 포스터를 담을 리스트에 담고 상태 설정
+      setState(() {
+        posterData[i] = tempImage;
+      });
+    }
   }
 
   // 보여지는 화며을 구성할 때 호출되는 함수
@@ -44,10 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: ListView(
         children: [
           // 상단 회전목마
-          HomeCarouselSlider(),
+          HomeCarouselSlider(movieData, posterData),
           Padding(padding: EdgeInsets.only(top: 20)),
           // 미리 보기
-          HomeCircleSlider(),
+          HomeCircleSlider(movieData, posterData),
           Padding(padding: EdgeInsets.only(top: 20)),
           // 지금 뜨는 컨텐츠
           HomeBoxSlider(),
