@@ -3,8 +3,19 @@ import 'package:flutter03_lionflix/provider/tab_page_index_provider.dart';
 import 'package:flutter03_lionflix/screen/main_screen.dart';
 import 'package:flutter03_lionflix/widget/main_bottom_navigaiton_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  // firebase의 await(동기화)때문에 Flutter VM이 화면처리를 못하는 문제가 발생함
+  // 이를 위해 설정
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Firestore 초기 설정
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(LionFlixApp());
 }
 
