@@ -5,6 +5,7 @@ import 'package:flutter03_lionflix/screen/search_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'like_screen.dart';
+import 'more_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -35,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         HomeScreen(),
         SearchScreen(),
         LikeScreen(),
-        Center(child: Text("more")),
+        MoreScreen(),
       ][currentPageIndex],
     );
   }
