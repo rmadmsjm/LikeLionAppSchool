@@ -31,3 +31,13 @@ Future<Image> getImageData(String fileName) async {
 
   return resultImage;
 }
+
+// 지금 뜨는 콘텐츠 정보 가져오기
+Future<List<int>> getHotMovieList() async {
+
+  var queryShanshot = await FirebaseFirestore.instance.collection('hot').get();
+
+  List<int> results = List<int>.from(queryShanshot.docs[0].data()['hot_movie_idx']);
+
+  return results;
+}

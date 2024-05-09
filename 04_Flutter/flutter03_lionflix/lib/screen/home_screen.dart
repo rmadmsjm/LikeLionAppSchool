@@ -17,6 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> movieData = [];
   // 영화 포스터 담을 상태 변수
   List<Image> posterData = [];
+  // 지금 뜨는 콘텐츠 정보 담을 리스트
+  List<int> hotMovie = [];
 
   // 화면이 보여질 때마다 호출되는 함수
   // initState()에 async 붙이면 오류 발생함
@@ -45,6 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
         (index) => Image.asset('lib/assets/images/loading.gif')
     );
 
+    // 지금 뜨는 콘첸츠 정보 받아오기
+    hotMovie = await getHotMovieList();
+
     // 영화 데이터를 통해 상태 설정
     setState(() {
       movieData = tempMovieData;
@@ -67,22 +72,29 @@ class _HomeScreenState extends State<HomeScreen> {
   // 3. 사용자에 의해 이벤트가 발생할 때
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HomeTopAppBar(),
-      // ListView : ScrollView 처럼 사용
-      // ListView.builder : RecyclerView 처럼 사용
-      body: ListView(
-        children: [
-          // 상단 회전목마
-          HomeCarouselSlider(movieData, posterData),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          // 미리 보기
-          HomeCircleSlider(movieData, posterData),
-          Padding(padding: EdgeInsets.only(top: 20)),
-          // 지금 뜨는 컨텐츠
-          HomeBoxSlider(),
-        ],
-      )
-    );
+    if(movieData.length == 0) {
+      return Scaffold(
+        appBar: HomeTopAppBar(),
+        body: Image.asset('lib/assets/images/loading.gif'),
+      );
+    } else {
+      return Scaffold(
+          appBar: HomeTopAppBar(),
+          // ListView : ScrollView 처럼 사용
+          // ListView.builder : RecyclerView 처럼 사용
+          body: ListView(
+            children: [
+              // 상단 회전목마
+              HomeCarouselSlider(movieData, posterData),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              // 미리 보기
+              HomeCircleSlider(movieData, posterData),
+              Padding(padding: EdgeInsets.only(top: 20)),
+              // 지금 뜨는 컨텐츠
+              HomeBoxSlider(movieData, posterData, hotMovie),
+            ],
+          )
+      );
+    }
   }
 }
