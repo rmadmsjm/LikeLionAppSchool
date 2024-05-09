@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/widget/more_list_view.dart';
 import 'package:flutter03_lionflix/widget/more_top_app_bar.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -13,6 +14,10 @@ class _MoreScreenState extends State<MoreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MoreTopAppBar(),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        child: MoreListView(),
+      ),
     );
   }
 }
