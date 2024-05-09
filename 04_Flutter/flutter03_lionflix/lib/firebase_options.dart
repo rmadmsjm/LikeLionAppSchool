@@ -65,8 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'flutterlionflix-f86f3.appspot.com',
     iosBundleId: 'kr.co.lion.flutter03Lionflix',
   );
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 }
