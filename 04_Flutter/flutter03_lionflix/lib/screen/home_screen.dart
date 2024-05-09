@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter03_lionflix/dao/movie_dao.dart';
 import 'package:flutter03_lionflix/widget/home_box_slider.dart';
 import 'package:flutter03_lionflix/widget/home_carousel_slider.dart';
 import 'package:flutter03_lionflix/widget/home_circle_slider.dart';
@@ -12,6 +13,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // 화면이 보여질 때마다 호출되는 함수
+  // initState()에 async 붙이면 오류 발생함
+  // Android의 onResume() 과 비슷
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getData();
+  }
+
+  // 영화 데이터 가져오기
+  Future<void> getData() async {
+    // 영화 데이터 가져오기
+    var tempMovieData = await getMovieData();
+    print('home screen : $tempMovieData');
+  }
+
+  // 보여지는 화며을 구성할 때 호출되는 함수
+  // 1. 처음 보여질 때
+  // 2. 상태가 설정되었을 때
+  // 3. 사용자에 의해 이벤트가 발생할 때
   @override
   Widget build(BuildContext context) {
     return Scaffold(
